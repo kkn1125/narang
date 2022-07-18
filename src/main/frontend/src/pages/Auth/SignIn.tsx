@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import * as faceapi from "face-api.js";
 import AuthTitle from "../../components/molecules/AuthTitle";
 import { Box, Button, Stack, Typography, useTheme } from "@mui/material";
 import TextFieldSet from "../../components/molecules/TextFieldSet";
