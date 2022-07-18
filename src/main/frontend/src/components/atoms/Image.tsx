@@ -7,8 +7,19 @@ interface ImageProp {
 
 function Image({ src, alt }: ImageProp) {
   return (
-    <section>
-      <img src={src} alt={alt} />
+    <section style={{ height: 500, overflow: "hidden", position: "relative" }}>
+      <img
+        src={src}
+        alt={alt}
+        crossOrigin='anonymous'
+        width='100%'
+        style={{
+          position: "absolute",
+          top: "50%",
+          transform: "translateY(-45%)",
+          objectFit: "cover",
+        }}
+      />
     </section>
   );
 }
