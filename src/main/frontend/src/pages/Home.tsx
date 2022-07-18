@@ -6,7 +6,7 @@ function Home() {
   return (
     <Box>
       <Image
-        src='https://mui.com/static/themes/onepirate/productHeroWonder.png'
+        src='https://cdn.pixabay.com/photo/2020/05/24/11/14/sea-5213746_1280.jpg'
         alt='sample'
       />
     </Box>
