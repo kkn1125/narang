@@ -9,7 +9,7 @@ function WriteForm() {
       <SunEditor
         lang='ko'
         // defaultValue='<p>내용을 입력하세요</p>'
-        placeholder="내용을 입력하세요"
+        placeholder='내용을 입력하세요'
         width='100%'
         height='300px'
       />
