@@ -14,6 +14,9 @@ root.render(
   <ThemeProvider theme={theme}>
     <GlobalStyles
       styles={{
+        "html, body, #root": {
+          height: "100%",
+        },
         a: {
           color: "inherit",
           textDecoration: "none",
