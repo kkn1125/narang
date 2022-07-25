@@ -1,4 +1,11 @@
-import { Box, Button, Stack, Typography, useTheme } from "@mui/material";
+import {
+  Box,
+  Button,
+  Divider,
+  Stack,
+  Typography,
+  useTheme,
+} from "@mui/material";
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AuthTitle from "../molecules/AuthTitle";
@@ -55,6 +62,15 @@ function SignControl({ mode, onSubmit, socials, fields }: SignControl) {
       </Box>
       <AuthTitle title={title} subtitle={subtitle} />
       <Stack component='form' onSubmit={onSubmit}>
+        {mode === SIGNIN && (
+          <Button
+            variant='contained'
+            size='large'
+            onClick={() => navigate("/auth/facesign")}>
+            Face Sign In
+          </Button>
+        )}
+        <Divider sx={{ my: 2 }} />
         {mode === SIGNIN && <SocialSignIn socials={socials} />}
         <TextFieldSet fields={fields} size='medium' />
         {mode == SIGNUP && <TermsConditions />}
