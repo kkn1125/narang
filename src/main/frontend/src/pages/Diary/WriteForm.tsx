@@ -1,9 +1,23 @@
 import { Box, TextField, Button, Stack } from "@mui/material";
-import React from "react";
+import React, { useRef, useState } from "react";
 import SunEditor from "suneditor-react";
+import SunEditorCore from "suneditor/src/lib/core";
 import "suneditor/dist/css/suneditor.min.css"; // Import Sun Editor's CSS File
 
 function WriteForm() {
+	const editor = useRef<SunEditorCore>();
+	const [formData, setFormData] = useState({title: ''});
+	
+	const handleFormData = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const {name, value} = e.currentTarget;
+		setFormData({...formData, [name]: value});
+	}
+
+	// The sunEditor parameter will be set to the core suneditor instance when this function is called
+	const getSunEditorInstance = (sunEditor: SunEditorCore) => {
+		editor.current = sunEditor;
+	};
+
 	return (
 		<Box>
 			<Box
@@ -13,11 +27,14 @@ function WriteForm() {
 				}}
 				noValidate
 				autoComplete='off'
-        mb={2}>
+				mb={2}>
 				<TextField
 					label='제목을 입력하세요'
 					id='standard-size-normal'
 					variant='standard'
+					onChange={handleFormData}
+					value={formData['title']}
+					name='title'
 				/>
 			</Box>
 			<Box>
@@ -27,15 +44,28 @@ function WriteForm() {
 					placeholder='내용을 입력하세요'
 					width='100%'
 					height='300px'
+					getSunEditorInstance={getSunEditorInstance}
 				/>
 			</Box>
 			<Stack
 				direction='row'
 				spacing={4}
-        mt={2}
+				mt={2}
 				justifyContent='center'
 				alignItems='center'>
-				<Button variant='contained' size='medium' color='primary' >
+				<Button
+					variant='contained'
+					size='medium'
+					color='primary'
+					onClick={() => {
+						// console.log(editor.current?.getContents(true));
+						// console.log(formData);
+						alert(JSON.stringify({
+							title: formData.title,
+							content: editor.current?.getContents(true),
+							regdate: Date.now()
+						}, null, 2))
+					}}>
 					일기 저장하기
 				</Button>
 				<Button variant='contained' size='medium' color='warning'>
