@@ -24,12 +24,12 @@ import { Link } from "react-router-dom";
 
 const sideMenu = {
   top: [
-    new MenuItem("일기", "", <MenuBookIcon />),
-    new MenuItem("감정 그래프", "graph", <BarChartIcon />),
-    new MenuItem("오늘의 추천", "recommend", <RecommendIcon />),
-    new MenuItem("공유 일기", "share", <ShareIcon />),
+    new MenuItem("일기", "/diary", <MenuBookIcon />),
+    new MenuItem("감정 그래프", "/diary/graph", <BarChartIcon />),
+    new MenuItem("오늘의 추천", "/diary/recommend", <RecommendIcon />),
+    new MenuItem("공유 일기", "/diary/share", <ShareIcon />),
   ],
-  bottom: [new MenuItem("사용법", "usage", <QuestionMarkIcon />)],
+  bottom: [new MenuItem("사용법", "/diary/usage", <QuestionMarkIcon />)],
 };
 
 function DrawerBlock() {

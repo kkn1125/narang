@@ -18,6 +18,7 @@ import Usage from "./pages/Diary/Usage";
 import AuthLayout from "./components/templates/AuthLayout";
 import SignIn from "./pages/Auth/SignIn";
 import SignUp from "./pages/Auth/SignUp";
+import FaceLogin from "./pages/Auth/FaceLogin";
 
 export default function App() {
   const elements = useRoutes([
@@ -35,6 +36,7 @@ export default function App() {
       children: [
         { path: "signin", element: <SignIn /> },
         { path: "signup", element: <SignUp /> },
+        { path: "facesign", element: <FaceLogin /> },
       ],
     },
     {
