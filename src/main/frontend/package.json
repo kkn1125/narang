@@ -12,6 +12,7 @@
     "@types/react-dom": "latest",
     "@types/react-router-dom": "^5.3.3",
     "axios": "^0.27.2",
+    "chart.js": "^3.8.2",
     "canvas": "^2.9.3",
     "chart.js": "^3.8.2",
     "dotenv": "^16.0.1",

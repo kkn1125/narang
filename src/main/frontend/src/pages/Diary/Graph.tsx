@@ -94,6 +94,7 @@ function Graph() {
       <Chart data={data} type={"bar"} />
     </div>
   );
+
 }
 
 export default Graph;
