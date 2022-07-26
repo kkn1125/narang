@@ -11,7 +11,7 @@ import { Link, useNavigate } from "react-router-dom";
 import AuthTitle from "../molecules/AuthTitle";
 import SocialSignIn, { SocialInfo } from "../molecules/SocialSignIn";
 import TermsConditions from "../molecules/TermsConditions";
-import TextFieldSet from "../molecules/TextFieldSet";
+import TextFieldSet, { TextFieldItem } from "../molecules/TextFieldSet";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { capitalize } from "../../tools/utils";
 
@@ -35,17 +35,11 @@ const AUTH = {
 
 type Mode = "signin" | "signup";
 
-interface Field {
-  name: string;
-  placeholder: string;
-  required: boolean;
-}
-
 interface SignControl {
   mode: Mode;
   onSubmit: (e: React.FormEvent) => void;
-  socials: SocialInfo[];
-  fields: Field[];
+  socials?: SocialInfo[];
+  fields: TextFieldItem[];
 }
 
 function SignControl({ mode, onSubmit, socials, fields }: SignControl) {
@@ -88,12 +82,12 @@ function SignControl({ mode, onSubmit, socials, fields }: SignControl) {
         }}>
         {notice}{" "}
         <Link
-          to='/auth/signup'
+          to={`/auth/${mode === SIGNIN ? SIGNUP : SIGNIN}`}
           style={{
             color: theme.palette.primary.main,
             fontWeight: 600,
           }}>
-          {capitalize(title)}
+          {capitalize(mode === SIGNIN ? "sign up" : "sign in")}
         </Link>
       </Typography>
     </div>
