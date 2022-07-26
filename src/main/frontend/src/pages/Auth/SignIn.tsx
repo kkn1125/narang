@@ -1,25 +1,21 @@
-import React, { useEffect } from "react";
-import AuthTitle from "../../components/molecules/AuthTitle";
-import { Box, Button, Stack, Typography, useTheme } from "@mui/material";
-import TextFieldSet from "../../components/molecules/TextFieldSet";
-import SocialSignIn, {
-  SocialInfo,
-} from "../../components/molecules/SocialSignIn";
+import React from "react";
+import { Stack } from "@mui/material";
+import { SocialInfo } from "../../components/molecules/SocialSignIn";
 import axios, { AxiosResponse } from "axios";
 import GoogleIcon from "@mui/icons-material/Google";
 import FacebookIcon from "@mui/icons-material/Facebook";
-import { Link, useNavigate } from "react-router-dom";
-import TermsConditions from "../../components/molecules/TermsConditions";
 import SignControl from "../../components/organisms/SignControl";
 
 const fields = [
   {
     name: "email",
+    type: "email",
     placeholder: "",
     required: true,
   },
   {
     name: "password",
+    type: "password",
     placeholder: "",
     required: true,
   },
@@ -60,11 +56,8 @@ function SignIn() {
 
     formDataInputs.forEach((input) => formData.append(input.name, input.value));
 
-    axios({
-      method: "POST",
-      url: "/api/signin",
-      data: formData,
-    })
+    axios
+      .post("/api/signin", formData)
       .then(handleReceiveData)
       .catch(handleError);
 
