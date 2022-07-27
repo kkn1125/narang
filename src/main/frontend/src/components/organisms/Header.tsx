@@ -16,13 +16,13 @@ import BedtimeOutlinedIcon from "@mui/icons-material/BedtimeOutlined";
 import { useNavigate } from "react-router-dom";
 
 const pages = [
-  new Item("Tutorial", "/tutorial"),
+  // new Item("Tutorial", "/tutorial"),
   new Item("About", "/about"),
-  new Item("Contact", "/contact"),
+  // new Item("Contact", "/contact"),
 ];
 const settings = [
   new Item("Profile", "/auth/profile"),
-  new Item("Account", "/auth/account"),
+  // new Item("Account", "/auth/account"),
   new Item("Diary", "/diary"),
   new Item("Logout", "/auth/signout"),
 ];
