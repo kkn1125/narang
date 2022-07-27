@@ -2,8 +2,9 @@ import { Stack, TextField } from "@mui/material";
 import React from "react";
 import { splitToUnderBar, upperCase } from "../../tools/utils";
 
-interface TextFieldItem {
+export interface TextFieldItem {
   name: string;
+  type: "text" | "email" | "password" | string;
   placeholder?: string;
   required?: boolean;
 }
@@ -16,9 +17,10 @@ interface TextFieldSetProps {
 function TextFieldSet({ fields, size = "medium" }: TextFieldSetProps) {
   return (
     <Stack gap={3}>
-      {fields.map(({ name, placeholder, required }, idx) => (
+      {fields.map(({ name, type, placeholder, required }, idx) => (
         <TextField
           key={idx}
+          type={type}
           required={required}
           id={splitToUnderBar(name)}
           name={splitToUnderBar(name)}
