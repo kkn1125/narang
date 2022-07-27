@@ -13,8 +13,10 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
+    "noImplicitAny": true,
     "jsx": "react",
-    "strictNullChecks": false
+    "strictNullChecks": false,
+    "sourceMap": false
   },
   "include": ["src"]
 }
