@@ -12,7 +12,7 @@ import {
   Typography,
 } from "@mui/material";
 import React, { Fragment } from "react";
-// import WavesBG from "../components/common/WavesBG";
+import WavesBG from "../components/common/WavesBG";
 
 const diaryProcess = [
   {
