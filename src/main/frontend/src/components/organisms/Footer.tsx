@@ -1,6 +1,6 @@
 import { Box, Stack, Typography } from "@mui/material";
 import React from "react";
-import MenuItem from "../../tools/models";
+import MenuItem from "../../models/MenuItem";
 import FooterMenuList from "../molecules/FooterMenuList";
 
 const menuList = [

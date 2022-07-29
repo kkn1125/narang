@@ -1,7 +1,7 @@
 import { Stack } from "@mui/material";
 import React, { Fragment } from "react";
 import { Link } from "react-router-dom";
-import MenuItem from "../../tools/models";
+import MenuItem from "../../models/MenuItem";
 import Title from "../atoms/Title";
 
 interface MenuList {
