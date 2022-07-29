@@ -47,7 +47,7 @@ function TermsConditions() {
         </Box>
       </Modal>
       <FormControlLabel
-        control={<Checkbox />}
+        control={<Checkbox name='terms' />}
         label={
           <Typography>
             I have read the

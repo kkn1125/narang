@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -11,18 +11,15 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import Item from "../../tools/models";
+import Item from "../../models/MenuItem";
 import BedtimeOutlinedIcon from "@mui/icons-material/BedtimeOutlined";
 import { useNavigate } from "react-router-dom";
 
 const pages = [
-  // new Item("Tutorial", "/tutorial"),
   new Item("About", "/about"),
-  // new Item("Contact", "/contact"),
 ];
 const settings = [
   new Item("Profile", "/auth/profile"),
-  // new Item("Account", "/auth/account"),
   new Item("Diary", "/diary"),
   new Item("Logout", "/auth/signout"),
 ];
@@ -30,10 +27,10 @@ const settings = [
 const Header = () => {
   const navigate = useNavigate();
 
-  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
+  const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(
     null
   );
-  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
+  const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(
     null
   );
 
