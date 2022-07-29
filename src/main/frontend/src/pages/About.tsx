@@ -197,7 +197,8 @@ function About() {
                     <Avatar alt={name} src={avatar} />
                   </ListItemAvatar>
                   <ListItemText
-                    primary={name + ' [ FE/BE ]'}
+                    disableTypography
+                    primary={name + " [ FE/BE ]"}
                     secondary={
                       <List>
                         <ListItem>
