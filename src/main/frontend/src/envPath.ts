@@ -1,0 +1,6 @@
+const {
+  REACT_APP_SERVER_HOST: SERVER_HOST,
+  REACT_APP_SERVER_PORT: SERVER_PORT,
+} = process.env;
+
+export { SERVER_HOST, SERVER_PORT };
