@@ -1,4 +1,15 @@
 package com.narang.web.mongoTemplate;
 
-public interface CrudTemplate {
+import java.util.List;
+
+public interface CrudTemplate<T> {
+    List<T> findAll();
+
+    T findById(String id);
+
+    void insert(T t);
+
+    void update(T t);
+
+    void delete(String id);
 }
