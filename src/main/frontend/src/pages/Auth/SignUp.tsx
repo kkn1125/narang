@@ -1,11 +1,13 @@
-import { Button, Container, Stack } from "@mui/material";
-import axios, { AxiosResponse } from "axios";
+import { Stack } from "@mui/material";
 import React from "react";
+import { authApi } from "../../apis/auth";
 import SignControl from "../../components/organisms/SignControl";
+import { ModelData } from "../../models/IModel";
+import User from "../../models/User";
 
 const fields = [
   {
-    name: "nickname",
+    name: "nickName",
     type: "text",
     placeholder: "",
     required: true,
@@ -28,34 +30,49 @@ const fields = [
     placeholder: "",
     required: true,
   },
+  {
+    name: "phone",
+    type: "text",
+    placeholder: "",
+    required: false,
+  },
+  {
+    name: "isFaceSign",
+    type: "checkbox",
+    placeholder: "",
+    hidden: true,
+    value: false,
+    required: false,
+  },
+  {
+    name: "profileImg",
+    type: "text",
+    placeholder: "",
+    hidden: true,
+    value: "",
+    required: false,
+  },
 ];
 
 function SignUp() {
-  const handleError = (err: any): void => {
-    console.log(err);
-  };
-
-  const handleReceiveData = (res: AxiosResponse<any, any>): void => {
-    console.log(res.data);
-  };
+  const user = new User();
+  user.set("_id", "3");
+  user.set("nickName", "dobby");
+  user.set("email", "chaplet03@gmail.com");
+  user.set("password", "123123qQ!");
+  user.set("profileImg", "3");
+  user.set("phone", "010-5050-2020");
+  user.set("isFaceSign", false);
+  user.get("nickName");
+  user.getMap();
 
   const onSubmit = (e: React.FormEvent): void => {
     e.preventDefault();
-
-    const formDataInputs = Object.values(e.target).filter(
-      (el) => el instanceof Element && el.tagName === "INPUT"
-    );
-
-    const formData = new FormData();
-
-    formDataInputs.forEach((input) => formData.append(input.name, input.value));
-
-    axios
-      .post("/api/signup", formData)
-      .then(handleReceiveData)
-      .catch(handleError);
-
-    return;
+    const user = new User();
+    const inputDatas = User.getInputData(e.target);
+    user.setByInputs(inputDatas);
+    const formData = user.makeFormData();
+    authApi("SIGNUP", formData);
   };
   return (
     <Stack sx={{ flex: 1 }}>
