@@ -14,6 +14,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Item from "../../models/MenuItem";
 import BedtimeOutlinedIcon from "@mui/icons-material/BedtimeOutlined";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const pages = [
   new Item("About", "/about"),
@@ -63,8 +64,8 @@ const Header = () => {
           <Typography
             variant='h6'
             noWrap
-            component='a'
-            href='/'
+            component={Link}
+            to='/'
             sx={{
               mr: 2,
               display: { xs: "none", md: "flex" },
