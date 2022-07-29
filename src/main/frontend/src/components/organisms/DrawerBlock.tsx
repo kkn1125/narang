@@ -18,7 +18,7 @@ import MenuBookIcon from "@mui/icons-material/MenuBook";
 import BarChartIcon from "@mui/icons-material/BarChart";
 
 import React, { useCallback } from "react";
-import MenuItem from "../../tools/models";
+import MenuItem from "../../models/MenuItem";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 
