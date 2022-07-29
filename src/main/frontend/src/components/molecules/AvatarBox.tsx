@@ -7,14 +7,14 @@ import {
 	Tooltip,
 	Typography,
 } from "@mui/material";
-import Item from "../../tools/models";
-import React from "react";
+import Item from "../../models/MenuItem";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const pages = [new Item("Profile", "/auth/profile")];
 
 function AvatarBox() {
-	const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
+	const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(
 		null
 	);
 
