@@ -1,32 +1,29 @@
+// 각 클래스마다 재정의가 필요하고 공통으로 가져야하는 함수 정의
+// T는 해당 클래스, U는 해당 클래스의 ColumnType을 지정한다.
+// 즉, 각 모델 클래스는 최소 아래 5개 함수는 가지고 있어야 한다는 의미.
 export interface IModel<T, U> {
   set: (column: U, value: ModelValue) => void;
   setByInputs: (inputs: HTMLInputElement[]) => void;
   get: (column: U) => ModelValue;
-  getMap: () => Map<string, ModelValue>;
-  log: (t: T) => void;
-  getInputData?: (target: EventTarget) => HTMLInputElement[];
+  getResponseData?: (responseData: T) => void;
   makeFormData: (modelDatas: ModelData[]) => FormData;
 }
 
+// 모델 클래스 필드, 값 튜플 타입
 export type ModelData = [string, ModelValue];
-
+// 모델 클래스 string 값
 export type ModelStringValue = string | null;
+// 모델 클래스 number 값
+export type ModelNumberValue = number;
+// 모델 클래스 boolean 값
 export type ModelBooleanValue = boolean;
-export type ModelValue = ModelStringValue | ModelBooleanValue;
+// 모델 클래스 모든 값
+export type ModelValue =
+  | ModelStringValue
+  | ModelNumberValue
+  | ModelBooleanValue;
 
-// user model column
-export type UserColumn =
-  | "_id"
-  | "nickName"
-  | "email"
-  | "password"
-  | "profileImg"
-  | "phone"
-  | "isFaceSign"
-  | "terms";
-// faceImage model column
-export type FaceImageColumn = "_id" | "imgPath" | "regdate";
-// diary model column
+// 일기 필드명 타입
 export type DiaryColumn =
   | "_id"
   | "title"
@@ -35,3 +32,14 @@ export type DiaryColumn =
   | "regdate"
   | "updates"
   | "isShare";
+
+// 일기 필드명 enums
+export enum DiaryColumnStrings {
+  _id,
+  title,
+  content,
+  author,
+  regdate,
+  updates,
+  isShare,
+}

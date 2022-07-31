@@ -29,14 +29,23 @@ public class UserRestController {
     public String findById(@PathVariable("id") String id) throws JsonProcessingException {
         System.out.println(id);
         ObjectMapper mapper = new ObjectMapper();
+        System.out.println(userTemplate.findById(id));
         return mapper.writeValueAsString(userTemplate.findById(id));
     }
 
     @PostMapping("/user")
+    @PutMapping("/user")
     public Boolean save(User user) {
         System.out.println("called user insert method");
         System.out.println(user);
         userTemplate.insert(user);
+        return true;
+    }
+
+    @DeleteMapping("/user/{id}")
+    public Boolean delete(@PathVariable("id") String id) {
+        System.out.println("called user insert method");
+        userTemplate.delete(id);
         return true;
     }
 }
