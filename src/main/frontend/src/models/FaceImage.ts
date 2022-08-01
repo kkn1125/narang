@@ -1,33 +1,33 @@
-import {
-  IModel,
-  ModelData,
-  ModelNumberValue,
-  ModelStringValue,
-  ModelValue,
-} from "./IModel";
+import { IModel, ModelData, ModelStringValue, ModelValue } from "./IModel";
 import { PModel } from "./PModel";
 
 // 얼굴이미지 필드명 타입
-export type FaceImageColumn = "_id" | "imgPath" | "regdate";
+export type FaceImageColumn =
+  | "_id"
+  | "uid"
+  | "imgPath"
+  | "regdate"
+  | "updates"
+  | "_class";
 
 // 얼굴이미지 필드명 enums
 export enum FaceImageColumnStrings {
   _id,
+  uid,
   imgPath,
   regdate,
+  updates,
+  _class,
 }
 
 class FaceImage extends PModel implements IModel<FaceImage, FaceImageColumn> {
+  private uid: ModelStringValue;
   private imgPath: ModelStringValue;
 
   public set(column: FaceImageColumn, value: ModelValue) {
     switch (column) {
-      case "_id":
       case "imgPath":
         this[column] = (value as ModelStringValue) || "";
-        break;
-      case "regdate":
-        this[column] = value as ModelNumberValue;
         break;
       default:
         break;
