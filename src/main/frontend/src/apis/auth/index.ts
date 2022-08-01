@@ -12,6 +12,7 @@ const handleReceiveError = (err: { message: any }) => {
 
 // 회원 인증 관련 api 메서드
 const signup = (data: FormData) => {
+  console.log(data)
   axios[USER_URL["INSERT"].method as METHOD](USER_URL["INSERT"].url, data)
     .then(handleReceiveData)
     .catch(handleReceiveError);
