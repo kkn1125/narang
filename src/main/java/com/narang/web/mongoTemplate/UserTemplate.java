@@ -1,7 +1,6 @@
 package com.narang.web.mongoTemplate;
 
 import com.narang.web.entity.User;
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -13,9 +12,10 @@ import java.util.List;
 @Component
 public class UserTemplate implements CrudTemplate<User>{
     private static final String COLLECTION = "user";
+    private static final Class<User> CLASS = User.class;
+
     @Autowired
     private MongoTemplate mongoTemplate;
-    private static final java.lang.Class<User> CLASS = User.class;
 
     @Override
     public List<User> findAll() {
