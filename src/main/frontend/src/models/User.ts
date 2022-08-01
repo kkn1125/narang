@@ -48,6 +48,7 @@ class User extends PModel implements IModel<User, UserColumn> {
 
   // setter
   public set(column: UserColumn, value: ModelValue) {
+    console.log("set:", column, value);
     switch (column) {
       case "nickName":
       case "email":
@@ -106,13 +107,13 @@ class User extends PModel implements IModel<User, UserColumn> {
       console.log(column, value);
       switch (typeof value) {
         case "number":
-          this.set(column as UserColumn, value.toString());
+          formData.append(column as UserColumn, value.toString());
           break;
         case "boolean":
-          this.set(column as UserColumn, value.toString());
+          formData.append(column as UserColumn, value.toString());
           break;
         default:
-          this.set(column as UserColumn, value || "");
+          formData.append(column as UserColumn, value || "");
           break;
       }
     });

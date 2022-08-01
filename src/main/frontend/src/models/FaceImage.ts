@@ -57,13 +57,13 @@ class FaceImage extends PModel implements IModel<FaceImage, FaceImageColumn> {
     Object.entries(this).forEach(([column, value]: ModelData) => {
       switch (typeof value) {
         case "number":
-          this.set(column as FaceImageColumn, value.toString());
+          formData.append(column as FaceImageColumn, value.toString());
           break;
         case "boolean":
-          this.set(column as FaceImageColumn, value.toString());
+          formData.append(column as FaceImageColumn, value.toString());
           break;
         default:
-          this.set(column as FaceImageColumn, value || "");
+          formData.append(column as FaceImageColumn, value || "");
           break;
       }
     });
