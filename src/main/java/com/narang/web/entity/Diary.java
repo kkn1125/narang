@@ -17,24 +17,20 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Document(collection = "user")
-public class User {
+@Document(collection = "diary")
+public class Diary {
     @Id
     private String id;
     @Field
-    private String nickName;
+    private String uid;
     @Field
-    private String email;
+    private String title;
     @Field
-    private String password;
+    private String content;
     @Field
-    private String phone;
+    private String author;
     @Field
-    private String profileImg;
-    @Field
-    private Boolean isFaceSign;
-    @Field
-    private Boolean terms;
+    private Boolean isShare;
     @DateTimeFormat(style = "M-")
     @CreatedDate
     @Field

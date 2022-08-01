@@ -46,4 +46,11 @@ const userApi = (
     .catch(handleReceiveError);
 };
 
-export { userApi };
+const userUpdate = (formData: FormData) => {
+  axios
+    .put(`/api/user`, formData)
+    .then(handleReceiveData)
+    .catch(handleReceiveError);
+};
+
+export { userApi, userUpdate };

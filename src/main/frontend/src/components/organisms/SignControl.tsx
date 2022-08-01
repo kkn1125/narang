@@ -14,6 +14,7 @@ import TermsConditions from "../molecules/TermsConditions";
 import TextFieldSet, { TextFieldItem } from "../molecules/TextFieldSet";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { capitalize } from "../../tools/utils";
+import { FormikInitialValue, ValidationSchema } from "../../pages/Auth/SignUp";
 
 const SIGNIN = "signin";
 const SIGNUP = "signup";
@@ -37,12 +38,13 @@ type Mode = "signin" | "signup";
 
 interface SignControl {
   mode: Mode;
-  onSubmit: (e: React.FormEvent) => void;
+  onSubmit?: (e: React.FormEvent) => void;
   socials?: SocialInfo[];
   fields: TextFieldItem[];
+  formik?: any;
 }
 
-function SignControl({ mode, onSubmit, socials, fields }: SignControl) {
+function SignControl({ mode, onSubmit, socials, fields, formik }: SignControl) {
   const navigate = useNavigate();
   const theme = useTheme();
   const { title, subtitle, button, notice } = AUTH[mode];
@@ -55,7 +57,7 @@ function SignControl({ mode, onSubmit, socials, fields }: SignControl) {
         </Button>
       </Box>
       <AuthTitle title={title} subtitle={subtitle} />
-      <Stack component='form' onSubmit={onSubmit}>
+      <Stack component='form' onSubmit={formik.handleSubmit}>
         {mode === SIGNIN && (
           <Button
             variant='contained'
@@ -66,8 +68,8 @@ function SignControl({ mode, onSubmit, socials, fields }: SignControl) {
         )}
         <Divider sx={{ my: 2 }} />
         {mode === SIGNIN && <SocialSignIn socials={socials} />}
-        <TextFieldSet fields={fields} size='medium' />
-        {mode == SIGNUP && <TermsConditions />}
+        <TextFieldSet fields={fields} size='medium' formik={formik} />
+        {mode == SIGNUP && <TermsConditions formik={formik} />}
         <Button
           size='large'
           variant='contained'
