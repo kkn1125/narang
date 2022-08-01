@@ -5,7 +5,7 @@ import org.springframework.data.mongodb.config.EnableMongoAuditing;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 @Configuration
-@EnableMongoRepositories("com.narang.web.mongoTemplate")
+@EnableMongoRepositories(considerNestedRepositories = true, basePackages = "com.narang.web.mongoTemplate")
 @EnableMongoAuditing
 public class MongoAuditConfig {
 }

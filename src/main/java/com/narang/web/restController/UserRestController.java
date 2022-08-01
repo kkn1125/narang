@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.narang.web.entity.User;
 import com.narang.web.mongoTemplate.UserTemplate;
+import com.narang.web.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,14 +12,17 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class UserRestController {
+//    @Autowired
+//    private UserTemplate userTemplate;
     @Autowired
-    private UserTemplate userTemplate;
+    private UserRepository userTemplate;
 
     @GetMapping("/users")
     public String findAll() throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         /* 매퍼를 먼저 생성합니다. */
-        System.out.println(userTemplate.findAll());
+//        System.out.println(userTemplate.findAll());
+        userTemplate.findQuery("testqeqwdwqdwq");
         return mapper.writeValueAsString(userTemplate.findAll());
         /* 객체를 JSON String 으로 변환 :: String */
     }
@@ -41,7 +45,7 @@ public class UserRestController {
     @DeleteMapping("/user/{id}")
     public Boolean delete(@PathVariable("id") String id) {
         System.out.println("called user insert method");
-        userTemplate.delete(id);
+        userTemplate.deleteById(id);
         return true;
     }
 }

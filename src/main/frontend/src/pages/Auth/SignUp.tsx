@@ -91,7 +91,10 @@ function SignUp() {
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      console.log(values);
+      const user = new User();
+      user.getResponseData(values as unknown as User);
+      const formData = user.makeFormData();
+      signup(formData);
     },
   });
 
