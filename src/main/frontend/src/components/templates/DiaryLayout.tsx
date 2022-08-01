@@ -1,12 +1,11 @@
-import * as React from "react";
+import React, { useEffect, useState } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
-import Drawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import DrawerBlock from "../organisms/DrawerBlock";
 import SearchBar from "../molecules/SearchBar";
 import MessageBox from "../molecules/MessageBox";
@@ -24,7 +23,9 @@ interface Props {
 
 function DiaryLayout(props: Props) {
   const { window } = props;
-  const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [bgBlack, setBgBlack] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const locate = useLocation();
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -32,6 +33,15 @@ function DiaryLayout(props: Props) {
 
   const container =
     window !== undefined ? () => window().document.body : undefined;
+
+  useEffect(() => {
+    // 경로가 auth/profile일 때 부분 다크 모드 적용
+    if (locate.pathname === "/auth/profile") {
+      setBgBlack(true);
+    } else {
+      setBgBlack(false);
+    }
+  }, [locate.pathname]);
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -42,6 +52,7 @@ function DiaryLayout(props: Props) {
         sx={{
           width: { sm: `calc(100% - ${drawerWidth}px)` },
           ml: { sm: `${drawerWidth}px` },
+          color: bgBlack ? "#ffffff" : "#000000",
         }}>
         <Toolbar
           sx={{
@@ -114,6 +125,7 @@ function DiaryLayout(props: Props) {
           flexGrow: 1,
           p: 3,
           width: { sm: `calc(100% - ${drawerWidth}px)` },
+          backgroundColor: bgBlack ? "#252525" : "#ffffff",
         }}>
         <Toolbar />
         <Outlet />
