@@ -21,7 +21,7 @@ const style = {
   p: 4,
 };
 
-function TermsConditions() {
+function TermsConditions({ formik }: { formik: any }) {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
   const handleOpen = (e: React.MouseEvent) => {
@@ -47,6 +47,7 @@ function TermsConditions() {
         </Box>
       </Modal>
       <FormControlLabel
+        onChange={formik.handleChange}
         control={<Checkbox name='terms' />}
         label={
           <Typography>
