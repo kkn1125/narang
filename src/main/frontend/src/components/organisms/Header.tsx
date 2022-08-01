@@ -7,33 +7,21 @@ import Typography from "@mui/material/Typography";
 import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
-import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
-import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import Item from "../../models/MenuItem";
 import BedtimeOutlinedIcon from "@mui/icons-material/BedtimeOutlined";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import AvatarBox from "../molecules/AvatarBox";
 
-const pages = [
-  new Item("About", "/about"),
-];
-const settings = [
-  new Item("Profile", "/auth/profile"),
-  new Item("Diary", "/diary"),
-  new Item("Logout", "/auth/signout"),
-];
+const pages = [new Item("About", "/about")];
 
 const Header = () => {
   const navigate = useNavigate();
 
-  const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(
-    null
-  );
-  const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(
-    null
-  );
+  const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
+  const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -151,39 +139,7 @@ const Header = () => {
             ))}
           </Box>
 
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title='Open settings'>
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt='Remy Sharp' src='/static/images/avatar/2.jpg' />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: "45px" }}
-              id='menu-appbar'
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}>
-              {settings.map(({ text, url }) => (
-                <MenuItem
-                  key={text}
-                  onClick={() => {
-                    handleCloseUserMenu();
-                    handleLink(url);
-                  }}>
-                  <Typography textAlign='center'>{text}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box>
+          <AvatarBox />
         </Toolbar>
       </Container>
     </AppBar>

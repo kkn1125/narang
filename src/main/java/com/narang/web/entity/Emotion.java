@@ -9,6 +9,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
+import org.springframework.data.mongodb.core.mapping.MongoId;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
@@ -17,24 +18,28 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Document(collection = "user")
-public class User {
+@Document(collection = "emotion")
+public class Emotion {
     @Id
     private String id;
     @Field
-    private String nickName;
+    private String uid;
     @Field
-    private String email;
+    private String did;
     @Field
-    private String password;
+    private String advice;
     @Field
-    private String phone;
+    private float comparative;
     @Field
-    private String profileImg;
+    private String emoji;
     @Field
-    private Boolean isFaceSign;
+    private Whether negative;
     @Field
-    private Boolean terms;
+    private Whether positive;
+    @Field
+    private Normal normal;
+    @Field
+    private Integer score;
     @DateTimeFormat(style = "M-")
     @CreatedDate
     @Field

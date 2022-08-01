@@ -4,14 +4,12 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.narang.web.entity.User;
 import com.narang.web.mongoTemplate.UserTemplate;
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.websocket.server.PathParam;
-
 @RestController
 @RequestMapping("/api")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class UserRestController {
     @Autowired
     private UserTemplate userTemplate;
@@ -33,10 +31,8 @@ public class UserRestController {
         return mapper.writeValueAsString(userTemplate.findById(id));
     }
 
-    @PostMapping("/user")
-    @PutMapping("/user")
+    @RequestMapping(path = "/user", method = {RequestMethod.POST, RequestMethod.PUT})
     public Boolean save(User user) {
-        System.out.println("called user insert method");
         System.out.println(user);
         userTemplate.insert(user);
         return true;

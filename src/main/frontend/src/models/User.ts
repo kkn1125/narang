@@ -60,10 +60,6 @@ class User extends PModel implements IModel<User, UserColumn> {
       case "terms":
         this[column] = value as ModelBooleanValue;
         break;
-      case "regdate":
-      case "updates":
-        this[column] = value as ModelNumberValue;
-        break;
       default:
         break;
     }
@@ -107,6 +103,7 @@ class User extends PModel implements IModel<User, UserColumn> {
   public makeFormData(): FormData {
     const formData = new FormData();
     Object.entries(this).forEach(([column, value]: ModelData) => {
+      console.log(column, value);
       switch (typeof value) {
         case "number":
           this.set(column as UserColumn, value.toString());

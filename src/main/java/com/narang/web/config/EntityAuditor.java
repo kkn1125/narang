@@ -5,8 +5,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
-@Component("mongoAuditingConfig")
-public class UserAuditor implements AuditorAware<String> {
+@Component("EntityAuditor")
+public class EntityAuditor implements AuditorAware<String> {
     @Override
     public Optional<String> getCurrentAuditor() {
         return Optional.of("narang");
