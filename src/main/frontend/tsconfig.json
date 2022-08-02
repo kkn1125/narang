@@ -16,7 +16,7 @@
     "noImplicitAny": true,
     "jsx": "react",
     "strictNullChecks": false,
-    "sourceMap": false
+    "sourceMap": false,
   },
   "include": ["src"]
 }

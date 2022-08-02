@@ -35,8 +35,8 @@ public class FaceImageTemplate implements CrudTemplate<FaceImage> {
     }
 
     @Override
-    public void insert(FaceImage faceImage) {
-        mongoTemplate.save(faceImage, COLLECTION);
+    public String insert(FaceImage faceImage) {
+        return mongoTemplate.save(faceImage, COLLECTION).getId();
     }
 
     @Override

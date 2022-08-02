@@ -28,8 +28,8 @@ public class UserTemplate implements CrudTemplate<User>{
     }
 
     @Override
-    public void insert(User user) {
-        mongoTemplate.save(user, COLLECTION);
+    public String insert(User user) {
+        return mongoTemplate.save(user, COLLECTION).getId();
     }
 
     @Override

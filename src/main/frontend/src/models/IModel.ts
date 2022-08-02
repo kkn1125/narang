@@ -21,7 +21,8 @@ export type ModelBooleanValue = boolean;
 export type ModelValue =
   | ModelStringValue
   | ModelNumberValue
-  | ModelBooleanValue;
+  | ModelBooleanValue
+  | Date;
 
 // 일기 필드명 타입
 export type DiaryColumn =

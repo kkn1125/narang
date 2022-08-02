@@ -3,7 +3,7 @@ import { PModel } from "./PModel";
 
 // 얼굴이미지 필드명 타입
 export type FaceImageColumn =
-  | "_id"
+  | "id"
   | "uid"
   | "imgPath"
   | "regdate"
@@ -12,7 +12,7 @@ export type FaceImageColumn =
 
 // 얼굴이미지 필드명 enums
 export enum FaceImageColumnStrings {
-  _id,
+  id,
   uid,
   imgPath,
   regdate,
@@ -36,9 +36,8 @@ class FaceImage extends PModel implements IModel<FaceImage, FaceImageColumn> {
 
   public setByInputs(inputs: HTMLInputElement[]) {
     inputs.forEach((input) => {
-      const column: FaceImageColumn = input.name as FaceImageColumn;
-      const value = input.value;
-      this.set(column, value);
+      const { name, value } = input;
+      this.set(name as FaceImageColumn, value);
     });
   }
 
@@ -50,24 +49,6 @@ class FaceImage extends PModel implements IModel<FaceImage, FaceImageColumn> {
     Object.entries(responseData).forEach(([column, value]: ModelData) => {
       this.set(column as FaceImageColumn, value);
     });
-  }
-
-  public makeFormData(): FormData {
-    const formData = new FormData();
-    Object.entries(this).forEach(([column, value]: ModelData) => {
-      switch (typeof value) {
-        case "number":
-          formData.append(column as FaceImageColumn, value.toString());
-          break;
-        case "boolean":
-          formData.append(column as FaceImageColumn, value.toString());
-          break;
-        default:
-          formData.append(column as FaceImageColumn, value || "");
-          break;
-      }
-    });
-    return formData;
   }
 }
 
