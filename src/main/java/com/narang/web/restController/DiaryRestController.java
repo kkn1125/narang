@@ -4,8 +4,11 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.narang.web.entity.Diary;
 import com.narang.web.mongoTemplate.DiaryTemplate;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/api")
@@ -25,8 +28,14 @@ public class DiaryRestController {
         return mapper.writeValueAsString(diaryTemplate.findById(id));
     }
 
-    @RequestMapping(path="/diary", method={RequestMethod.POST,RequestMethod.PUT})
-    public Boolean save(Diary diary) {
+    @PostMapping("/diary")
+    public String insert(Diary diary) {
+        String newObjectId = diaryTemplate.insert(diary);
+        System.out.println(diary);
+        return newObjectId;
+    }
+    @PutMapping("/diary")
+    public Boolean update(Diary diary) {
         diaryTemplate.update(diary);
         return true;
     }
