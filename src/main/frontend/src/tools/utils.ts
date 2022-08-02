@@ -1,29 +1,7 @@
 import { ModelValue } from "../models/IModel";
 import * as yup from "yup";
 
-const upperCase = (text: string) => text.toUpperCase();
-const splitToUnderBar = (text: string) => text.split(/[\s]/g).join("_");
-const capitalize = (text: string): string =>
-  text
-    .split(/\s|_|-|\./g)
-    .map((_) => _[0].toUpperCase().concat(_.slice(1)))
-    .join(" ");
-
-const mapToQuery = (maps: Map<string, ModelValue>): string => {
-  const mapped = maps.entries();
-  let stringBuilder = [];
-  while (true) {
-    const {
-      value: [key, value],
-    } = mapped.next();
-    stringBuilder.push(`${key}=${value}`);
-    if (mapped.next().done) break;
-  }
-
-  return stringBuilder.join("&");
-};
-
-const nickNameValidation = yup
+export const nickNameValidation = yup
   .string()
   .matches(
     /^([A-z]+([0-9]*))+$/g,
@@ -32,21 +10,21 @@ const nickNameValidation = yup
   .min(5, "최소 5글자 이상이어야 합니다.")
   .max(15, "최대 15글자 이내여야 합니다.")
   .required("닉네임은 필수 항목 입니다.");
-const emailValidation = yup
+export const emailValidation = yup
   .string()
   .matches(
     /^([A-z]+([0-9]*))+\@[A-z]{2,}(\.[A-z]{2,}){1,}$/g,
     "이메일 형식과 맞지 않습니다."
   )
   .required("이메일은 필수 항목 입니다.");
-const passwordValidation = yup
+export const passwordValidation = yup
   .string()
   .matches(
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/g,
     "비밀번호는 숫자 + 대문자 + 특수문자로 구성되어야 합니다. (대문자 및 특수문자는 최소 1자 이상 포함되어야 합니다."
   )
   .required("이메일은 필수 항목 입니다.");
-const phoneValidation = yup
+export const phoneValidation = yup
   .string()
   .matches(
     /^[0-9]{2,4}(-[0-9]{3,5}){2,3}$/,
@@ -69,13 +47,40 @@ export const FILE_TYPE_ERROR = `파일형식이 다릅니다. 가능한 형식�
   ", "
 )} 입니다.`;
 
+const upperCase = (text: string) => text.toUpperCase();
+const splitToUnderBar = (text: string) => text.split(/[\s]/g).join("_");
+const capitalize = (text: string): string =>
+  text
+    .split(/\s|_|-|\./g)
+    .map((_) => _[0].toUpperCase().concat(_.slice(1)))
+    .join(" ");
+
+const mapToQuery = (maps: Map<string, ModelValue>): string => {
+  const mapped = maps.entries();
+  let stringBuilder = [];
+  while (true) {
+    const {
+      value: [key, value],
+    } = mapped.next();
+    stringBuilder.push(`${key}=${value}`);
+    if (mapped.next().done) break;
+  }
+
+  return stringBuilder.join("&");
+};
+
+const convertLongToDate = (time: number): string => {
+  return new Date(time).toLocaleString("ko", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+};
+
 export {
   upperCase,
   splitToUnderBar,
   capitalize,
   mapToQuery,
-  nickNameValidation,
-  emailValidation,
-  passwordValidation,
-  phoneValidation,
+  convertLongToDate,
 };

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 
 interface OverflowContentProps extends TypographyProps {
   limit: number;
-  children: string;
+  children: string | React.ReactElement | React.ReactElement[];
 }
 
 const Text = styled(Typography)``;
@@ -17,15 +17,22 @@ const OverflowContent = ({
   const [result, setResult] = useState("");
 
   useEffect(() => {
-    const getLengthOrZero = (target: string[] | null) =>
-      target ? target.length : 0;
-    const en: number = getLengthOrZero(children.match(/[A-z]/g));
-    const ko: number = getLengthOrZero(children.match(/[ㄱ-힣]/g));
-    const whitespace: number = getLengthOrZero(children.match(/[^A-zㄱ-힣]/g));
+    console.log(children);
+    if (typeof children === "string") {
+      const getLengthOrZero = (target: string[] | null) =>
+        target ? target.length : 0;
+      const en: number = getLengthOrZero(children.match(/[A-z]/g));
+      const ko: number = getLengthOrZero(children.match(/[ㄱ-힣]/g));
+      const whitespace: number = getLengthOrZero(
+        children.match(/[^A-zㄱ-힣]/g)
+      );
 
-    if (ko * 2 + en + whitespace > limit) {
-      setResult(children.slice(0, limit));
-      setIsOverflow(true);
+      if (ko * 2 + en + whitespace > limit) {
+        setResult(children.slice(0, limit));
+        setIsOverflow(true);
+      } else {
+        setResult(children);
+      }
     }
   });
 

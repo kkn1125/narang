@@ -2,8 +2,10 @@ package com.narang.web.restController;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.narang.web.entity.Diary;
 import com.narang.web.entity.Emotion;
 import com.narang.web.mongoTemplate.EmotionTemplate;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,9 +45,16 @@ public class EmotionRestController {
         return mapper.writeValueAsString(emotionTemplate.findOne(DID, did));
     }
 
-    @RequestMapping(path = "/emotion", method = {RequestMethod.POST, RequestMethod.PUT})
-    public Boolean save(Emotion emotion) {
+    @PostMapping("/emotion")
+    public String insert(Emotion emotion) {
+        String newObjectId = ObjectId.get().toString();
+        emotion.setId(newObjectId);
         emotionTemplate.insert(emotion);
+        return newObjectId;
+    }
+    @PutMapping("/emotion")
+    public Boolean update(Emotion emotion) {
+        emotionTemplate.update(emotion);
         return true;
     }
 

@@ -37,8 +37,8 @@ public class EmotionTemplate implements CrudTemplate<Emotion>{
     }
 
     @Override
-    public void insert(Emotion emotion) {
-        mongoTemplate.save(emotion, COLLECTION);
+    public String insert(Emotion emotion) {
+        return mongoTemplate.save(emotion, COLLECTION).getId();
     }
 
     @Override
