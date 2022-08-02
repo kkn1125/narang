@@ -1,6 +1,6 @@
 import * as React from "react";
 import Layout from "./components/templates/Layout";
-import { useRoutes } from "react-router-dom";
+import { Route, Routes, useRoutes } from "react-router-dom";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import NotFound from "./pages/NotFound";
@@ -16,48 +16,31 @@ import SignIn from "./pages/Auth/SignIn";
 import SignUp from "./pages/Auth/SignUp";
 import FaceLogin from "./pages/Auth/FaceLogin";
 import Profile from "./pages/Auth/Profile";
+import Detail from "./pages/Diary/Detail";
 
 export default function App() {
-  const elements = useRoutes([
-    {
-      path: "/",
-      element: <Layout />,
-      children: [
-        { index: true, element: <Home /> },
-        { path: "about", element: <About /> },
-      ],
-    },
-    {
-      path: "/auth",
-      element: <AuthLayout />,
-      children: [
-        { path: "signin", element: <SignIn /> },
-        { path: "signup", element: <SignUp /> },
-        { path: "facesign", element: <FaceLogin /> },
-      ],
-    },
-    {
-      path: "/auth",
-      element: <DiaryLayout />,
-      children: [{ path: "profile", element: <Profile /> }],
-    },
-    {
-      path: "/diary",
-      element: <DiaryLayout />,
-      children: [
-        { path: "", element: <Diary /> },
-        { path: "write", element: <WriteForm /> },
-        { path: "graph", element: <Graph /> },
-        { path: "recommend", element: <Recommend /> },
-        { path: "share", element: <Share /> },
-        { path: "usage", element: <Usage /> },
-      ],
-    },
-    {
-      path: "*",
-      element: <NotFound />,
-    },
-  ]);
-
-  return elements;
+  return (
+    <Routes>
+      <Route path='/' element={<Layout />}>
+        <Route index element={<Home />} />
+        <Route path='about' element={<About />} />
+      </Route>
+      <Route path='/auth' element={<AuthLayout />}>
+        <Route path='signin' element={<SignIn />} />
+        <Route path='signup' element={<SignUp />} />
+        <Route path='facesign' element={<FaceLogin />} />
+      </Route>
+      <Route path='/auth' element={<DiaryLayout />}>
+        <Route path='profile' element={<Profile />} />
+      </Route>
+      <Route path='/diary' element={<DiaryLayout />}>
+        <Route path=':id' element={<Detail />} />
+        <Route path='write' element={<WriteForm />} />
+        <Route path='graph' element={<Graph />} />
+        <Route path='recommend' element={<Recommend />} />
+        <Route path='share' element={<Share />} />
+        <Route path='usage' element={<Usage />} />
+      </Route>
+    </Routes>
+  );
 }
