@@ -2,7 +2,6 @@ import {
   IModel,
   ModelBooleanValue,
   ModelData,
-  ModelNumberValue,
   ModelStringValue,
   ModelValue,
 } from "./IModel";
@@ -10,7 +9,7 @@ import { PModel } from "./PModel";
 
 // 유저 필드 타입
 export type UserColumn =
-  | "_id"
+  | "id"
   | "nickName"
   | "email"
   | "password"
@@ -24,7 +23,7 @@ export type UserColumn =
 
 // 유저 필드명 enums
 export enum UserColumnStrings {
-  _id,
+  id,
   nickName,
   email,
   password,
@@ -74,22 +73,8 @@ class User extends PModel implements IModel<User, UserColumn> {
   // input list로 객체 값 해당 필드에 자동 할당
   public setByInputs(inputs: HTMLInputElement[]): void {
     inputs.forEach((input) => {
-      const column: UserColumn = input.name as UserColumn;
-      const value = input.value;
-      const checked = input.checked;
-      switch (column) {
-        case "isFaceSign":
-        case "terms":
-          this.set(column, checked);
-          break;
-        case "regdate":
-        case "updates":
-          this.set(column, value);
-          break;
-        default:
-          this.set(column, value || "");
-          break;
-      }
+      const { name, value } = input;
+      this.set(name as UserColumn, value);
     });
   }
 
@@ -98,26 +83,6 @@ class User extends PModel implements IModel<User, UserColumn> {
     Object.entries(responseData).forEach(([column, value]: ModelData) => {
       this.set(column as UserColumn, value);
     });
-  }
-
-  // 현재 객체 필드에 할당된 값으로 formData 생성
-  public makeFormData(): FormData {
-    const formData = new FormData();
-    Object.entries(this).forEach(([column, value]: ModelData) => {
-      console.log(column, value);
-      switch (typeof value) {
-        case "number":
-          formData.append(column as UserColumn, value.toString());
-          break;
-        case "boolean":
-          formData.append(column as UserColumn, value.toString());
-          break;
-        default:
-          formData.append(column as UserColumn, value || "");
-          break;
-      }
-    });
-    return formData;
   }
 }
 

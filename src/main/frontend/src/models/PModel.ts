@@ -1,10 +1,10 @@
-import { ModelStringValue, ModelValue } from "./IModel";
+import { ModelData, ModelStringValue, ModelValue } from "./IModel";
 
 // parent model의 줄인 이름, 공통의 변수 및 함수 상속하기 위함
 export class PModel {
-  private _id: ModelStringValue = null;
-  private regdate: number = null;
-  private updates: number = null;
+  private id: ModelStringValue = null;
+  private regdate: Date | number | string = null;
+  private updates: Date | number | string = null;
   private _class: string = null;
 
   // 공통 함수를 extends 상속으로 변경
@@ -28,5 +28,49 @@ export class PModel {
   // Map 객체에 담아서 반환
   public getMap(): Map<string, ModelValue> {
     return new Map(Object.entries(this));
+  }
+
+  // 현재 객체 필드에 할당된 값으로 formData 생성
+  public makeFormData(): FormData {
+    const formData = new FormData();
+    Object.entries(this).forEach(([column, value]: [string, string]) => {
+      console.log(column, value);
+      switch (column) {
+        case "negative":
+        case "positive":
+        case "normal":
+          Object.entries(value).forEach(([key, val]) => {
+            formData.append(`${column}.${key}`, val);
+          });
+          break;
+        case "id":
+          break;
+        default:
+          formData.append(column, value || "");
+          break;
+      }
+    });
+    return formData;
+  }
+
+  // 현재 객체 필드에 할당된 값으로 formData 생성
+  public makeFormDataWithId(): FormData {
+    const formData = new FormData();
+    Object.entries(this).forEach(([column, value]: [string, string]) => {
+      console.log(column, value);
+      switch (column) {
+        case "negative":
+        case "positive":
+        case "normal":
+          Object.entries(value).forEach(([key, val]) => {
+            formData.append(`${column}.${key}`, val);
+          });
+          break;
+        default:
+          formData.append(column, value || "");
+          break;
+      }
+    });
+    return formData;
   }
 }
