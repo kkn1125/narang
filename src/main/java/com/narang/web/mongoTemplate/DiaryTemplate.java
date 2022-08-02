@@ -28,8 +28,8 @@ public class DiaryTemplate implements CrudTemplate<Diary> {
     }
 
     @Override
-    public void insert(Diary diary) {
-        mongoTemplate.save(diary, COLLECTION);
+    public String insert(Diary diary) {
+        return mongoTemplate.save(diary, COLLECTION).getId();
     }
 
     @Override

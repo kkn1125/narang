@@ -7,7 +7,7 @@ public interface CrudTemplate<T> {
 
     T findById(String id);
 
-    void insert(T t);
+    String insert(T t);
 
     void update(T t);
 
