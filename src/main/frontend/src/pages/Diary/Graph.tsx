@@ -9,15 +9,28 @@ import {
   LineElement,
   ChartTypeRegistry,
   ChartData,
+  Tooltip,
+  Legend,
 } from "chart.js";
+import { Typography } from "@mui/material";
 
 ChartJS.register(
   CategoryScale,
   LinearScale,
   PointElement,
   LineElement,
-  BarElement
+  BarElement,
+  Legend,
+  Tooltip
 );
+
+const options = {
+  scales: {
+    y: {
+      beginAtZero: true,
+    },
+  },
+};
 
 const labels = ["January", "February", "March", "April", "May", "June"];
 
@@ -49,52 +62,20 @@ const data: ChartData<keyof ChartTypeRegistry, number[], string> = {
 };
 
 function Graph() {
-  const chartRef = useRef<ChartJS>(null);
-
-  function triggerTooltip(chart: ChartJS | null) {
-    const tooltip = chart?.tooltip;
-
-    if (!tooltip) {
-      return;
-    }
-
-    if (tooltip.getActiveElements().length > 0) {
-      tooltip.setActiveElements([], { x: 0, y: 0 });
-    } else {
-      const { chartArea } = chart;
-
-      tooltip.setActiveElements(
-        [
-          {
-            datasetIndex: 0,
-            index: 2,
-          },
-          {
-            datasetIndex: 1,
-            index: 2,
-          },
-        ],
-        {
-          x: (chartArea.left + chartArea.right) / 2,
-          y: (chartArea.top + chartArea.bottom) / 2,
-        }
-      );
-    }
-
-    chart.update();
-  }
-
-  useEffect(() => {
-    const chart = chartRef.current;
-
-    triggerTooltip(chart);
-  }, []);
   return (
     <div>
-      <Chart data={data} type={"bar"} />
+      <Chart data={data} type={"bar"} options={options} />
+
+      <Typography variant='h5'>감정 그래프</Typography>
+      <Typography variant='body1'>이번 주</Typography>
+      <Typography variant='body1'>긍정 점수</Typography>
+      <Typography variant='body1'>2</Typography>
+      <Typography variant='body1'>부정 점수</Typography>
+      <Typography variant='body1'>-1</Typography>
+      <Typography variant='body1'>총 점수</Typography>
+      <Typography variant='body1'>1</Typography>
     </div>
   );
-
 }
 
 export default Graph;
