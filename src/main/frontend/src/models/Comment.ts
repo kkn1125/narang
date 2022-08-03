@@ -9,10 +9,9 @@ import { PModel } from "./PModel";
 
 type CommentColumn =
   | "id"
+  | "did"
   | "content"
   | "author"
-  | "regdate"
-  | "updates"
   | "mention"
   | "regdate"
   | "updates"
@@ -20,6 +19,7 @@ type CommentColumn =
 
 enum CommentColumnStrings {
   id,
+  did,
   content,
   author,
   mention,
@@ -45,11 +45,6 @@ class Comment extends PModel implements IModel<Comment, CommentColumn> {
       default:
         break;
     }
-  }
-
-  // getter
-  public get(column: CommentColumn): ModelValue {
-    return this[column];
   }
 
   // input list로 객체 값 해당 필드에 자동 할당
