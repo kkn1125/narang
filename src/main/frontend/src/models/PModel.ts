@@ -25,6 +25,11 @@ export class PModel {
     );
   }
 
+  // getter
+  public get(column: string) {
+    return Object.fromEntries(Object.entries(this))[column];
+  }
+
   // Map 객체에 담아서 반환
   public getMap(): Map<string, ModelValue> {
     return new Map(Object.entries(this));

@@ -52,10 +52,6 @@ class Like extends PModel implements IModel<Like, LikeColumn> {
     });
   }
 
-  public get(column: LikeColumn): ModelValue {
-    return this[column] as unknown as ModelValue;
-  }
-
   public getResponseData(responseData: Like): void {
     Object.entries(responseData).forEach(([column, value]: ModelData) => {
       this.set(column as LikeColumn, value);
