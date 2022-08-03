@@ -4,10 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Setter
 @Getter
@@ -31,9 +33,11 @@ public class Product {
 
     private String seller;
 
-    private Boolean isSoldOut;
+    private Boolean isSoldOut = false;
 
-    private Date regdate;
+    @CreatedDate
+    private LocalDateTime regdate;
 
-    private Date updates;
+    @LastModifiedDate
+    private LocalDateTime updates;
 }
