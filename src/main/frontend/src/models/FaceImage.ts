@@ -41,10 +41,6 @@ class FaceImage extends PModel implements IModel<FaceImage, FaceImageColumn> {
     });
   }
 
-  public get(column: FaceImageColumn): ModelValue {
-    return this[column];
-  }
-
   public getResponseData(responseData: FaceImage): void {
     Object.entries(responseData).forEach(([column, value]: ModelData) => {
       this.set(column as FaceImageColumn, value);

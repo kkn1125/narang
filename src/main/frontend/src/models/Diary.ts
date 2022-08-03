@@ -55,11 +55,6 @@ class Diary extends PModel implements IModel<Diary, DiaryColumn> {
     }
   }
 
-  // getter
-  public get(column: DiaryColumn): ModelValue {
-    return this[column];
-  }
-
   // input list로 객체 값 해당 필드에 자동 할당
   public setByInputs(inputs: HTMLInputElement[]): void {
     inputs.forEach((input) => {

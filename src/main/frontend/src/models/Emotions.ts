@@ -100,10 +100,6 @@ class Emotions extends PModel {
     });
   }
 
-  public get(column: EmotionColumn): ModelValue | Whether | Normal {
-    return this[column];
-  }
-
   public getResponseData(responseData: Emotions): void {
     Object.entries(responseData).forEach(
       ([column, value]: [string, ModelValue | Whether | Normal]) => {
