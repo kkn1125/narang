@@ -10,15 +10,30 @@ import {
 import Item from "../../models/MenuItem";
 import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useCookies } from "react-cookie";
+import { signout } from "../../apis/auth";
 
 function AvatarBox() {
+  const navigate = useNavigate();
+
+  const [cookies, setCookie, removeCookie] = useCookies();
+
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
   const [isSignin, setIsSignin] = useState(false);
 
   const [items, setItems] = useState([
     new Item("Profile", "/auth/profile", null, !isSignin),
     new Item("Diary", "/diary", null, !isSignin),
-    new Item("Logout", "/auth/signout", null, isSignin),
+    new Item("Sign in", "/auth/signin", null, !isSignin),
+    new Item("Sign up", "/auth/signup", null, !isSignin),
+    new Item("Logout", "/auth/signout", null, isSignin).activateHandler(
+      async () => {
+        removeCookie("sessionid");
+        removeCookie("JSESSIONID");
+        setItems(items.map((item) => item.changeActive()));
+        return await signout();
+      }
+    ),
   ]);
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -28,10 +43,15 @@ function AvatarBox() {
     setAnchorElUser(null);
   };
 
-  const navigate = useNavigate();
-
   useEffect(() => {
     // console.log("이후 세션 받아와야 함");
+    const { sessionid } = cookies;
+    if (sessionid) {
+      setIsSignin(true);
+      setItems(items.map((item) => item.changeActive()));
+    } else {
+      setIsSignin(false);
+    }
   }, []);
 
   return (
@@ -58,12 +78,16 @@ function AvatarBox() {
         onClose={handleCloseUserMenu}>
         {items
           .filter((_) => _.isActive)
-          .map(({ text, url }) => (
+          .map(({ text, url, handler }) => (
             <MenuItem
               key={text}
               onClick={() => {
                 handleCloseUserMenu();
-                navigate(url);
+                if (handler) {
+                  handler();
+                } else {
+                  navigate(url);
+                }
               }}>
               <Typography textAlign='center'>{text}</Typography>
             </MenuItem>
