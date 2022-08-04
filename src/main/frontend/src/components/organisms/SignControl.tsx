@@ -1,12 +1,13 @@
 import {
   Box,
   Button,
+  CircularProgress,
   Divider,
   Stack,
   Typography,
   useTheme,
 } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AuthTitle from "../molecules/AuthTitle";
 import SocialSignIn, { SocialInfo } from "../molecules/SocialSignIn";
@@ -36,6 +37,10 @@ const AUTH = {
 type Mode = "signin" | "signup";
 
 interface SignControl {
+  modelsLoaded?: boolean;
+  processing?: number;
+  faceSignStart?: boolean;
+  setFaceSignStart?: React.Dispatch<React.SetStateAction<boolean>>;
   mode: Mode;
   onSubmit?: (e: React.FormEvent) => void;
   socials?: SocialInfo[];
@@ -43,10 +48,26 @@ interface SignControl {
   formik?: any;
 }
 
-function SignControl({ mode, onSubmit, socials, fields, formik }: SignControl) {
+function SignControl({
+  modelsLoaded,
+  processing,
+  faceSignStart,
+  setFaceSignStart,
+  mode,
+  onSubmit,
+  socials,
+  fields,
+  formik,
+}: SignControl) {
   const navigate = useNavigate();
   const theme = useTheme();
   const { title, subtitle, button, notice } = AUTH[mode];
+
+  useEffect(() => {
+    if (!modelsLoaded) {
+      setFaceSignStart(false);
+    }
+  }, [modelsLoaded]);
 
   return (
     <div>
@@ -61,8 +82,20 @@ function SignControl({ mode, onSubmit, socials, fields, formik }: SignControl) {
           <Button
             variant='contained'
             size='large'
-            onClick={() => navigate("/auth/facesign")}>
-            Face Sign In
+            onClick={
+              () => setFaceSignStart(true)
+              // navigate("/auth/facesign")
+            }>
+            {!faceSignStart && "Face Sign In"}
+            {faceSignStart &&
+              (!modelsLoaded ? (
+                <>
+                  <CircularProgress size='small' color='warning' /> Preparing
+                  ...
+                </>
+              ) : (
+                (processing / 5) * 100 + "%"
+              ))}
           </Button>
         )}
         <Divider sx={{ my: 2 }} />

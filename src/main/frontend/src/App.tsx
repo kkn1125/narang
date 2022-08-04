@@ -13,7 +13,7 @@ import Usage from "./pages/Diary/Usage";
 import AuthLayout from "./components/templates/AuthLayout";
 import SignIn from "./pages/Auth/SignIn";
 import SignUp from "./pages/Auth/SignUp";
-import FaceLogin from "./pages/Auth/FaceLogin";
+// import FaceLogin from "./pages/Auth/[x]FaceLogin";
 import Profile from "./pages/Auth/Profile";
 import Detail from "./pages/Diary/Detail";
 import Cart from "./pages/Diary/Cart";
@@ -29,7 +29,7 @@ function App() {
       <Route path='/auth' element={<AuthLayout />}>
         <Route path='signin' element={<SignIn />} />
         <Route path='signup' element={<SignUp />} />
-        <Route path='facesign' element={<FaceLogin />} />
+        {/* <Route path='facesign' element={<FaceLogin />} /> */}
       </Route>
       <Route path='/auth' element={<DiaryLayout />}>
         <Route path='profile' element={<Profile />} />

@@ -17,6 +17,7 @@
     "jsx": "react",
     "strictNullChecks": false,
     "sourceMap": false,
+    "noEmitOnError": true
   },
   "include": ["src"]
 }
