@@ -23,4 +23,11 @@ const findDiaryById = (id: string) => {
     .catch(handleReceiveError);
 };
 
-export { insertDiary, findAllDiary, findDiaryById };
+const deleteDiaryById = (id: string) => {
+  return axios
+    .delete(`/api/diary/${id}`)
+    .then(handleReceiveData)
+    .catch(handleReceiveError);
+};
+
+export { insertDiary, findAllDiary, findDiaryById, deleteDiaryById };
