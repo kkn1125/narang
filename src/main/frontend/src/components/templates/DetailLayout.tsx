@@ -1,12 +1,13 @@
 import {
   Avatar,
   Box,
+  Button,
   Container,
   Divider,
   Stack,
   Typography,
 } from "@mui/material";
-import React from "react";
+import React, { memo } from "react";
 import parse, {
   DOMNode,
   Element,
@@ -14,6 +15,9 @@ import parse, {
 } from "html-react-parser";
 import CommentList from "../organisms/CommentList";
 import UserInfo from "../organisms/UserInfo";
+import { useNavigate } from "react-router-dom";
+import { deleteDiaryById } from "../../apis/diary";
+import { deleteEmotionByDid } from "../../apis/emotions";
 
 const options: HTMLReactParserOptions = {
   replace: (domNode: DOMNode) => {
@@ -27,8 +31,16 @@ const options: HTMLReactParserOptions = {
   },
 };
 
-function DetailLayout({ diary }: { diary: any }) {
-  const { title, content, author, regdate, updates } = diary;
+function DetailLayout({ diary, emotion }: { diary: any; emotion: any }) {
+  const { id, title, content, author, regdate, updates } = diary;
+  const navigate = useNavigate();
+
+  const handleDeleteDiary = async (e: React.MouseEvent) => {
+    await deleteDiaryById(id);
+    await deleteEmotionByDid(id);
+    navigate("/diary");
+  };
+
   return (
     <Container maxWidth='lg'>
       <UserInfo author={author} regdate={regdate} />
@@ -38,11 +50,18 @@ function DetailLayout({ diary }: { diary: any }) {
         direction='row'
         justifyContent='space-between'
         alignItems='flex-end'>
-        <Box>
+        <Stack
+          direction='row'
+          justifyContent='space-between'
+          alignItems='flex-end'
+          sx={{ flex: 1 }}>
           <Typography variant='h4' sx={{ fontWeight: 700 }}>
             {title}
           </Typography>
-        </Box>
+          <Button variant='contained' color='error' onClick={handleDeleteDiary}>
+            일기 지우기
+          </Button>
+        </Stack>
       </Stack>
 
       <Divider sx={{ my: 2 }} />
@@ -58,6 +77,10 @@ function DetailLayout({ diary }: { diary: any }) {
         {parse(content, options)}
       </Typography>
 
+      <Typography>긍정점수: {emotion.positive.score}</Typography>
+      <Typography>부정점수: {emotion.negative.score}</Typography>
+      <Typography>총 점수: {emotion.score}</Typography>
+      <Typography>종합 이모지: {emotion.emoji}</Typography>
       <Divider sx={{ my: 2 }} />
 
       <CommentList comments={[]} />
@@ -65,4 +88,4 @@ function DetailLayout({ diary }: { diary: any }) {
   );
 }
 
-export default DetailLayout;
+export default memo(DetailLayout);

@@ -42,16 +42,17 @@ public class EmotionRestController {
     @GetMapping("/emotion/did/{did}")
     public String findByDid(@PathVariable("did") String did) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
+        System.out.println(emotionTemplate.findOne(DID, did));
         return mapper.writeValueAsString(emotionTemplate.findOne(DID, did));
     }
 
     @PostMapping("/emotion")
     public String insert(Emotion emotion) {
-        String newObjectId = ObjectId.get().toString();
-        emotion.setId(newObjectId);
-        emotionTemplate.insert(emotion);
+        System.out.println(emotion);
+        String newObjectId = emotionTemplate.insert(emotion);
         return newObjectId;
     }
+
     @PutMapping("/emotion")
     public Boolean update(Emotion emotion) {
         emotionTemplate.update(emotion);
@@ -64,7 +65,13 @@ public class EmotionRestController {
         return true;
     }
 
-    @DeleteMapping("/emotion/uid/{id}")
+    @DeleteMapping("/emotion/did/{did}")
+    public Boolean deleteByDid(@PathVariable("did") String did) {
+        emotionTemplate.deleteByDid(did);
+        return true;
+    }
+
+    @DeleteMapping("/emotion/uid/{uid}")
     public Boolean deleteByUid(@PathVariable("uid") String uid, String id) {
         emotionTemplate.deleteByUid(id, uid);
         return true;

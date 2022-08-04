@@ -9,7 +9,6 @@ import DiaryLayout from "./components/templates/DiaryLayout";
 import WriteForm from "./pages/Diary/WriteForm";
 import Recommend from "./pages/Diary/Recommend";
 import Graph from "./pages/Diary/Graph";
-import Share from "./pages/Diary/Share";
 import Usage from "./pages/Diary/Usage";
 import AuthLayout from "./components/templates/AuthLayout";
 import SignIn from "./pages/Auth/SignIn";
@@ -17,8 +16,10 @@ import SignUp from "./pages/Auth/SignUp";
 import FaceLogin from "./pages/Auth/FaceLogin";
 import Profile from "./pages/Auth/Profile";
 import Detail from "./pages/Diary/Detail";
+import Cart from "./pages/Diary/Cart";
+import { withCookies } from "react-cookie";
 
-export default function App() {
+function App() {
   return (
     <Routes>
       <Route path='/' element={<Layout />}>
@@ -34,13 +35,16 @@ export default function App() {
         <Route path='profile' element={<Profile />} />
       </Route>
       <Route path='/diary' element={<DiaryLayout />}>
+        <Route index element={<Diary />} />
         <Route path=':id' element={<Detail />} />
         <Route path='write' element={<WriteForm />} />
         <Route path='graph' element={<Graph />} />
         <Route path='recommend' element={<Recommend />} />
-        <Route path='share' element={<Share />} />
+        <Route path='cart' element={<Cart />} />
         <Route path='usage' element={<Usage />} />
       </Route>
     </Routes>
   );
 }
+
+export default App;

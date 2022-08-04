@@ -17,7 +17,6 @@ const OverflowContent = ({
   const [result, setResult] = useState("");
 
   useEffect(() => {
-    console.log(children);
     if (typeof children === "string") {
       const getLengthOrZero = (target: string[] | null) =>
         target ? target.length : 0;
