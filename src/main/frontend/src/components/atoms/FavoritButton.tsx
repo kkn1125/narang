@@ -1,9 +1,17 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import { Box, IconButton, Stack, SvgIcon, Typography } from "@mui/material";
+import {
+  addLike,
+  deleteLikeByDid,
+  deleteLikeById,
+  findByDid,
+} from "../../apis/like";
+import Like from "../../models/Like";
 
 interface FavoritButton {
+  diaryId: string;
   onClick?: (
     e: React.MouseEvent,
     setIsClicked: React.Dispatch<boolean>,
@@ -11,13 +19,35 @@ interface FavoritButton {
   ) => void;
 }
 
-function FavoritButton({ onClick }: FavoritButton) {
+function FavoritButton({ diaryId, onClick }: FavoritButton) {
   const [isClicked, setIsClicked] = useState(false);
-  const count = useRef(0);
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    const getInitialLikes = async () => {
+      const likes = await findByDid(diaryId);
+      setCount(likes.length);
+    };
+    getInitialLikes();
+  }, []);
 
   const handleFavoritCount = (e: React.MouseEvent) => {
-    setIsClicked(!isClicked);
-    count.current = count.current + (!isClicked ? +1 : -1);
+    if (!isClicked) {
+      setCount(count + 1);
+      const like = new Like();
+      like.set("did", diaryId);
+      like.set("isLike", true);
+      like.set("uid", "kimson");
+      addLike(like.makeFormData());
+      setIsClicked(true);
+      // TODO: setIsClicked는 로그인 JWT 구현 후 설정해야 함
+    } else {
+      setCount(count - 1);
+      const formData = new FormData();
+      formData.append("uid", "kimson");
+      deleteLikeByDid(diaryId, formData);
+      setIsClicked(false);
+    }
   };
 
   return (
@@ -33,7 +63,7 @@ function FavoritButton({ onClick }: FavoritButton) {
           {isClicked ? <FavoriteIcon /> : <FavoriteBorderOutlinedIcon />}
         </SvgIcon>
       </IconButton>
-      <Typography>{count.current}</Typography>
+      <Typography>{count}</Typography>
     </Stack>
   );
 }
