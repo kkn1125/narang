@@ -6,8 +6,21 @@ class MenuItem {
     public text: string = null,
     public url: string = null,
     public icon?: React.ReactElement,
-    public isActive?: boolean
+    public isActive?: boolean,
+    public handler?: () => Promise<boolean>
   ) {}
+  public changeActive() {
+    if (this.url.match("sign")) {
+      this.isActive = !this.isActive;
+    }
+    return this;
+  }
+  public activateHandler(addHandler: () => Promise<boolean>) {
+    this.handler = async (): Promise<boolean> => {
+      return await addHandler();
+    };
+    return this;
+  }
 }
 
 export default MenuItem;
