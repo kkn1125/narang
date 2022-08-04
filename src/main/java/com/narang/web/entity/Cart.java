@@ -10,30 +10,24 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
-@Setter
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Document(collection = "products")
-public class Product {
-
+@Document(collection = "carts")
+public class Cart {
     @Id
+    private String cid;
+
+    private String uid;
+
     private String pid;
-
-    private String category;
-
-    private String name;
-
-    private Long price;
 
     private Long amount;
 
-    private String content;
-
-    private String seller;
-
-    private Boolean isSoldOut = false;
+    private Boolean isOrdered = false;
 
     @CreatedDate
     private LocalDateTime regdate;

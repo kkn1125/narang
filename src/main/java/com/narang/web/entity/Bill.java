@@ -6,38 +6,28 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
 
-@Setter
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Document(collection = "products")
-public class Product {
+@Document(collection = "bills")
+public class Bill {
 
     @Id
+    private String bid;
+
     private String pid;
 
-    private String category;
-
-    private String name;
-
-    private Long price;
+    private String uid;
 
     private Long amount;
 
-    private String content;
-
-    private String seller;
-
-    private Boolean isSoldOut = false;
+    private Long price;
 
     @CreatedDate
     private LocalDateTime regdate;
-
-    @LastModifiedDate
-    private LocalDateTime updates;
 }

@@ -6,9 +6,15 @@ import App from "./App";
 import theme from "./theme";
 import { BrowserRouter } from "react-router-dom";
 import { GlobalStyles } from "@mui/material";
+import { CookiesProvider } from "react-cookie";
+import axios from "axios";
 
 const rootElement = document.getElementById("root");
 const root = createRoot(rootElement!);
+
+// axios.defaults.withCredentials = true;
+// axios.defaults.xsrfCookieName = "csrftoken";
+// axios.defaults.xsrfHeaderName = "X-CSRFToken";
 
 root.render(
   <ThemeProvider theme={theme}>
@@ -23,10 +29,12 @@ root.render(
         },
       }}
     />
-    <BrowserRouter>
-      {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-      <CssBaseline />
-      <App />
-    </BrowserRouter>
+    <CookiesProvider>
+      <BrowserRouter>
+        {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+        <CssBaseline />
+        <App />
+      </BrowserRouter>
+    </CookiesProvider>
   </ThemeProvider>
 );

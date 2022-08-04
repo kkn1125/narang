@@ -49,9 +49,11 @@ export class PModel {
           });
           break;
         case "id":
+        case "regdate":
+        case "updates":
           break;
         default:
-          formData.append(column, value || "");
+          formData.append(column, value);
           break;
       }
     });
@@ -59,7 +61,7 @@ export class PModel {
   }
 
   // 현재 객체 필드에 할당된 값으로 formData 생성
-  public makeFormDataWithId(): FormData {
+  public makeFormDataWithUpdate(): FormData {
     const formData = new FormData();
     Object.entries(this).forEach(([column, value]: [string, string]) => {
       console.log(column, value);
@@ -72,7 +74,7 @@ export class PModel {
           });
           break;
         default:
-          formData.append(column, value || "");
+          formData.append(column, value);
           break;
       }
     });

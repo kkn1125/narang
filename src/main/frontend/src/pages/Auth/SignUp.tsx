@@ -14,6 +14,7 @@ import {
   passwordValidation,
   phoneValidation,
 } from "../../tools/utils";
+import { useNavigate } from "react-router-dom";
 
 const fields = [
   {
@@ -79,6 +80,7 @@ export interface FormikInitialValue {
 }
 
 function SignUp() {
+  const navigate = useNavigate();
   const [user, setUser] = useState(new User());
   const formik = useFormik({
     initialValues: {
@@ -95,17 +97,9 @@ function SignUp() {
       user.getResponseData(values as unknown as User);
       const formData = user.makeFormData();
       signup(formData);
+      navigate("/auth/signin");
     },
   });
-
-  const onSubmit = (e: React.FormEvent): void => {
-    e.preventDefault();
-    const user = new User();
-    const inputDatas = User.getInputData(e.target);
-    user.setByInputs(inputDatas);
-    const formData = user.makeFormData();
-    signup(formData);
-  };
 
   // handler 정리
   const handleResult = (result: void | User) => {

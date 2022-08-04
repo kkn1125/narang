@@ -40,9 +40,8 @@ public class ProductRestController {
     }
 
     @PostMapping("/product")
-    public ResponseEntity<?> createGoods(@RequestBody Product product) {
+    public ResponseEntity<?> createProduct(@RequestBody Product product) {
         try {
-            product.setRegdate(new Date(System.currentTimeMillis())); // db에 현재 시간이 UTC로 찍힘
             productRepository.save(product);
             return new ResponseEntity<Product>(product, HttpStatus.OK);
         } catch (Exception e) {
@@ -51,7 +50,7 @@ public class ProductRestController {
     }
 
     @PutMapping("/product/{pid}")
-    public ResponseEntity<?> updateById(@PathVariable("pid") String id, @RequestBody Product product) {
+    public ResponseEntity<?> updateProduct(@PathVariable("pid") String id, @RequestBody Product product) {
         Optional<Product> productOptional = productRepository.findById(id);
         if (productOptional.isPresent()) {
             Product productToSave = productOptional.get();
@@ -61,8 +60,7 @@ public class ProductRestController {
             productToSave.setAmount(product.getAmount() != null ? product.getAmount() : productToSave.getAmount());
             productToSave.setContent(product.getContent() != null ? product.getContent() : productToSave.getContent());
             productToSave.setSeller(product.getSeller() != null ? product.getSeller() : productToSave.getSeller());
-            productToSave.setIsSoldOut(product.getIsSoldOut() != null ? product.getIsSoldOut() : productToSave.getIsSoldOut());
-            productToSave.setUpdates(new Date(System.currentTimeMillis()));
+            productToSave.setIsSoldOut(product.getIsSoldOut() == true ? product.getIsSoldOut() : productToSave.getIsSoldOut());
             productRepository.save(productToSave);
             return new ResponseEntity<>(productToSave, HttpStatus.OK);
         } else {
@@ -71,7 +69,7 @@ public class ProductRestController {
     }
 
     @DeleteMapping("/product/{pid}")
-    public ResponseEntity<?> deleteById(@PathVariable("pid") String id) {
+    public ResponseEntity<?> deleteProduct(@PathVariable("pid") String id) {
         try {
             productRepository.deleteById(id);
             // id 잘못 입력시에도 리턴 찍히는 것 다시 체크하기!

@@ -71,7 +71,7 @@ function Diary() {
                   {getContent(item.content)}
                 </OverflowContent>
               </Cover>
-              <FavoritButton />
+              <FavoritButton diaryId={item.id} />
             </ImageListItem>
           ))}
       </Masonry>

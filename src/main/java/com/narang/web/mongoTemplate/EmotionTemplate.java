@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class EmotionTemplate implements CrudTemplate<Emotion>{
+public class EmotionTemplate implements CrudTemplate<Emotion> {
     private static final String COLLECTION = "emotion";
     private static final Class<Emotion> CLASS = Emotion.class;
 
@@ -38,7 +38,7 @@ public class EmotionTemplate implements CrudTemplate<Emotion>{
 
     @Override
     public String insert(Emotion emotion) {
-        return mongoTemplate.save(emotion, COLLECTION).getId();
+        return mongoTemplate.insert(emotion, COLLECTION).getId();
     }
 
     @Override
@@ -54,13 +54,22 @@ public class EmotionTemplate implements CrudTemplate<Emotion>{
         mongoTemplate.save(q, COLLECTION);
     }
 
+    public void deleteByDid(String did) {
+        Criteria cr = new Criteria("did").is(did);
+
+        Query q = new Query(cr);
+
+        System.out.println(q);
+        mongoTemplate.remove(q, COLLECTION);
+    }
+
     public void deleteByUid(String id, String uid) {
         Criteria cr = new Criteria("_id").is(id);
 
         Query q = new Query(cr);
 
         Criteria exp = new Criteria();
-        exp.and("_id").is(id);
+        exp.and("uid").is(uid);
 
         q.addCriteria(exp);
 

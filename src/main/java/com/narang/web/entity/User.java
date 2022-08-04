@@ -10,7 +10,12 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.format.annotation.DateTimeFormat;
+//import org.springframework.security.core.GrantedAuthority;
+//import org.springframework.security.core.authority.SimpleGrantedAuthority;
+//import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 
 @Data
@@ -18,9 +23,11 @@ import java.util.Date;
 @AllArgsConstructor
 @Builder
 @Document(collection = "user")
-public class User {
+public class User // implements UserDetails
+{
     @Id
     private String id;
+    private String userAuth;
     @Field
     private String nickName;
     @Field
@@ -45,4 +52,38 @@ public class User {
     private Date updates;
     @Field
     private String _class;
+
+    public Boolean compareWithPassword(String password) {
+        return this.password.equals(password);
+    }
+
+//    @Override
+//    public Collection<? extends GrantedAuthority> getAuthorities() {
+//        return Collections.singletonList(new SimpleGrantedAuthority(this.userAuth));
+//    }
+
+//    @Override
+//    public String getUsername() {
+//        return this.email;
+//    }
+
+//    @Override
+//    public boolean isAccountNonExpired() {
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean isAccountNonLocked() {
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean isCredentialsNonExpired() {
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean isEnabled() {
+//        return true;
+//    }
 }

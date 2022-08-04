@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class UserTemplate implements CrudTemplate<User>{
+public class UserTemplate implements CrudTemplate<User> {
     private static final String COLLECTION = "user";
     private static final Class<User> CLASS = User.class;
 
@@ -25,6 +25,13 @@ public class UserTemplate implements CrudTemplate<User>{
     @Override
     public User findById(String id) {
         return mongoTemplate.findById(id, CLASS);
+    }
+
+    public User findByEmail(String email) {
+        Criteria cr = new Criteria("email");
+        cr.is(email);
+        Query q = new Query(cr);
+        return mongoTemplate.findOne(q, CLASS);
     }
 
     @Override

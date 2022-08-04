@@ -1,10 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Stack } from "@mui/material";
 import { SocialInfo } from "../../components/molecules/SocialSignIn";
-import axios, { AxiosResponse } from "axios";
 import GoogleIcon from "@mui/icons-material/Google";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import SignControl from "../../components/organisms/SignControl";
+import { useFormik } from "formik";
+import { emailValidation, passwordValidation } from "../../tools/utils";
+import { OptionalObjectSchema, TypeOfShape } from "yup/lib/object";
+import { AnyObject } from "yup/lib/types";
+import * as yup from "yup";
+import { signin } from "../../apis/auth";
+import { useNavigate } from "react-router-dom";
+import { useCookies } from "react-cookie";
 
 const fields = [
   {
@@ -36,41 +43,55 @@ const socials: SocialInfo[] = [
   },
 ];
 
+export type ValidationSchema = OptionalObjectSchema<
+  {},
+  AnyObject,
+  TypeOfShape<{}>
+>;
+const validationSchema: ValidationSchema = yup.object({
+  email: emailValidation,
+  password: passwordValidation,
+});
+export interface FormikInitialValue {
+  email: string;
+  password: string;
+}
+
 function SignIn() {
-  const handleError = (err: any): void => {
-    console.log(err);
-  };
+  const [cookies, setCookie] = useCookies();
 
-  const handleReceiveData = (res: AxiosResponse<any, any>): void => {
-    console.log(res.data);
-  };
+  const navigate = useNavigate();
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+    },
+    validationSchema: validationSchema,
+    onSubmit: async (values) => {
+      // console.log(values);
+      const sessionId = await signin(values);
+      console.log(sessionId);
+      if (sessionId) {
+        setCookie("sessionid", sessionId);
+        navigate("/");
+      } else {
+        alert("이메일과 비밀번호를 확인해주세요.");
+      }
+    },
+  });
 
-  const onSubmit = (e: React.FormEvent): void => {
-    e.preventDefault();
-
-    const formDataInputs = Object.values(e.target).filter(
-      (el) => el instanceof Element && el.tagName === "INPUT"
-    );
-
-    const formData = new FormData();
-
-    formDataInputs.forEach((input) => formData.append(input.name, input.value));
-
-    axios
-      .post("/api/signin", formData)
-      .then(handleReceiveData)
-      .catch(handleError);
-
-    return;
-  };
+  useEffect(() => {
+    console.log(cookies);
+  }, []);
 
   return (
     <Stack sx={{ flex: 1 }}>
       <SignControl
         mode='signin'
+        formik={formik}
         fields={fields}
         socials={socials}
-        onSubmit={onSubmit}
+        // onSubmit={onSubmit}
       />
     </Stack>
   );

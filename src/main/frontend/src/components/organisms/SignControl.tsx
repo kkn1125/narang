@@ -14,7 +14,6 @@ import TermsConditions from "../molecules/TermsConditions";
 import TextFieldSet, { TextFieldItem } from "../molecules/TextFieldSet";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { capitalize } from "../../tools/utils";
-import { FormikInitialValue, ValidationSchema } from "../../pages/Auth/SignUp";
 
 const SIGNIN = "signin";
 const SIGNUP = "signup";
