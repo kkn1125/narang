@@ -11,7 +11,8 @@ import {
 
 import ListItemIcon from "@mui/material/ListItemIcon";
 import RecommendIcon from "@mui/icons-material/Recommend";
-import ShareIcon from "@mui/icons-material/Share";
+// import ShareIcon from "@mui/icons-material/Share";
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import QuestionMarkIcon from "@mui/icons-material/QuestionMark";
 
 import MenuBookIcon from "@mui/icons-material/MenuBook";
@@ -27,7 +28,7 @@ const sideMenu = {
     new MenuItem("일기", "/diary", <MenuBookIcon />),
     new MenuItem("감정 그래프", "/diary/graph", <BarChartIcon />),
     new MenuItem("오늘의 추천", "/diary/recommend", <RecommendIcon />),
-    new MenuItem("공유 일기", "/diary/share", <ShareIcon />),
+    new MenuItem("장바구니", "/diary/cart", <ShoppingCartIcon />),
   ],
   bottom: [new MenuItem("사용법", "/diary/usage", <QuestionMarkIcon />)],
 };
