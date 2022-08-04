@@ -13,6 +13,7 @@ import {
 } from "@mui/material";
 import React, { Fragment } from "react";
 import WavesBG from "../components/common/WavesBG";
+import FaceSign from "../components/organisms/FaceSign";
 
 const diaryProcess = [
   {
@@ -126,9 +127,10 @@ function About() {
               minHeight: 300,
               height: "30vw",
               maxHeight: 500,
-              backgroundColor: "#acacac",
+              backgroundColor: "#151515",
+              overflow: "hidden",
             }}>
-            안면인식 추가해야함
+            <FaceSign test />
           </Box>
           <Box
             sx={{

@@ -7,7 +7,7 @@ function AuthLayout() {
     <Container
       maxWidth='sm'
       sx={{
-        height: "100%",
+        height: "auto",
         display: "flex",
         alignItems: "center",
       }}>

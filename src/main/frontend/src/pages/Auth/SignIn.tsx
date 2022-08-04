@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Stack } from "@mui/material";
 import { SocialInfo } from "../../components/molecules/SocialSignIn";
 import GoogleIcon from "@mui/icons-material/Google";
@@ -12,6 +12,7 @@ import * as yup from "yup";
 import { signin } from "../../apis/auth";
 import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
+import FaceSign from "../../components/organisms/FaceSign";
 
 const fields = [
   {
@@ -59,6 +60,9 @@ export interface FormikInitialValue {
 
 function SignIn() {
   const [cookies, setCookie] = useCookies();
+  const [faceSignStart, setFaceSignStart] = useState(false);
+  const [modelsLoaded, setModelsLoaded] = useState(false);
+  const [processing, setProcessing] = useState(0);
 
   const navigate = useNavigate();
   const formik = useFormik({
@@ -84,9 +88,25 @@ function SignIn() {
     console.log(cookies);
   }, []);
 
+  const handleFaceSignStart = () => {
+    setFaceSignStart(!faceSignStart);
+  };
+
   return (
     <Stack sx={{ flex: 1 }}>
+      {faceSignStart && (
+        <FaceSign
+          modelsLoaded={modelsLoaded}
+          setModelsLoaded={setModelsLoaded}
+          processing={processing}
+          setProcessing={setProcessing}
+        />
+      )}
       <SignControl
+        modelsLoaded={modelsLoaded}
+        processing={processing}
+        faceSignStart={faceSignStart}
+        setFaceSignStart={setFaceSignStart}
         mode='signin'
         formik={formik}
         fields={fields}
