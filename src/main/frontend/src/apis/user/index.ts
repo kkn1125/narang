@@ -46,11 +46,14 @@ const userApi = (
     .catch(handleReceiveError);
 };
 
+// 회원 수정
 const userUpdate = (formData: FormData) => {
   axios
     .put(`/api/user`, formData)
     .then(handleReceiveData)
     .catch(handleReceiveError);
 };
+
+// 회원 탈퇴
 
 export { userApi, userUpdate };
