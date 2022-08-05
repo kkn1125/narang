@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import { findAllDiary } from "../../apis/diary";
 import FavoritButton from "../../components/atoms/FavoritButton";
 import OverflowContent from "../../components/atoms/OverflowContent";
+import { dev } from "../../tools/devConsole";
 
 // https://romeoh.tistory.com/entry/face-api-face-apijs-for-Browser
 
@@ -41,7 +42,10 @@ function Diary() {
   useEffect(() => {
     const getDiaryData = async () => {
       const diaries = await findAllDiary();
-      setItemData(diaries);
+      dev.log('테스트 로그')
+      if (diaries) {
+        setItemData(diaries);
+      }
     };
     getDiaryData();
   }, []);
