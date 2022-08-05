@@ -10,10 +10,10 @@ import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
 import Item from "../../models/MenuItem";
-import BedtimeOutlinedIcon from "@mui/icons-material/BedtimeOutlined";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import AvatarBox from "../molecules/AvatarBox";
+import Brand, { Responsive } from "../atoms/Brand";
 
 const pages = [new Item("About", "/about")];
 
@@ -46,25 +46,7 @@ const Header = () => {
     <AppBar position='static' sx={{ backgroundColor: "#28282a" }}>
       <Container maxWidth='xl'>
         <Toolbar disableGutters>
-          <BedtimeOutlinedIcon
-            sx={{ display: { xs: "none", md: "flex" }, mr: 1 }}
-          />
-          <Typography
-            variant='h6'
-            noWrap
-            component={Link}
-            to='/'
-            sx={{
-              mr: 2,
-              display: { xs: "none", md: "flex" },
-              fontFamily: "monospace",
-              fontWeight: 700,
-              letterSpacing: ".3rem",
-              color: "inherit",
-              textDecoration: "none",
-            }}>
-            NARANG
-          </Typography>
+          <Brand responsive={Responsive.Desktop} />
 
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
@@ -105,7 +87,8 @@ const Header = () => {
               ))}
             </Menu>
           </Box>
-          <BedtimeOutlinedIcon
+          <Brand responsive={Responsive.Mobile} />
+          {/* <BedtimeOutlinedIcon
             sx={{ display: { xs: "flex", md: "none" }, mr: 1 }}
           />
           <Typography
@@ -123,8 +106,8 @@ const Header = () => {
               color: "inherit",
               textDecoration: "none",
             }}>
-            LOGO
-          </Typography>
+            {BRAND}
+          </Typography> */}
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map(({ text, url }) => (
               <Button

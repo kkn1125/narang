@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Stack } from "@mui/material";
+import { Box, Stack } from "@mui/material";
 import { SocialInfo } from "../../components/molecules/SocialSignIn";
 import GoogleIcon from "@mui/icons-material/Google";
 import FacebookIcon from "@mui/icons-material/Facebook";
@@ -93,7 +93,8 @@ function SignIn() {
   };
 
   return (
-    <Stack sx={{ flex: 1 }}>
+    <Stack sx={{ height: "100%" }}>
+      <Box sx={{ flex: 1 }} />
       {faceSignStart && (
         <FaceSign
           modelsLoaded={modelsLoaded}
@@ -111,8 +112,8 @@ function SignIn() {
         formik={formik}
         fields={fields}
         socials={socials}
-        // onSubmit={onSubmit}
       />
+      <Box sx={{ flex: 1 }} />
     </Stack>
   );
 }

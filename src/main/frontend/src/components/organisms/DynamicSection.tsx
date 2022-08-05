@@ -33,7 +33,6 @@ function DynamicSection({
           md: main ? "80vh" : "65vh",
         },
         minHeight: "500px",
-        maxHeight: "1300px",
         overflow: "hidden",
         py: 10,
         "& .MuiTypography-root": {
@@ -56,12 +55,12 @@ function DynamicSection({
             width: "100%",
             height: "100%",
             zIndex: -1,
-            ...(main && { filter: "brightness(0.85)" }),
+            ...(main && { filter: "brightness(0.7)" }),
             ...(background && { backgroundColor: "#fff5f8" }),
           }}
         />
       )}
-      {title && <Title title={title} size={titleSize} />}
+      {title && <Title title={title} size={titleSize} main={main} />}
       {slot}
       {icons && (
         <Stack

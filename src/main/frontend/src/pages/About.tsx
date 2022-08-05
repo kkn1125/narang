@@ -1,19 +1,25 @@
 import {
   Avatar,
+  Badge,
   Box,
   Container,
   Divider,
+  IconButton,
   List,
   ListItem,
-  ListItemAvatar,
   ListItemText,
   Paper,
   Stack,
+  styled,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import React, { Fragment } from "react";
 import WavesBG from "../components/common/WavesBG";
 import FaceSign from "../components/organisms/FaceSign";
+import GitHubIcon from "@mui/icons-material/GitHub";
+import BookIcon from "@mui/icons-material/Book";
+import EmailIcon from "@mui/icons-material/Email";
 
 const diaryProcess = [
   {
@@ -45,6 +51,8 @@ const developers = [
     email: "chaplet01@gmail.com",
     github: "https://github.com/kkn1125",
     blog: "https://kkn1125.github.io/",
+    nation: "kr",
+    desc: "그림 그리기 🖼️ 와 기타 🎸 를 다루는 것이 취미 입니다 😁",
   },
   {
     id: 2,
@@ -53,15 +61,24 @@ const developers = [
     email: "ohora.ming@gmail.com",
     github: "https://github.com/ohoraming",
     blog: "https://ohoraming.github.io/",
+    nation: "kr",
+    desc: "about에 남기고 싶은 말 적기!",
   },
 ];
 
 function About() {
   return (
     <Box>
-      <Box sx={{ position: "relative", minHeight: 500 }}>
+      <Box
+        sx={{
+          position: "relative",
+          minHeight: {
+            xs: 550,
+            md: 400,
+          },
+        }}>
         <WavesBG />
-        <Container maxWidth='full' sx={{ pt: 15 }}>
+        <Container maxWidth='lg' sx={{ pt: 15 }}>
           <Typography
             variant='h2'
             gutterBottom
@@ -77,7 +94,10 @@ function About() {
             sx={{
               fontWeight: 300,
               color: "#ffffff",
-              maxWidth: "60%",
+              maxWidth: {
+                xs: "auto",
+                md: "60%",
+              },
               wordBreak: "keep-all",
             }}>
             "Narang"서비스는 개개인의 일기를 작성하면서 감정을 분석하고 해석된
@@ -89,7 +109,10 @@ function About() {
             sx={{
               fontWeight: 300,
               color: "#ffffff",
-              maxWidth: "60%",
+              maxWidth: {
+                xs: "auto",
+                md: "60%",
+              },
               wordBreak: "keep-all",
             }}>
             주요 서비스는 일기를 작성하고, 일기의 내용을 분석하여 감정 데이터를
@@ -109,7 +132,7 @@ function About() {
         }}>
         <Stack
           component={Paper}
-          elevation={15}
+          elevation={5}
           gap={5}
           direction={{
             xs: "column",
@@ -123,7 +146,10 @@ function About() {
               alignItems: "center",
               flex: "30vw 1 1",
               minWidth: 300,
-              maxWidth: 500,
+              maxWidth: {
+                xs: "auto",
+                md: 500,
+              },
               minHeight: 300,
               height: "30vw",
               maxHeight: 500,
@@ -155,10 +181,10 @@ function About() {
         </Stack>
       </Container>
 
-      <Container maxWidth='full' sx={{ my: 10 }}>
+      <Container maxWidth='lg' sx={{ my: 10 }}>
         <Typography
           gutterBottom
-          variant='h3'
+          variant='h4'
           sx={{ fontWeight: 700, textTransform: "uppercase" }}>
           diary sentiment analysis
         </Typography>
@@ -183,53 +209,112 @@ function About() {
         </Typography>
       </Container>
 
-      <Container maxWidth='full' sx={{ my: 10 }}>
+      <Container maxWidth='lg' sx={{ my: 10 }}>
         <Typography
           gutterBottom
-          variant='h3'
+          variant='h4'
           sx={{ fontWeight: 700, textTransform: "uppercase" }}>
-          개발 및 기여자
+          Teams
         </Typography>
-        <List>
+        <Stack direction={{ xs: "column", md: "row" }} sx={{ gap: 3 }}>
           {developers.map(
-            ({ id, name, avatar, email, github, blog }, idx, o) => (
-              <Fragment key={id}>
-                <ListItem sx={{ alignItems: "flex-start" }}>
-                  <ListItemAvatar>
-                    <Avatar alt={name} src={avatar} />
-                  </ListItemAvatar>
-                  <ListItemText
-                    disableTypography
-                    primary={name + " [ FE/BE ]"}
-                    secondary={
-                      <List>
-                        <ListItem>
-                          <a href={`mailto:${email}`} target='_blank'>
-                            Email : {email}
-                          </a>
-                        </ListItem>
-                        <ListItem>
-                          <a href={github} target='_blank'>
-                            Github : {github}
-                          </a>
-                        </ListItem>
-                        <ListItem>
-                          <a href={blog} target='_blank'>
-                            Blog : {blog}
-                          </a>
-                        </ListItem>
-                      </List>
-                    }
-                  />
-                </ListItem>
-                {idx !== o.length - 1 && <Divider sx={{ my: 1 }} />}
-              </Fragment>
+            (
+              { id, name, avatar, email, github, blog, nation, desc },
+              idx,
+              o
+            ) => (
+              <Paper
+                key={name}
+                elevation={5}
+                sx={{
+                  flex: "25% 0 0",
+                  p: 3.5,
+                  minHeight: "250px",
+                  height: "60vh",
+                  maxHeight: "300px",
+                }}>
+                <Stack>
+                  <Stack
+                    direction='row'
+                    justifyContent='space-between'
+                    alignItems='flex-start'>
+                    <Box>
+                      <Badge
+                        overlap='circular'
+                        anchorOrigin={{
+                          vertical: "bottom",
+                          horizontal: "right",
+                        }}
+                        badgeContent={
+                          <SmallAvatar
+                            alt={nation}
+                            src={`https://flagcdn.com/${nation}.svg`}
+                          />
+                        }>
+                        <Avatar
+                          variant='rounded'
+                          alt={name}
+                          src={avatar}
+                          sx={{
+                            width: 70,
+                            height: 70,
+                          }}
+                        />
+                      </Badge>
+                    </Box>
+                    <Stack direction='row'>
+                      <Tooltip title={"email".toUpperCase()}>
+                        <a href={`mailto:${email}`}>
+                          <IconButton>
+                            <EmailIcon />
+                          </IconButton>
+                        </a>
+                      </Tooltip>
+                      <Tooltip title={"blog".toUpperCase()}>
+                        <a href={`${blog}`} target='_blank'>
+                          <IconButton>
+                            <BookIcon />
+                          </IconButton>
+                        </a>
+                      </Tooltip>
+                      <Tooltip title={"github".toUpperCase()}>
+                        <a href={`${github}`} target='_blank'>
+                          <IconButton>
+                            <GitHubIcon />
+                          </IconButton>
+                        </a>
+                      </Tooltip>
+                    </Stack>
+                  </Stack>
+                  <Typography variant='body1' sx={{ fontWeight: 700 }}>
+                    {name}
+                  </Typography>
+                  <Typography
+                    variant='body1'
+                    sx={{ color: (theme) => theme.palette.grey[500] }}>
+                    FE & BE
+                  </Typography>
+                  <Divider sx={{ my: 1 }} />
+                  <Typography
+                    variant='body2'
+                    sx={{ color: (theme) => theme.palette.grey[500] }}>
+                    {desc}
+                  </Typography>
+                </Stack>
+              </Paper>
             )
           )}
-        </List>
+        </Stack>
       </Container>
     </Box>
   );
 }
+
+const SmallAvatar = styled(Avatar)(({ theme }) => ({
+  width: 22,
+  height: 22,
+  border: `2px solid ${theme.palette.background.paper}`,
+  transform: `translateX(50%)`,
+}));
 
 export default About;
