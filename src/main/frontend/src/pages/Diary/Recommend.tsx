@@ -49,7 +49,7 @@ function Items() {
       </Typography>
       <Grid container spacing={4}>
         {items.map((item: any) => (
-          <Grid item>
+          <Grid key={item.title} item>
             <Card sx={{ width: 350, height: 300 }}>
               <CardActionArea>
                 <CardMedia

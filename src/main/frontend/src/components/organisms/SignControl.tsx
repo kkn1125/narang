@@ -64,7 +64,7 @@ function SignControl({
   const { title, subtitle, button, notice } = AUTH[mode];
 
   useEffect(() => {
-    if (!modelsLoaded) {
+    if (!modelsLoaded && setFaceSignStart) {
       setFaceSignStart(false);
     }
   }, [modelsLoaded]);
