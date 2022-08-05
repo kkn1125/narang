@@ -1,5 +1,5 @@
-import { Stack } from "@mui/material";
-import { FormikConfig, FormikHelpers, useFormik } from "formik";
+import { Box, Stack } from "@mui/material";
+import { useFormik } from "formik";
 import React, { useEffect, useState } from "react";
 import { signup } from "../../apis/auth";
 import { userApi } from "../../apis/user";
@@ -123,13 +123,10 @@ function SignUp() {
   }, []);
 
   return (
-    <Stack sx={{ flex: 1 }}>
-      <SignControl
-        mode='signup'
-        fields={fields}
-        formik={formik}
-        // onSubmit={onSubmit}
-      />
+    <Stack sx={{ height: "100%" }}>
+      <Box sx={{ flex: 1 }} />
+      <SignControl mode='signup' fields={fields} formik={formik} />
+      <Box sx={{ flex: 1 }} />
     </Stack>
   );
 }

@@ -4,13 +4,7 @@ import { Outlet } from "react-router-dom";
 
 function AuthLayout() {
   return (
-    <Container
-      maxWidth='sm'
-      sx={{
-        height: "auto",
-        display: "flex",
-        alignItems: "center",
-      }}>
+    <Container maxWidth='sm' sx={{ height: "100%" }}>
       <Outlet />
     </Container>
   );

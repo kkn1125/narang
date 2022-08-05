@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import { findDiaryById } from "../../apis/diary";
 import { findEmotionByDid } from "../../apis/emotions";
+import Footer from "../../components/organisms/Footer";
 import DetailLayout from "../../components/templates/DetailLayout";
 
 function Detail() {
@@ -25,6 +26,7 @@ function Detail() {
   return (
     <Stack>
       {diary && emotion && <DetailLayout diary={diary} emotion={emotion} />}
+      <Footer />
     </Stack>
   );
 }

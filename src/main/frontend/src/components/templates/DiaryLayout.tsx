@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
-import CssBaseline from "@mui/material/CssBaseline";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
@@ -10,6 +9,7 @@ import DrawerBlock from "../organisms/DrawerBlock";
 import SearchBar from "../molecules/SearchBar";
 import MessageBox from "../molecules/MessageBox";
 import { SwipeableDrawer } from "@mui/material";
+import Footer from "../organisms/Footer";
 
 const drawerWidth = 240;
 
@@ -45,14 +45,13 @@ function DiaryLayout(props: Props) {
 
   return (
     <Box sx={{ display: "flex" }}>
-      <CssBaseline />
       <AppBar
-        color='transparent'
         position='fixed'
         sx={{
-          width: { sm: `calc(100% - ${drawerWidth}px)` },
+          // width: { sm: `calc(100% - ${drawerWidth}px)` },
           ml: { sm: `${drawerWidth}px` },
           color: bgBlack ? "#ffffff" : "#000000",
+          backgroundColor: bgBlack ? "#252525" : "inherit",
         }}>
         <Toolbar
           sx={{
@@ -67,7 +66,8 @@ function DiaryLayout(props: Props) {
             sx={{ mr: 2, display: { sm: "none" } }}>
             <MenuIcon />
           </IconButton>
-          <SearchBar />
+          {/* <SearchBar /> */}
+          <Box sx={{ flex: 1 }} />
           <MessageBox />
         </Toolbar>
       </AppBar>
@@ -119,16 +119,22 @@ function DiaryLayout(props: Props) {
           <DrawerBlock />
         </SwipeableDrawer>
       </Box>
-      <Box
-        component='main'
-        sx={{
-          flexGrow: 1,
-          p: 3,
-          width: { sm: `calc(100% - ${drawerWidth}px)` },
-          backgroundColor: bgBlack ? "#252525" : "#ffffff",
-        }}>
-        <Toolbar />
-        <Outlet />
+      <Box>
+        <Box
+          component='main'
+          sx={{
+            flexGrow: 1,
+            p: 3,
+            // width: { sm: `calc(100% - ${drawerWidth}px)` },
+            backgroundColor: bgBlack ? "#252525" : "#ffffff",
+            minHeight: "100%",
+            // marginLeft: "auto",
+            // marginRight: "auto",
+          }}>
+          <Toolbar />
+          <Outlet />
+        </Box>
+        <Footer bottomFixed />
       </Box>
     </Box>
   );
