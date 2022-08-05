@@ -38,7 +38,10 @@ const shape = {
   width: "100%",
   overflow: "hidden",
   lineHeight: 0,
-  height: 600,
+  height: {
+    xs: 800,
+    md: 600,
+  },
   transform: "rotate(180deg)",
   zIndex: -1,
   "& svg": {

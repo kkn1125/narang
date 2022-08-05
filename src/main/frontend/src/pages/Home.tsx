@@ -1,29 +1,40 @@
-import { Box, Button, Paper, Stack, TextField, Typography } from "@mui/material";
-import React from "react";
+import {
+  Box,
+  Button,
+  Paper,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
+import React, { useEffect, useState } from "react";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
 import PsychologyIcon from "@mui/icons-material/Psychology";
 import ShareIcon from "@mui/icons-material/Share";
 import DynamicSection from "../components/organisms/DynamicSection";
 import { dark } from "@mui/material/styles/createPalette";
+import axios from "axios";
+import { handleReceiveData, handleReceiveError } from "../apis/commonTypes";
+import { dev } from "../tools/devConsole";
+import { Link } from "react-router-dom";
 
 const firstSection = [
   {
     icon: <BorderColorIcon sx={{ fontSize: 60 }} />,
-    title: "THE BEST LUXURY HOTELS",
+    title: "일기 감정 분석",
     content:
-      "From the latest trendy boutique hotel to the iconic palace with XXL pool, go for a mini-vacation just a few subway stops away from your home.",
+      "작성한 일기의 텍스트를 분석해서 감정 정보를 읽어 냅니다. 일기에 나타난 나의 감정은 그래프로 전환되어, 나를 관리하는데 도움을 줍니다.",
   },
   {
     icon: <PsychologyIcon sx={{ fontSize: 60 }} />,
-    title: "NEW EXPERIENCES",
+    title: "안면 인식 로그인",
     content:
-      "Privatize a pool, take a Japanese bath or wake up in 900m2 of garden… your Sundays will not be alike.",
+      "인증 절차가 편리한 요즘 더욱 편리한 사용감을 위해 안면 인식을 통한 간편한 로그인 서비스를 지원합니다.",
   },
   {
     icon: <ShareIcon sx={{ fontSize: 60 }} />,
-    title: "EXCLUSIVE RATES",
+    title: "나의 일상 공유",
     content:
-      "By registering, you will access specially negotiated rates that you will not find anywhere else.",
+      "일기는 개인이 공개 여부를 설정하여 사용자가 함께 오늘의 이야기를 함께 공유할 수 있습니다.",
   },
 ];
 
@@ -31,40 +42,63 @@ const secondsSection = [
   {
     index: 1,
     icon: <BorderColorIcon sx={{ fontSize: 60 }} />,
-    content: "Appointment every Wednesday 9am.",
+    content:
+      "일기를 작성하면 내용이 sentiment 라이브러리를 통해 감정 분석 됩니다. 감정 분석된 내용은 데이터베이스에 저장 됩니다.",
   },
   {
     index: 2,
     icon: <PsychologyIcon sx={{ fontSize: 60 }} />,
     content:
-      "First come, first served. Our offers are in limited quantities, so be quick.",
+      "저장된 감정 데이터는 감정 점수에 대응하여 추천할 만한 상품을 표시하는 기능과, 나만의 감정 그래프를 생성하는데 사용 됩니다.",
   },
   {
     index: 3,
     icon: <ShareIcon sx={{ fontSize: 60 }} />,
     content:
-      "New offers every week. New experiences, new surprises. Your Sundays will no longer be alike.",
+      "작성한 일기를 사용자들과 공유하고, 나의 이야기를 우리들의 이야기로 만들어 보세요.",
   },
 ];
 
 function Home() {
+  const [advice, setAdvice] = useState("");
+  useEffect(() => {
+    const refreshAdvice = async () => {
+      return axios
+        .get("https://api.adviceslip.com/advice")
+        .then(handleReceiveData)
+        .catch(handleReceiveError);
+    };
+    refreshAdvice().then((data) => setAdvice(data.slip.advice));
+  }, []);
   return (
     <Box>
       <DynamicSection
         main
-        title='UPGRADE YOUR SUNDAYS'
+        title='UPGRADE YOUR DAY'
         titleSize='l'
         img='https://cdn.pixabay.com/photo/2020/05/24/11/14/sea-5213746_1280.jpg'
         slot={
           <Stack alignItems='center' gap={3}>
-            <Typography variant='body1'>
-              Enjoy secret offers up to -70% off the best luxury hotels every
-              Sunday.
-            </Typography>
-            <Button size='large' variant='contained' color='error'>
-              register
+            <Box>
+              <Typography
+                variant='body1'
+                align='center'
+                sx={{ fontWeight: 700 }}>
+                오늘의 명언
+              </Typography>
+              <Typography variant='body1'>
+                {advice !== "" ? "- " + advice : "명언을 불러오는 중 ..."}
+              </Typography>
+            </Box>
+            <Button
+              component={Link}
+              to='/auth/signup'
+              size='large'
+              variant='contained'
+              color='error'>
+              회원 가입
             </Button>
-            <Typography variant='body2'>Discover the experience</Typography>
+            <Typography variant='body2'>당신의 이야기를 들려주세요.</Typography>
           </Stack>
         }
       />

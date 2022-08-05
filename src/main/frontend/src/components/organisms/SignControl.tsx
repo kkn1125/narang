@@ -7,7 +7,7 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AuthTitle from "../molecules/AuthTitle";
 import SocialSignIn, { SocialInfo } from "../molecules/SocialSignIn";
@@ -70,7 +70,7 @@ function SignControl({
   }, [modelsLoaded]);
 
   return (
-    <div>
+    <Stack justifyContent='center'>
       <Box>
         <Button startIcon={<ArrowBackIcon />} onClick={() => navigate("/")}>
           메인으로
@@ -82,10 +82,7 @@ function SignControl({
           <Button
             variant='contained'
             size='large'
-            onClick={
-              () => setFaceSignStart(true)
-              // navigate("/auth/facesign")
-            }>
+            onClick={() => setFaceSignStart(true)}>
             {!faceSignStart && "Face Sign In"}
             {faceSignStart &&
               (!modelsLoaded ? (
@@ -98,8 +95,13 @@ function SignControl({
               ))}
           </Button>
         )}
-        <Divider sx={{ my: 2 }} />
-        {mode === SIGNIN && <SocialSignIn socials={socials} />}
+
+        {mode === SIGNIN && (
+          <>
+            <Divider sx={{ my: 2 }} />
+            <SocialSignIn socials={socials} />
+          </>
+        )}
         <TextFieldSet fields={fields} size='medium' formik={formik} />
         {mode == SIGNUP && <TermsConditions formik={formik} />}
         <Button
@@ -124,7 +126,7 @@ function SignControl({
           {capitalize(mode === SIGNIN ? "sign up" : "sign in")}
         </Link>
       </Typography>
-    </div>
+    </Stack>
   );
 }
 

@@ -64,10 +64,12 @@ function FaceSign({
     setUserName("kimson");
     handleOnVideo();
     return () => {
-      localStream.getTracks().forEach((track: any) => {
-        track.stop();
-      });
-      setCaptureVideo(false);
+      if (localStream) {
+        localStream.getTracks().forEach((track: any) => {
+          track.stop();
+        });
+        setCaptureVideo(false);
+      }
     };
   }, []);
 
@@ -116,7 +118,9 @@ function FaceSign({
       .getUserMedia(constraints)
       .then((stream) => {
         localStream = stream;
-        return ((videoRef.current as any).srcObject = stream);
+        if (videoRef.current) {
+          return ((videoRef.current as any).srcObject = stream);
+        }
       })
       .catch((err) => console.error(err));
   };

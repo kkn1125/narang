@@ -24,6 +24,7 @@ interface TitleProps {
   size: SizeProps;
   align: string;
   noGutter: boolean;
+  main?: boolean;
 }
 
 const sizeType: {
@@ -35,10 +36,17 @@ const sizeType: {
   l: "h2",
 };
 
-function Title({ title, size, align, noGutter }: TitleProps) {
+function Title({ title, size, align, noGutter, main }: TitleProps) {
   return (
     <Box sx={{ textAlign: align, mb: !noGutter && 12 }}>
-      <Typography variant={sizeType[size]}>
+      <Typography
+        variant={sizeType[size]}
+        sx={{
+          ...(main && {
+            fontWeight: 500,
+            textShadow: "3px 3px 5px #00000095",
+          }),
+        }}>
         {title}
         <Box
           component='span'
