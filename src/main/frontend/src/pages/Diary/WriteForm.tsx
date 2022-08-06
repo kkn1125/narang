@@ -1,5 +1,5 @@
 import { Box, TextField, Button, Stack, FormHelperText } from "@mui/material";
-import React, { useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import SunEditor from "suneditor-react";
 import SunEditorCore from "suneditor/src/lib/core";
 import Analyzer from "../../tools/analyzer";
@@ -13,6 +13,9 @@ import "suneditor/dist/css/suneditor.min.css";
 import Diary from "../../models/Diary";
 import SwitchLabels from "../../components/molecules/SwitchLabels";
 import { insertEmotions } from "../../apis/emotions";
+import { useCookies } from "react-cookie";
+import { checkToken } from "../../apis/auth";
+import { UserContext } from "../../contexts/UserProvider";
 
 interface FormikProps {
   title: string;
@@ -25,6 +28,8 @@ interface FormikProps {
 
 function WriteForm() {
   const navigate = useNavigate();
+  const [user, dispatch] = useContext(UserContext);
+  const [cookies, setCookie] = useCookies(["token"]);
   const editor = useRef<SunEditorCore>();
   const [formData, setFormData] = useState({ title: "" });
 
@@ -46,10 +51,10 @@ function WriteForm() {
       did: yup.string(),
     }),
     onSubmit: async (values) => {
-      formik.values.author = "author";
+      formik.values.author = user.nickName;
       // values로 넣는 이유는 form data에 전달되는 반응 속도가 제일 빨라서.
       formik.values.content = editor.current?.getContents(true);
-      formik.values.uid = "testuid";
+      formik.values.uid = user.id;
 
       const emotionResult = await sendDiaryInfo();
 
@@ -62,7 +67,7 @@ function WriteForm() {
 
       const emotion = new Emotions();
       emotion.getResponseData(
-        emotionResult.emotionScore as unknown as Emotions
+        emotionResult.emotionScore as unknown as Emotions,
       );
       emotion.set("uid", values.uid);
       emotion.set("did", diaryId);
@@ -75,26 +80,17 @@ function WriteForm() {
     },
   });
 
-  // // 프론트 개발 폼데이터 전송 테스트용
-  // const devSendFormData = (value: FormikProps, result: any) => {
-  //   // 데이터 전송
-  //   console.log(value);
-  //   console.log(result);
-  // };
-
-  // // api 서버 개발 후 테스트용
-  // const sendFormData = (value: FormikProps, result: any) => {
-  //   const formData = new FormData();
-  //   const url = "/api/diary";
-  //   // 데이터 전송
-  //   console.log(value);
-  //   console.log(result);
-  //   axios.post(url, formData).then((res) => {
-  //     if (res.status === 200) {
-  //       navigate("/diary");
-  //     }
-  //   });
-  // };
+  useEffect(() => {
+    if (!cookies.token) {
+      navigate("/diary");
+    } else {
+      checkToken(cookies.token).then((res) => {
+        if (res.result === false) {
+          navigate("/diary");
+        }
+      });
+    }
+  }, []);
 
   const getSunEditorInstance = (sunEditor: SunEditorCore) => {
     editor.current = sunEditor;
@@ -104,7 +100,7 @@ function WriteForm() {
     const analyzer = new Analyzer(
       "ko",
       "en",
-      editor.current?.getContents(true)
+      editor.current?.getContents(true),
     );
 
     await analyzer.translate();
