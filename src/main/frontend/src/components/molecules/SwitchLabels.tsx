@@ -14,7 +14,7 @@ function SwitchLabels({ name, formik }: { name: string; formik?: any }) {
             onChange={formik.handleChange}
           />
         }
-        label={name}
+        label={"공유 여부 설정"}
       />
     </FormGroup>
   );

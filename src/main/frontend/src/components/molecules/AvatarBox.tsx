@@ -8,31 +8,36 @@ import {
   Typography,
 } from "@mui/material";
 import Item from "../../models/MenuItem";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import { signout } from "../../apis/auth";
+import { findByJwt } from "../../apis/user";
+import { decodeJwt } from "jose";
+import { removeUser, setUser, UserContext } from "../../contexts/UserProvider";
 
 function AvatarBox() {
   const navigate = useNavigate();
-
-  const [cookies, setCookie, removeCookie] = useCookies();
+  const [user, dispatch] = useContext(UserContext);
+  const [cookies, setCookie, removeCookie] = useCookies(["token"]);
 
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
   const [isSignin, setIsSignin] = useState(false);
 
   const [items, setItems] = useState([
-    new Item("Profile", "/auth/profile", null, !isSignin),
+    new Item("Profile", "/auth/profile", null, isSignin),
     new Item("Diary", "/diary", null, !isSignin),
     new Item("Sign in", "/auth/signin", null, !isSignin),
     new Item("Sign up", "/auth/signup", null, !isSignin),
     new Item("Logout", "/auth/signout", null, isSignin).activateHandler(
       async () => {
-        removeCookie("sessionid");
-        removeCookie("JSESSIONID");
         setItems(items.map((item) => item.changeActive()));
-        return await signout();
-      }
+        const result = await signout(cookies.token).finally(() => {
+          dispatch(removeUser());
+          removeCookie("token");
+          navigate("/");
+        });
+      },
     ),
   ]);
 
@@ -45,10 +50,21 @@ function AvatarBox() {
 
   useEffect(() => {
     // console.log("이후 세션 받아와야 함");
-    const { sessionid } = cookies;
-    if (sessionid) {
+    const { token } = cookies;
+    if (token) {
+      // console.log(decodeJwt(token))
+      if (decodeJwt(token).exp * 1000 <= Date.now()) {
+        removeCookie("token");
+      }
       setIsSignin(true);
       setItems(items.map((item) => item.changeActive()));
+      findByJwt(token).then((res) => {
+        if (res) {
+          // console.log(res);
+          delete res["password"];
+          dispatch(setUser(res));
+        }
+      });
     } else {
       setIsSignin(false);
     }
@@ -58,7 +74,7 @@ function AvatarBox() {
     <Box sx={{ flexGrow: 0 }}>
       <Tooltip title='Open settings'>
         <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-          <Avatar alt='Remy Sharp' src='' />
+          <Avatar children={user.nickName?.[0]} />
         </IconButton>
       </Tooltip>
       <Menu

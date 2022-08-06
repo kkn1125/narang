@@ -15,7 +15,7 @@ export const USER_URL = {
   DELETE: { url: `/api/${FIND_ONE}`, method: "delete" },
 };
 
-export type UserGET = "FIND_ALL" | "FIND_BY_ID";
+export type UserGET = "FIND_ALL" | "FIND_BY_ID" | "FIND_BY_EMAIL";
 export type UserPOST = "INSERT";
 export type UserPUT = "UPDATE";
 export type UserDELETE = "DELETE";
