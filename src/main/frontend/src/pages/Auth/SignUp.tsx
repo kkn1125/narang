@@ -2,7 +2,6 @@ import { Box, Stack } from "@mui/material";
 import { useFormik } from "formik";
 import React, { useEffect, useState } from "react";
 import { signup } from "../../apis/auth";
-import { userApi } from "../../apis/user";
 import SignControl from "../../components/organisms/SignControl";
 import User from "../../models/User";
 import * as yup from "yup";
@@ -64,7 +63,7 @@ const validationSchema: ValidationSchema = yup.object({
     "비밀번호가 일치하지 않습니다.",
     function (value) {
       return this.parent.password === value;
-    }
+    },
   ),
   phone: phoneValidation,
   terms: yup.boolean(),
@@ -115,12 +114,6 @@ function SignUp() {
     if (process.env.NODE_ENV !== "production") console.log(err.message);
     else alert(err.message);
   };
-
-  useEffect(() => {
-    userApi("FIND_BY_ID", { pathVariable: "62e4d415a0c264729ff122ad" })
-      .then(handleResult)
-      .catch(handleError);
-  }, []);
 
   return (
     <Stack sx={{ height: "100%" }}>

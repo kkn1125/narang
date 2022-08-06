@@ -73,10 +73,10 @@ function SignIn() {
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       // console.log(values);
-      const sessionId = await signin(values);
-      console.log(sessionId);
-      if (sessionId) {
-        setCookie("sessionid", sessionId);
+      const token = await signin(values);
+      console.log(token);
+      if (token) {
+        setCookie("token", token);
         navigate("/");
       } else {
         alert("이메일과 비밀번호를 확인해주세요.");
