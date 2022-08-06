@@ -1,21 +1,19 @@
 package com.narang.web.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.format.annotation.DateTimeFormat;
-//import org.springframework.security.core.GrantedAuthority;
-//import org.springframework.security.core.authority.SimpleGrantedAuthority;
-//import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
 
 @Data
@@ -23,11 +21,11 @@ import java.util.Date;
 @AllArgsConstructor
 @Builder
 @Document(collection = "user")
-public class User // implements UserDetails
-{
+public class User implements UserDetails {
     @Id
     private String id;
     private String userAuth;
+    private Collection<? extends GrantedAuthority> authority;
     @Field
     private String nickName;
     @Field
@@ -53,37 +51,40 @@ public class User // implements UserDetails
     @Field
     private String _class;
 
-    public Boolean compareWithPassword(String password) {
-        return this.password.equals(password);
+    public Boolean compareWithPassword(String inputPassword) {
+        System.out.println(inputPassword);
+        System.out.println(this.password);
+        return this.password.equals(inputPassword);
     }
 
-//    @Override
-//    public Collection<? extends GrantedAuthority> getAuthorities() {
-//        return Collections.singletonList(new SimpleGrantedAuthority(this.userAuth));
-//    }
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return this.authority;
+    }
 
-//    @Override
-//    public String getUsername() {
-//        return this.email;
-//    }
+    @Override
+    public String getUsername() {
+        return this.email;
+    }
 
-//    @Override
-//    public boolean isAccountNonExpired() {
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean isAccountNonLocked() {
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean isCredentialsNonExpired() {
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean isEnabled() {
-//        return true;
-//    }
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
 }
