@@ -8,11 +8,13 @@ import {
   Typography,
 } from "@mui/material";
 import { useFormik } from "formik";
-import React, { FormEvent, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { useCookies } from "react-cookie";
 import * as yup from "yup";
 import { addFaceImage } from "../../apis/faceImage";
-import { userApi, userUpdate } from "../../apis/user";
+import { userUpdate } from "../../apis/user";
 import TextFieldSet from "../../components/molecules/TextFieldSet";
+import { UserContext } from "../../contexts/UserProvider";
 import FaceImage from "../../models/FaceImage";
 import User, { UserColumn } from "../../models/User";
 import {
@@ -26,39 +28,6 @@ import {
   REQUIRED_ERROR,
 } from "../../tools/utils";
 
-const fields = [
-  {
-    name: "nickName",
-    type: "text",
-    placeholder: "",
-    required: true,
-  },
-  {
-    name: "email",
-    type: "text",
-    placeholder: "",
-    required: true,
-  },
-  {
-    name: "phone",
-    type: "text",
-    placeholder: "",
-    required: true,
-  },
-  {
-    name: "password",
-    type: "password",
-    placeholder: "",
-    required: true,
-  },
-  {
-    name: "check password",
-    type: "password",
-    placeholder: "",
-    required: true,
-  },
-];
-
 const validationSchema = yup.object({
   nickName: nickNameValidation,
   email: emailValidation,
@@ -68,7 +37,7 @@ const validationSchema = yup.object({
     "비밀번호가 일치하지 않습니다.",
     function (value) {
       return this.parent.password === value;
-    }
+    },
   ),
   phone: phoneValidation,
   profileImg: yup.lazy((value) => {
@@ -131,6 +100,41 @@ const validationSchema = yup.object({
 
 // http://placekitten.com/200/200
 function Profile() {
+  const [user, dispatch] = useContext(UserContext);
+  const [cookies, setCookie] = useCookies(["token"]);
+  const [fields, setFields] = useState([
+    {
+      name: "nickName",
+      type: "text",
+      placeholder: "",
+      required: true,
+    },
+    {
+      name: "email",
+      type: "text",
+      placeholder: "",
+      required: true,
+    },
+    {
+      name: "phone",
+      type: "text",
+      placeholder: "",
+      required: true,
+    },
+    {
+      name: "password",
+      type: "password",
+      placeholder: "",
+      required: true,
+    },
+    {
+      name: "check password",
+      type: "password",
+      placeholder: "",
+      required: true,
+    },
+  ]);
+
   const formik = useFormik({
     initialValues: {
       nickName: "",
@@ -166,6 +170,19 @@ function Profile() {
 
   const [profileImg, setProfileImg] = useState(null);
   const [faceImage, setFaceImage] = useState(null);
+
+  useEffect(() => {
+    const { token } = cookies;
+    if (token) {
+      // console.log(user, fields);
+      setFields(
+        fields.map((field) => ({
+          ...field,
+          value: user[field.name],
+        })),
+      );
+    }
+  }, [user]);
 
   // formik 상세화면 배경 이미지 파일 직접 지정
   const handleProfileImg = (e: React.FormEvent<HTMLInputElement>) => {
@@ -241,12 +258,12 @@ function Profile() {
             />
             <Box>
               <Typography variant='h5' gutterBottom component='div'>
-                Katarina Smith
+                {user.nickName}
               </Typography>
             </Box>
             <Box>
               <Typography variant='body2' gutterBottom component='div' mb={2}>
-                Email Address
+                {user.email}
               </Typography>
             </Box>
             <Divider />

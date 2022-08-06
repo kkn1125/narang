@@ -25,7 +25,7 @@ const checkUserByEmail = async ({
   console.log(email, password);
   const session = await axios[USER_URL["SIGNIN_BY_EMAIL"].method as METHOD](
     `${USER_URL["SIGNIN_BY_EMAIL"].url}`,
-    formData
+    formData,
   )
     .then(handleReceiveData)
     .catch(handleReceiveError);
@@ -49,17 +49,28 @@ const signin = async ({
 const signup = (data: FormData) => {
   return axios[USER_URL["INSERT"].method as METHOD](
     USER_URL["INSERT"].url,
-    data
+    data,
   )
     .then(handleReceiveData)
     .catch(handleReceiveError);
 };
 
-const signout = async () => {
+const signout = async (token: string) => {
+  const formData = new FormData();
+  formData.append("token", token);
   return await axios
-    .post("/api/user/signout")
+    .post("/api/user/signout", formData)
     .then(handleReceiveData)
     .catch(handleReceiveError);
 };
 
-export { signin, signup, signout };
+const checkToken = async (token: string) => {
+  const formData = new FormData();
+  formData.append("token", token);
+  return await axios
+    .post("/api/token/confirm", formData)
+    .then(handleReceiveData)
+    .catch(handleReceiveError);
+};
+
+export { signin, signup, signout, checkToken };

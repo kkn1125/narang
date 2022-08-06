@@ -19,16 +19,19 @@ repositories {
 }
 
 dependencies {
+	// https://mvnrepository.com/artifact/org.glassfish.jaxb/jaxb-runtime
+	// java 11 버전 이상은 에러 발생하기 때문에 추가
+	implementation group: 'org.glassfish.jaxb', name: 'jaxb-runtime', version: '4.0.0'
 //	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
-//	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
 //	implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
 //	// https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-api
-//	implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.5'
+	implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.5'
 //	// https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-impl
-//	runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.5'
+	runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.5'
 //	// https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-jackson
-//	runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.5'
+	runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.5'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	compileOnly 'org.projectlombok:lombok'
 	// https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind

@@ -1,4 +1,5 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
+import { decodeJwt } from "jose";
 import User from "../../models/User";
 import { mapToQuery } from "../../tools/utils";
 import { METHOD } from "../commonTypes";
@@ -18,30 +19,29 @@ const handleReceiveError = (err: { message: any }) => {
   console.log(err.message);
 };
 
-const userApi = (
-  url: UserGET | UserPOST | UserPUT | UserDELETE,
-  params?: Params,
-  options?: AxiosRequestConfig<any>
-) => {
-  const parameters = [];
-
-  if (url !== "FIND_ALL") {
-    if (params.querys) {
-      const q = mapToQuery(params.querys);
-      parameters.push(q);
-    }
-    if (params.pathVariable) {
-      parameters.push(params.pathVariable);
-    }
+const findByJwt = async (token: string) => {
+  try {
+    const email = decodeJwt(token).sub;
+    // console.log(email)
+    return await axios
+      .get(`/api/user/email/${email}`)
+      .then(handleReceiveData)
+      .catch(handleReceiveError);
+  } catch (e) {
+    return false;
   }
+};
 
-  return axios[USER_URL[url].method as METHOD](
-    USER_URL[url].url +
-      (url !== "FIND_ALL"
-        ? (params.querys ? "?" : "/") + parameters.pop()
-        : ""),
-    options
-  )
+const findUserAll = async () => {
+  return await axios
+    .get(`/api/users`)
+    .then(handleReceiveData)
+    .catch(handleReceiveError);
+};
+
+const findUserById = async (id: string) => {
+  return await axios
+    .get(`/api/user/${id}`)
     .then(handleReceiveData)
     .catch(handleReceiveError);
 };
@@ -55,5 +55,11 @@ const userUpdate = (formData: FormData) => {
 };
 
 // 회원 탈퇴
+const userDeleteById = async (id: string) => {
+  return await axios
+    .delete(`/api/user/${id}`)
+    .then(handleReceiveData)
+    .catch(handleReceiveError);
+};
 
-export { userApi, userUpdate };
+export { findUserAll, findUserById, userUpdate, userDeleteById, findByJwt };
