@@ -8,6 +8,7 @@ import { BrowserRouter } from "react-router-dom";
 import { GlobalStyles } from "@mui/material";
 import { CookiesProvider } from "react-cookie";
 import axios from "axios";
+import UserProvider from "./contexts/UserProvider";
 
 const rootElement = document.getElementById("root");
 const root = createRoot(rootElement!);
@@ -29,12 +30,15 @@ root.render(
         },
       }}
     />
-    <CookiesProvider>
-      <BrowserRouter>
-        {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-        <CssBaseline />
-        <App />
-      </BrowserRouter>
-    </CookiesProvider>
-  </ThemeProvider>
+
+    <UserProvider>
+      <CookiesProvider>
+        <BrowserRouter>
+          {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+          <CssBaseline />
+          <App />
+        </BrowserRouter>
+      </CookiesProvider>
+    </UserProvider>
+  </ThemeProvider>,
 );
