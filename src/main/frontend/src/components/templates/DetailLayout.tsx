@@ -7,7 +7,7 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import React, { memo } from "react";
+import React, { memo, useContext } from "react";
 import parse, {
   DOMNode,
   Element,
@@ -18,6 +18,7 @@ import UserInfo from "../organisms/UserInfo";
 import { useNavigate } from "react-router-dom";
 import { deleteDiaryById } from "../../apis/diary";
 import { deleteEmotionByDid } from "../../apis/emotions";
+import { UserContext } from "../../contexts/UserProvider";
 
 const options: HTMLReactParserOptions = {
   replace: (domNode: DOMNode) => {
@@ -32,8 +33,9 @@ const options: HTMLReactParserOptions = {
 };
 
 function DetailLayout({ diary, emotion }: { diary: any; emotion: any }) {
-  const { id, title, content, author, regdate, updates } = diary;
+  const { id, uid, title, content, author, regdate, updates } = diary;
   const navigate = useNavigate();
+  const [user, dispatch] = useContext(UserContext);
 
   const handleDeleteDiary = async (e: React.MouseEvent) => {
     await deleteDiaryById(id);
@@ -58,9 +60,14 @@ function DetailLayout({ diary, emotion }: { diary: any; emotion: any }) {
           <Typography variant='h4' sx={{ fontWeight: 700 }}>
             {title}
           </Typography>
-          <Button variant='contained' color='error' onClick={handleDeleteDiary}>
-            일기 지우기
-          </Button>
+          {user && user.id === uid && (
+            <Button
+              variant='contained'
+              color='error'
+              onClick={handleDeleteDiary}>
+              일기 지우기
+            </Button>
+          )}
         </Stack>
       </Stack>
 

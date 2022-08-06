@@ -6,13 +6,13 @@ import {
   styled,
   Typography,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { findAllDiary } from "../../apis/diary";
 import FavoritButton from "../../components/atoms/FavoritButton";
 import OverflowContent from "../../components/atoms/OverflowContent";
-import { dev } from "../../tools/devConsole";
+import { UserContext } from "../../contexts/UserProvider";
 
 // https://romeoh.tistory.com/entry/face-api-face-apijs-for-Browser
 
@@ -26,11 +26,12 @@ const randomSize = ["/640/480", "/640/300", "/640/500", "/640/250"];
 
 function Diary() {
   const navigate = useNavigate();
+  const [user, dispatch] = useContext(UserContext);
   const [itemData, setItemData] = useState([]);
 
   const getRandImg = () => {
     return `https://picsum.photos/seed/${parseInt(
-      (Math.random() * 1000).toString()
+      (Math.random() * 1000).toString(),
     )}${randomSize[parseInt((Math.random() * 3).toString())]}`;
   };
 
@@ -42,7 +43,6 @@ function Diary() {
   useEffect(() => {
     const getDiaryData = async () => {
       const diaries = await findAllDiary();
-      dev.log('테스트 로그')
       if (diaries) {
         setItemData(diaries);
       }
@@ -63,10 +63,21 @@ function Diary() {
           <Typography variant='body1'>공유된 일기가 없습니다 🥲</Typography>
         )}
         {itemData
-          .filter((item) => item.isShare)
+          .filter((item) =>
+            user.nickName ? item.isShare || user.id === item.uid : item.isShare,
+          )
           .map((item, idx: number) => (
             <ImageListItem key={item.title}>
               <img src={getRandImg()} alt={item.title} loading='lazy' />
+              {!item.isShare && (
+                <Typography
+                  sx={{
+                    color: "#ffffff",
+                    transform: "translate(15px, -30px)",
+                  }}>
+                  {user.nickName}님의 비공개 된 일기 입니다.
+                </Typography>
+              )}
               <Cover>
                 <Link to={item.id}>
                   <Typography variant='h5'>{item.title}</Typography>

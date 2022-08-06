@@ -7,16 +7,16 @@ class MenuItem {
     public url: string = null,
     public icon?: React.ReactElement,
     public isActive?: boolean,
-    public handler?: () => Promise<boolean>
+    public handler?: () => Promise<void>
   ) {}
   public changeActive() {
-    if (this.url.match("sign")) {
+    if (this.url.match(/sign|profile/gi)) {
       this.isActive = !this.isActive;
     }
     return this;
   }
-  public activateHandler(addHandler: () => Promise<boolean>) {
-    this.handler = async (): Promise<boolean> => {
+  public activateHandler(addHandler: () => Promise<void>) {
+    this.handler = async (): Promise<void> => {
       return await addHandler();
     };
     return this;

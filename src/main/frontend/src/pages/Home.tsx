@@ -17,6 +17,8 @@ import { handleReceiveData, handleReceiveError } from "../apis/commonTypes";
 import { dev } from "../tools/devConsole";
 import { Link } from "react-router-dom";
 
+let tryAmount = 5;
+
 const firstSection = [
   {
     icon: <BorderColorIcon sx={{ fontSize: 60 }} />,
@@ -68,7 +70,21 @@ function Home() {
         .then(handleReceiveData)
         .catch(handleReceiveError);
     };
-    refreshAdvice().then((data) => setAdvice(data.slip.advice));
+    function tryAdvice() {
+      refreshAdvice()
+        .then((data) => setAdvice(data.slip.advice))
+        .catch(() => {
+          tryAmount -= 1;
+          console.log("명언 로드에 실패했습니다. 다시 시도합니다.");
+          if (tryAmount <= 0) {
+            tryAmount = 5;
+            throw new Error("api 서버 연결이 원활하지 않습니다.");
+          } else {
+            tryAdvice();
+          }
+        });
+    }
+    tryAdvice();
   }, []);
   return (
     <Box>
