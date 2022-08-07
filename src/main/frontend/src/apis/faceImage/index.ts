@@ -8,6 +8,13 @@ const handleReceiveError = (err: { message: any }) => {
   console.log(err.message);
 };
 
+const findFaceImageAll = () => {
+  return axios
+    .get("/api/faces")
+    .then(handleReceiveData)
+    .catch(handleReceiveError);
+};
+
 const addFaceImage = (formData: FormData) => {
   axios
     .post("/api/face", formData)
@@ -37,4 +44,4 @@ const deleteFaceImageById = (uid: string, ids: string[]) => {
     .catch(handleReceiveError);
 };
 
-export { addFaceImage, deleteAll, deleteFaceImageById };
+export { findFaceImageAll, addFaceImage, deleteAll, deleteFaceImageById };

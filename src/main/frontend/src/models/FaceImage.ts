@@ -26,6 +26,7 @@ class FaceImage extends PModel implements IModel<FaceImage, FaceImageColumn> {
 
   public set(column: FaceImageColumn, value: ModelValue) {
     switch (column) {
+      case "uid":
       case "imgPath":
         this[column] = (value as ModelStringValue) || "";
         break;

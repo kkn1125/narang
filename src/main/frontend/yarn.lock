@@ -7205,6 +7205,11 @@ jose@^4.8.3:
   resolved "https://registry.yarnpkg.com/jose/-/jose-4.8.3.tgz#5a754fb4aa5f2806608d083f438e6916b11087da"
   integrity sha512-7rySkpW78d8LBp4YU70Wb7+OTgE3OwAALNVZxhoIhp4Kscp+p/fBkdpxGAMKxvCAMV4QfXBU9m6l9nX/vGwd2g==
 
+js-sha256@^0.9.0:
+  version "0.9.0"
+  resolved "https://registry.yarnpkg.com/js-sha256/-/js-sha256-0.9.0.tgz#0b89ac166583e91ef9123644bd3c5334ce9d0966"
+  integrity sha512-sga3MHh9sgQN2+pJ9VYZ+1LPwXOxuBJBA5nrR5/ofPfuiJBE2hnjsaN8se8JznOmGLN2p49Pe5U/ttafcs/apA==
+
 "js-tokens@^3.0.0 || ^4.0.0", js-tokens@^4.0.0:
   version "4.0.0"
   resolved "https://registry.npmjs.org/js-tokens/-/js-tokens-4.0.0.tgz"
@@ -7326,6 +7331,11 @@ jsonpointer@^5.0.0:
   dependencies:
     array-includes "^3.1.5"
     object.assign "^4.1.2"
+
+kadvice@^1.0.10:
+  version "1.0.10"
+  resolved "https://registry.yarnpkg.com/kadvice/-/kadvice-1.0.10.tgz#692f7d20f800e4d75160641645b3fde47f4d67fb"
+  integrity sha512-rBP2FrG8HV0CbKc7gshsP66XP64aGj1wTvdSrRg2zSzr0gy14tus39rk1kawVq6lhF4K5yOpqidcTHmQMN25NQ==
 
 kind-of@^6.0.2:
   version "6.0.3"

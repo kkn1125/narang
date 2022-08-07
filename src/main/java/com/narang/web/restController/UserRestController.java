@@ -3,13 +3,17 @@ package com.narang.web.restController;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.narang.web.entity.User;
-import com.narang.web.repository.UserRepository;
-import com.narang.web.service.SecurityService;
+import com.narang.web.service.UserService;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -18,129 +22,96 @@ import java.util.Map;
 @RequestMapping("/api")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class UserRestController {
-    private final static long exp = 1000 * 60 * 60;
-    @Autowired
-    private SecurityService securityService;
 
     @Autowired
-    private UserRepository userTemplate;
+    private UserService userService;
+
+    private String mapper(Object object) throws JsonProcessingException {
+        return new ObjectMapper().writeValueAsString(object);
+    }
 
     @GetMapping("/users")
     public String findAll() throws JsonProcessingException {
-        ObjectMapper mapper = new ObjectMapper();
-        return mapper.writeValueAsString(userTemplate.findAll());
-        /* 객체를 JSON String 으로 변환 :: String */
+        return mapper(userService.findAll());
     }
 
     @GetMapping("/user/{id}")
     public String findById(@PathVariable("id") String id) throws JsonProcessingException {
         System.out.println(id);
-        ObjectMapper mapper = new ObjectMapper();
-        System.out.println(userTemplate.findById(id));
-        return mapper.writeValueAsString(userTemplate.findById(id));
+        System.out.println(userService.findById(id));
+        return mapper(userService.findById(id));
     }
 
     @GetMapping("/user/nickname/{nickName}")
     public String findByNickName(@PathVariable("nickName") String nickName) throws JsonProcessingException {
         System.out.println(nickName);
-        ObjectMapper mapper = new ObjectMapper();
-        System.out.println(userTemplate.findByNickName(nickName));
-        return mapper.writeValueAsString(userTemplate.findByNickName(nickName));
+        System.out.println(userService.findByNickName(nickName));
+        return mapper(userService.findByNickName(nickName));
     }
 
     @GetMapping("/user/email/{email}")
     public String findByEmail(@PathVariable("email") String email) throws JsonProcessingException {
         System.out.println(email);
-        ObjectMapper mapper = new ObjectMapper();
-        System.out.println(userTemplate.findByEmail(email));
-        return mapper.writeValueAsString(userTemplate.findByEmail(email).orElseThrow());
+        System.out.println(userService.findByEmail(email));
+        return mapper(userService.findByEmail(email));
+    }
+
+    @PostMapping("/user/face/signin")
+    public String faceSignin(String email, String password) {
+        return userService.faceSignin(email, password);
     }
 
     @PostMapping("/user/signin")
-    public String signin(String email, String password
-//            , HttpSession session
-    ) {
-        String token = securityService.createToken(email, exp);
-        System.out.println("token: " + token);
-        System.out.println("email: " + email);
-        System.out.println("password: " + password);
-        User user = userTemplate.findByEmail(email).orElseThrow();
-        System.out.println(user);
-        if (user == null) {
-            return null;
-        }
-
-        Boolean isCorrect = securityService.matchPassword(password, user.getPassword());
-        if (isCorrect) {
-//            session.setAttribute("user", user.getId());
-            System.out.println(isCorrect);
-            System.out.println(user.getPassword());
-//            System.out.println(session.getId());
-            return token;
-        }
-
-        return null;
+    public String signin(String email, String password) {
+        return userService.signin(email, password);
     }
 
     @PostMapping("/token/confirm")
     public Map<String, Object> getSubject(String token) {
-        Map<String, Object> map = new LinkedHashMap<>();
-        try {
-            String subject = securityService.getSubject(token);
-            map.put("result", subject);
-            return map;
-        } catch (Exception ex) {
-            map.put("result", false);
-            return map;
-        }
+        return userService.confirmToken(token);
     }
-
-//    @PostMapping("/user/refresh")
-//    public Boolean refreshSession(HttpSession session) {
-//        session.removeAttribute("user");
-//        return true;
-//    }
 
     @PostMapping("/user/signout")
     public Boolean signout(String token) {
-//        System.out.println("세션 제거");
-//        session.invalidate();
-        String expiredToken = null;
-        System.out.println("sign out");
-        try {
-            expiredToken = securityService.logout(token);
-        } catch (Exception e) {
-            return true;
-        }
-        return false;
+        return userService.signout(token);
+    }
+
+    @PostMapping("/user/checkPassword")
+    public Boolean checkPassword(String password, String id) {
+        return userService.checkPassword(password, id);
     }
 
     @PostMapping("/user")
-    public Boolean insert(User user, String authRole) {
-        if (authRole == null) {
-            authRole = "USER";
-        }
-        String hashPassword = securityService.passwordEncode(user.getPassword());
-        user.setUserAuth(authRole);
-        user.setPassword(hashPassword);
-
-        System.out.println(user);
-        userTemplate.insert(user);
+    public Boolean insert(User user) {
+        userService.join(user);
         return true;
+    }
+
+    @PostMapping("/fileupload")
+    public Map<String, Object> fileupload(MultipartFile multipartFile, String id, String hashName) {
+        File targetFile = new File("src/main/frontend/src/upload/"
+                + id
+                + "/" + hashName);
+        try {
+            InputStream fileStream = multipartFile.getInputStream();
+            FileUtils.copyInputStreamToFile(fileStream, targetFile);
+        } catch (IOException e) {
+            FileUtils.deleteQuietly(targetFile);
+            e.printStackTrace();
+        }
+        Map<String, Object> m = new HashMap<>();
+        return m;
     }
 
     @PutMapping("/user")
     public Boolean update(User user) {
-        System.out.println(user);
-        userTemplate.save(user);
+        userService.update(user);
         return true;
     }
 
     @DeleteMapping("/user/{id}")
     public Boolean delete(@PathVariable("id") String id) {
-        System.out.println("called user insert method");
-        userTemplate.deleteById(id);
-        return true;
+        return userService.deleteById(id);
     }
 }
 

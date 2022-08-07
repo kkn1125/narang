@@ -19,6 +19,11 @@ import {
   styled,
   Typography,
 } from "@mui/material";
+import { findUserAll } from "../../apis/user";
+import { findFaceImageAll } from "../../apis/faceImage";
+import { faceSignin, signin } from "../../apis/auth";
+import { useNavigate } from "react-router-dom";
+import { useCookies } from "react-cookie";
 
 let limitCount = 5;
 
@@ -32,6 +37,8 @@ interface FaceSignProps {
   setProcessing?: React.Dispatch<React.SetStateAction<number>>;
 }
 
+let user: any = {};
+
 function FaceSign({
   test,
   modelsLoaded,
@@ -39,8 +46,10 @@ function FaceSign({
   processing,
   setProcessing,
 }: FaceSignProps) {
+  const navigate = useNavigate();
+  const [cookies, setCookie] = useCookies(["token"]);
   const [captureVideo, setCaptureVideo] = useState(true);
-  const [userName, setUserName] = useState("");
+  // const [user, setUser] = useState<any>({});
   const [target, setTarget] = useState(null);
   const count = useRef(0);
 
@@ -61,7 +70,6 @@ function FaceSign({
   };
 
   useEffect(() => {
-    setUserName("kimson");
     handleOnVideo();
     return () => {
       if (localStream) {
@@ -74,20 +82,25 @@ function FaceSign({
   }, []);
 
   const loadImage = async () => {
-    const labels = [userName];
+    const users = (await findUserAll()) as unknown as any[];
+    const images = await findFaceImageAll();
+    const labels = images as unknown as any[];
     return Promise.all(
-      labels.map(async (label) => {
+      labels.map(async (label: any) => {
         const images = await fetchImage(
-          require("../../users/me/[x]sample.jpg")
+          require(`../../upload/${label.uid}/${label.imgPath}`),
         );
+
         const descriptions = [];
         const detections = await detectSingleFace(images)
           .withFaceLandmarks()
           .withFaceDescriptor();
         descriptions.push(detections.descriptor);
 
-        return new LabeledFaceDescriptors(label, descriptions);
-      })
+        const foundUser: any = users.filter((u) => u.id === label.uid)?.pop();
+        user = foundUser;
+        return new LabeledFaceDescriptors(foundUser?.nickName, descriptions);
+      }),
     );
   };
 
@@ -151,7 +164,7 @@ function FaceSign({
       if (!videoRef.current) return;
       const detections = await detectAllFaces(
         videoRef.current,
-        new TinyFaceDetectorOptions()
+        new TinyFaceDetectorOptions(),
       )
         .withFaceLandmarks()
         .withFaceExpressions()
@@ -182,7 +195,7 @@ function FaceSign({
       if (!videoRef.current) return;
       const detections = await detectAllFaces(
         videoRef.current,
-        new TinyFaceDetectorOptions()
+        new TinyFaceDetectorOptions(),
       )
         .withFaceLandmarks()
         .withFaceExpressions()
@@ -216,7 +229,7 @@ function FaceSign({
         });
       } else {
         faceDetecting().then((label) => {
-          if (label && label.match(userName)) {
+          if (label && label.match(user.nickName)) {
             updateCount((count.current += 1));
           }
 
@@ -224,9 +237,21 @@ function FaceSign({
             setModelsLoaded?.(false);
             setCaptureVideo(false);
             clearCount(0);
-            alert("로그인 되었습니다");
+            faceSignin({ email: user.email, password: user.password })
+              .then((result) => {
+                setCookie("token", result);
+                navigate("/");
+              })
+              .catch(() => {
+                alert(
+                  "등록된 안면 이미지와 일치하는 정보가 없습니다. 안면 인식을 등록했는지 일반 로그인 후 프로필에서 확인해주세요.",
+                );
+                navigate("/");
+                navigate("/auth/signin");
+              });
+            // alert("로그인 되었습니다");
           } else {
-            console.log("인식 중...");
+            // console.log("인식 중...");
             setTimeout(loop, 1);
           }
         });
