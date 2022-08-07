@@ -37,7 +37,8 @@ function App() {
       <Route path='/diary' element={<DiaryLayout />}>
         <Route index element={<Diary />} />
         <Route path=':id' element={<Detail />} />
-        <Route path='write' element={<WriteForm />} />
+        <Route path='form' element={<WriteForm />} />
+        <Route path='form/:id' element={<WriteForm />} />
         <Route path='graph' element={<Graph />} />
         <Route path='recommend' element={<Recommend />} />
         <Route path='cart' element={<Cart />} />
