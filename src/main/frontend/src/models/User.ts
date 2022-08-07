@@ -37,13 +37,13 @@ export enum UserColumnStrings {
 }
 
 class User extends PModel implements IModel<User, UserColumn> {
-  private nickName: ModelStringValue = "";
-  private email: ModelStringValue = "";
-  private password: ModelStringValue = "";
-  private profileImg: ModelStringValue = "";
-  private phone: ModelStringValue = "";
-  private isFaceSign: ModelBooleanValue = false;
-  private terms: ModelBooleanValue = false;
+  private nickName: ModelStringValue;
+  private email: ModelStringValue;
+  private password: ModelStringValue;
+  private profileImg: ModelStringValue;
+  private phone: ModelStringValue;
+  private isFaceSign: ModelBooleanValue;
+  private terms: ModelBooleanValue;
 
   // setter
   public set(column: UserColumn, value: ModelValue) {
