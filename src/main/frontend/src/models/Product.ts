@@ -58,7 +58,7 @@ class Product extends PModel implements IModel<Product, ProductColumn> {
   }
   
   // input list로 객체 값 해당 필드에 자동 할당
-  public setByInputs:(inputs: HTMLInputElement[]): void {
+  public setByInputs(inputs: HTMLInputElement[]): void {
     inputs.forEach((input) => {
       const { name, value } = input;
       this.set(name as ProductColumn, value);

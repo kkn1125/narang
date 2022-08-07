@@ -1,0 +1,54 @@
+package com.narang.web.service;
+
+import com.narang.web.entity.Emotion;
+import com.narang.web.repository.EmotionRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class EmotionService {
+    private EmotionRepository emotionRepository;
+
+    @Autowired
+    EmotionService (EmotionRepository emotionRepository) {
+        this.emotionRepository = emotionRepository;
+    }
+
+    public List<Emotion> findAll() {
+        return emotionRepository.findAll();
+    }
+
+    public Emotion findById(String id) {
+        return emotionRepository.findById(id).orElseThrow();
+    }
+    public Emotion findByUid(String uid) {
+        return emotionRepository.findByUid(uid).orElseThrow();
+    }
+    public Emotion findByDid(String did) {
+        return emotionRepository.findByDid(did).orElseThrow();
+    }
+
+    public String insert(Emotion emotion) {
+        Emotion newEmotion = emotionRepository.insert(emotion);
+        return newEmotion.getId();
+    }
+
+    public Boolean update(Emotion emotion) {
+        emotionRepository.updateToPart(emotion);
+        return true;
+    }
+
+    public Boolean delete(String id){
+        emotionRepository.deleteById(id);
+        return true;
+    }
+
+    public Boolean deleteByDid(String did) {
+        return emotionRepository.deleteByDid(did);
+    }
+    public Boolean deleteByUid(String uid) {
+        return emotionRepository.deleteByUid(uid);
+    }
+}

@@ -32,7 +32,7 @@ public class ProductRestController {
     @GetMapping("/product/{pid}")
     public ResponseEntity<?> getSingleProduct(@PathVariable("pid") String id) {
         Optional<Product> productOptional = productRepository.findById(id);
-        if(productOptional.isPresent()) {
+        if (productOptional.isPresent()) {
             return new ResponseEntity<>(productOptional.get(), HttpStatus.OK);
         } else {
             return new ResponseEntity<>("pid가 [" + id + "]인 상품이 존재하지 않습니다.", HttpStatus.NOT_FOUND);
