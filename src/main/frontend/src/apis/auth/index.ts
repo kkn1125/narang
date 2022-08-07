@@ -45,6 +45,22 @@ const signin = async ({
   return await checkUserByEmail({ email, password });
 };
 
+const faceSignin = async ({
+  email,
+  password,
+}: {
+  email: string;
+  password: string;
+}) => {
+  const formData = new FormData();
+  formData.append("email", email);
+  formData.append("password", password);
+  return axios
+    .post("/api/user/face/signin", formData)
+    .then(handleReceiveData)
+    .catch(handleReceiveError);
+};
+
 // 회원 가입
 const signup = (data: FormData) => {
   return axios[USER_URL["INSERT"].method as METHOD](
@@ -64,6 +80,19 @@ const signout = async (token: string) => {
     .catch(handleReceiveError);
 };
 
+const checkPassword = async (
+  password: string,
+  id: string,
+): Promise<boolean> => {
+  const formData = new FormData();
+  formData.append("password", password);
+  formData.append("id", id);
+  return await axios
+    .post("/api/user/checkPassword", formData)
+    .then(handleReceiveData)
+    .catch(handleReceiveError);
+};
+
 const checkToken = async (token: string) => {
   const formData = new FormData();
   formData.append("token", token);
@@ -73,4 +102,4 @@ const checkToken = async (token: string) => {
     .catch(handleReceiveError);
 };
 
-export { signin, signup, signout, checkToken };
+export { signin, faceSignin, signup, signout, checkToken, checkPassword };

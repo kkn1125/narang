@@ -23,24 +23,3 @@ export type ModelValue =
   | ModelNumberValue
   | ModelBooleanValue
   | Date;
-
-// 일기 필드명 타입
-export type DiaryColumn =
-  | "_id"
-  | "title"
-  | "content"
-  | "author"
-  | "regdate"
-  | "updates"
-  | "isShare";
-
-// 일기 필드명 enums
-export enum DiaryColumnStrings {
-  _id,
-  title,
-  content,
-  author,
-  regdate,
-  updates,
-  isShare,
-}

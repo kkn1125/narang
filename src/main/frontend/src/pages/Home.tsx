@@ -6,7 +6,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
 import PsychologyIcon from "@mui/icons-material/Psychology";
 import ShareIcon from "@mui/icons-material/Share";
@@ -16,6 +16,9 @@ import axios from "axios";
 import { handleReceiveData, handleReceiveError } from "../apis/commonTypes";
 import { dev } from "../tools/devConsole";
 import { Link } from "react-router-dom";
+import { random } from "kadvice";
+import { UserContext } from "../contexts/UserProvider";
+import { useCookies } from "react-cookie";
 
 let tryAmount = 5;
 
@@ -62,27 +65,18 @@ const secondsSection = [
 ];
 
 function Home() {
-  const [advice, setAdvice] = useState("");
+  const [advice, setAdvice] = useState<any>({});
+  const [cookies, setCookie] = useCookies();
   useEffect(() => {
-    const refreshAdvice = async () => {
-      return axios
-        .get("https://api.adviceslip.com/advice")
-        .then(handleReceiveData)
-        .catch(handleReceiveError);
+    const refreshAdvice = () => {
+      return random(2);
     };
     function tryAdvice() {
-      refreshAdvice()
-        .then((data) => setAdvice(data.slip.advice))
-        .catch(() => {
-          tryAmount -= 1;
-          console.log("명언 로드에 실패했습니다. 다시 시도합니다.");
-          if (tryAmount <= 0) {
-            tryAmount = 5;
-            throw new Error("api 서버 연결이 원활하지 않습니다.");
-          } else {
-            tryAdvice();
-          }
-        });
+      try {
+        setAdvice(refreshAdvice());
+      } catch (e) {
+        setAdvice(refreshAdvice());
+      }
     }
     tryAdvice();
   }, []);
@@ -102,18 +96,27 @@ function Home() {
                 sx={{ fontWeight: 700 }}>
                 오늘의 명언
               </Typography>
-              <Typography variant='body1'>
-                {advice !== "" ? "- " + advice : "명언을 불러오는 중 ..."}
+              <Typography variant='body1' component='div' align='center'>
+                {advice.message !== "" ? (
+                  <Box>
+                    <Typography component='div'>{advice.message}</Typography>
+                    <Typography component='div'>- {advice.author}</Typography>
+                  </Box>
+                ) : (
+                  "명언을 불러오는 중 ..."
+                )}
               </Typography>
             </Box>
-            <Button
-              component={Link}
-              to='/auth/signup'
-              size='large'
-              variant='contained'
-              color='error'>
-              회원 가입
-            </Button>
+            {!cookies.token && (
+              <Button
+                component={Link}
+                to='/auth/signup'
+                size='large'
+                variant='contained'
+                color='error'>
+                회원 가입
+              </Button>
+            )}
             <Typography variant='body2'>당신의 이야기를 들려주세요.</Typography>
           </Stack>
         }
@@ -160,8 +163,10 @@ function Home() {
                 left: "calc(55% + 10vw)",
                 zIndex: 1,
                 transform: "translate(-50%,-50%)",
-                background:
-                  "url('https://images.unsplash.com/photo-1527853787696-f7be74f2e39a?auto=format&fit=crop&w=750')",
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                backgroundImage:
+                  "url('https://cdn.pixabay.com/photo/2018/02/18/14/38/leaf-3162421_1280.jpg')",
               }}
             />
             <Stack

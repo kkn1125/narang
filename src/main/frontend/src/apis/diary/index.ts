@@ -9,6 +9,13 @@ const insertDiary = (formData: FormData) => {
     .catch(handleReceiveError);
 };
 
+const updateDiary = (formData: FormData) => {
+  return axios
+    .put("/api/diary", formData)
+    .then(handleReceiveData)
+    .catch(handleReceiveError);
+};
+
 const findAllDiary = () => {
   return axios
     .get("/api/diaries")
@@ -30,4 +37,10 @@ const deleteDiaryById = (id: string) => {
     .catch(handleReceiveError);
 };
 
-export { insertDiary, findAllDiary, findDiaryById, deleteDiaryById };
+export {
+  insertDiary,
+  updateDiary,
+  findAllDiary,
+  findDiaryById,
+  deleteDiaryById,
+};
