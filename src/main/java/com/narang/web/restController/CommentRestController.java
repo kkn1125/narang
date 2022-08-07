@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.narang.web.entity.Comment;
 import com.narang.web.entity.Diary;
 import com.narang.web.repository.CommentRepository;
+import com.narang.web.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,31 +14,40 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 @RequestMapping("/api")
 public class CommentRestController {
+    private CommentService commentService;
+
     @Autowired
-    private CommentRepository repository;
+    CommentRestController(CommentService commentService) {
+        this.commentService = commentService;
+    }
 
     @GetMapping("/comments")
     public String findAll() throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
-        System.out.println(mapper.writerWithDefaultPrettyPrinter().writeValueAsString(repository.findAll()));
-        return mapper.writeValueAsString(repository.findAll());
+        return mapper.writeValueAsString(commentService.findAll());
+    }
+
+    @GetMapping("/comment/did/{did}")
+    public String findByDid(String did) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        return mapper.writeValueAsString(commentService.findByDid(did));
     }
 
     @PostMapping("/comment")
     public String insert(Comment comment) {
         System.out.println(comment);
-        Comment newComment = repository.insertComment(comment);
-        return newComment.getId();
+        return commentService.insert(comment);
     }
+
     @PutMapping("/comment")
     public Boolean update(Comment comment) {
-        repository.save(comment);
+        commentService.updateToPart(comment);
         return true;
     }
 
     @DeleteMapping("/comment/{id}")
     public Boolean delete(@PathVariable("id") String id) {
-        repository.deleteById(id);
+        commentService.deleteById(id);
         return true;
     }
 

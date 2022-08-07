@@ -3,7 +3,7 @@ package com.narang.web.restController;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.narang.web.entity.FaceImage;
-import com.narang.web.mongoTemplate.FaceImageTemplate;
+import com.narang.web.service.FaceImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,42 +13,46 @@ import java.util.List;
 @RequestMapping("/api")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class FaceImageRestController {
+    private FaceImageService faceService;
+
     @Autowired
-    private FaceImageTemplate faceTemplate;
+    FaceImageRestController(FaceImageService faceService) {
+        this.faceService = faceService;
+    }
 
     @GetMapping("/faces")
     public String findAll() throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
-        /* 매퍼를 먼저 생성합니다. */
-        System.out.println(faceTemplate.findAll());
-        return mapper.writeValueAsString(faceTemplate.findAll());
+        System.out.println(faceService.findAll());
+        return mapper.writeValueAsString(faceService.findAll());
     }
 
     @GetMapping("/face/{uid}")
     public String findOne(@PathVariable("uid") String uid) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
-        /* 매퍼를 먼저 생성합니다. */
-        System.out.println(faceTemplate.findById(uid));
-        return mapper.writeValueAsString(faceTemplate.findById(uid));
+        System.out.println(faceService.findByUid(uid));
+        return mapper.writeValueAsString(faceService.findByUid(uid));
     }
 
-    @RequestMapping(path = "/face", method = {RequestMethod.POST, RequestMethod.PUT})
-    public Boolean save(FaceImage face) {
-        /* 매퍼를 먼저 생성합니다. */
-        System.out.println(face);
-        faceTemplate.insert(face);
+    @PostMapping("/face")
+    public String insert(FaceImage face) {
+        return faceService.insert(face);
+    }
+
+    @DeleteMapping("/face/{id}")
+    public Boolean deleteById(@PathVariable("id") String id) {
+        faceService.deleteById(id);
         return true;
     }
 
-    @DeleteMapping("/face/{uid}")
-    public Boolean delete(@PathVariable("uid") String uid, @RequestParam("ids") List<String> ids) {
-        /* 매퍼를 먼저 생성합니다. */
+    @DeleteMapping("/face/uid/{uid}")
+    public Boolean deleteByUid(@PathVariable("uid") String uid, @RequestParam("ids") List<String> ids) {
         System.out.println(uid);
         System.out.println(ids);
         if (ids == null) {
-            faceTemplate.delete(uid);
+            faceService.deleteByUid(uid);
         } else {
-            faceTemplate.deleteByTwo(uid, ids);
+            faceService.deleteByTwo(uid, ids);
         }
         return true;
     }

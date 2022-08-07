@@ -3,46 +3,44 @@ package com.narang.web.restController;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.narang.web.entity.Diary;
-import com.narang.web.mongoTemplate.DiaryTemplate;
-import org.bson.types.ObjectId;
+import com.narang.web.service.DiaryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/api")
 public class DiaryRestController {
     @Autowired
-    DiaryTemplate diaryTemplate;
+    DiaryService diaryService;
 
     @GetMapping("/diaries")
     public String findAll() throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
-        return mapper.writeValueAsString(diaryTemplate.findAll());
+        return mapper.writeValueAsString(diaryService.findAll());
     }
 
     @GetMapping("/diary/{id}")
     public String findById(@PathVariable("id") String id) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
-        return mapper.writeValueAsString(diaryTemplate.findById(id));
+        return mapper.writeValueAsString(diaryService.findById(id));
     }
 
     @PostMapping("/diary")
     public String insert(Diary diary) {
-        String newObjectId = diaryTemplate.insert(diary);
+        String newObjectId = diaryService.insert(diary);
         System.out.println(diary);
         return newObjectId;
     }
+
     @PutMapping("/diary")
     public Boolean update(Diary diary) {
-        diaryTemplate.update(diary);
+        diaryService.update(diary);
         return true;
     }
 
     @DeleteMapping("/diary/{id}")
     public Boolean delete(@PathVariable("id") String id) {
-        diaryTemplate.delete(id);
+        diaryService.deleteById(id);
         return true;
     }
 }
