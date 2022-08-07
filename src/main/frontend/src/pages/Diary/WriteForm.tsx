@@ -4,10 +4,10 @@ import SunEditor from "suneditor-react";
 import SunEditorCore from "suneditor/src/lib/core";
 import Analyzer from "../../tools/analyzer";
 import { useFormik } from "formik";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import * as yup from "yup";
 import axios from "axios";
-import { insertDiary } from "../../apis/diary";
+import { findDiaryById, insertDiary, updateDiary } from "../../apis/diary";
 import Emotions from "../../models/Emotions";
 import "suneditor/dist/css/suneditor.min.css";
 import Diary from "../../models/Diary";
@@ -26,12 +26,15 @@ interface FormikProps {
   did: string;
 }
 
+let temp: any;
+
 function WriteForm() {
   const navigate = useNavigate();
+  const params = useParams();
   const [user, dispatch] = useContext(UserContext);
   const [cookies, setCookie] = useCookies(["token"]);
   const editor = useRef<SunEditorCore>();
-  const [formData, setFormData] = useState({ title: "" });
+  const [formData, setFormData] = useState(null);
 
   const formik = useFormik({
     initialValues: {
@@ -63,7 +66,13 @@ function WriteForm() {
 
       const diaryFormData = diary.makeFormData();
 
-      const diaryId = await insertDiary(diaryFormData);
+      if (params.id) {
+        diaryFormData.append("id", params.id);
+      }
+
+      const diaryId = params.id
+        ? await updateDiary(diaryFormData)
+        : await insertDiary(diaryFormData);
 
       const emotion = new Emotions();
       emotion.getResponseData(
@@ -73,8 +82,10 @@ function WriteForm() {
       emotion.set("did", diaryId);
 
       const emotionFormData = emotion.makeFormData();
-      console.log(emotion);
-      insertEmotions(emotionFormData);
+
+      if (!params.id) {
+        insertEmotions(emotionFormData);
+      }
 
       navigate("/diary");
     },
@@ -90,7 +101,32 @@ function WriteForm() {
         }
       });
     }
-  }, []);
+    if (params.id) {
+      const origin = findDiaryById(params.id);
+
+      origin.then((data) => {
+        temp = data;
+        Object.entries(data).forEach(([key, value]) => {
+          switch (key) {
+            case "title":
+            case "content":
+            case "author":
+            case "uid":
+            case "did":
+              formik.values[key] = value as string;
+              break;
+            case "isShare":
+              formik.values[key] = value as boolean;
+              break;
+          }
+        });
+        setFormData("");
+      });
+    }
+    setTimeout(() => {
+      setFormData(null);
+    }, 1);
+  }, [params]);
 
   const getSunEditorInstance = (sunEditor: SunEditorCore) => {
     editor.current = sunEditor;
@@ -160,6 +196,7 @@ function WriteForm() {
             width='100%'
             height='300px'
             name='content'
+            setContents={formik.values["content"]}
             getSunEditorInstance={getSunEditorInstance}
           />
         </Box>
@@ -181,6 +218,7 @@ function WriteForm() {
           </Button>
         </Stack>
       </Box>
+      {formData}
     </Box>
   );
 }

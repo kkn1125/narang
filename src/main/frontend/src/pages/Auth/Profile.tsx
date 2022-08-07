@@ -8,11 +8,16 @@ import {
   Typography,
 } from "@mui/material";
 import { useFormik } from "formik";
+import { EncryptJWT } from "jose";
+import { sha256 } from "js-sha256";
 import React, { useContext, useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import * as yup from "yup";
+import { checkPassword } from "../../apis/auth";
+import { handleReceiveError } from "../../apis/commonTypes";
 import { addFaceImage } from "../../apis/faceImage";
 import { userUpdate } from "../../apis/user";
+import { fileupload } from "../../apis/utils/fileupload";
 import TextFieldSet from "../../components/molecules/TextFieldSet";
 import { UserContext } from "../../contexts/UserProvider";
 import FaceImage from "../../models/FaceImage";
@@ -26,6 +31,7 @@ import {
   passwordValidation,
   phoneValidation,
   REQUIRED_ERROR,
+  splitToUnderBar,
 } from "../../tools/utils";
 
 const validationSchema = yup.object({
@@ -60,8 +66,7 @@ const validationSchema = yup.object({
             insertTime: yup.number(),
             insertDate: yup.string(),
           })
-          .nullable()
-          .required(REQUIRED_ERROR);
+          .nullable();
       case "string":
         return yup.string().required("필수입력");
       default:
@@ -88,8 +93,7 @@ const validationSchema = yup.object({
             insertTime: yup.number(),
             insertDate: yup.string(),
           })
-          .nullable()
-          .required(REQUIRED_ERROR);
+          .nullable();
       case "string":
         return yup.string().required("필수입력");
       default:
@@ -149,22 +153,37 @@ function Profile() {
     onSubmit: (values) => {
       console.log(values);
 
-      const user = new User();
-      Object.entries(values).forEach(([column, value]) => {
-        user.set(column as UserColumn, value);
-      });
-      user.set("profileImg", values.profileImg.name);
+      checkPassword(values.check_password, user.id)
+        .then((result) => {
+          if (result) {
+            const userInfo = new User();
+            Object.entries(values).forEach(([column, value]) => {
+              userInfo.set(column as UserColumn, value);
+            });
+            userInfo.set("id", user.id);
+            userInfo.set("profileImg", values.profileImg?.name);
 
-      const face = new FaceImage();
-      face.set("uid", "12345");
-      face.set("imgPath", values.faceImage.name);
+            const face = new FaceImage();
+            const imgSplit = values.faceImage?.name.split(".");
+            const type = imgSplit.pop();
+            const name = imgSplit.join();
+            face.set("uid", user.id);
+            face.set("imgPath", `${sha256(name)}.${type}`);
 
-      setTimeout(() => {
-        const userFormData = user.makeFormData();
-        const faceFormData = face.makeFormData();
-        userUpdate(userFormData);
-        addFaceImage(faceFormData);
-      }, 1);
+            const userFormData = userInfo.makeFormData();
+            const faceFormData = face.makeFormData();
+
+            console.log(userInfo, face, user.id);
+            console.log(type, name);
+
+            fileupload(values.faceImage, user.id, `${sha256(name)}.${type}`);
+            userUpdate(userFormData);
+            addFaceImage(faceFormData);
+          } else {
+            alert("비밀번호를 다시 확인 해 주세요.");
+          }
+        })
+        .catch(handleReceiveError);
     },
   });
 
@@ -172,54 +191,39 @@ function Profile() {
   const [faceImage, setFaceImage] = useState(null);
 
   useEffect(() => {
-    const { token } = cookies;
-    if (token) {
-      // console.log(user, fields);
-      setFields(
-        fields.map((field) => ({
-          ...field,
-          value: user[field.name],
-        })),
-      );
-    }
+    Object.entries(user).forEach(([key, value]) => {
+      switch (key) {
+        case "nickName":
+        case "email":
+        case "password":
+        case "check_password":
+        case "phone":
+          formik.values[key] = value as string;
+          break;
+        case "profileImg":
+        case "faceImage":
+          formik.values[key] = value as object | string;
+          break;
+      }
+    });
+    setProfileImg("");
+    setTimeout(() => {
+      setProfileImg(null);
+    }, 1);
   }, [user]);
 
   // formik 상세화면 배경 이미지 파일 직접 지정
   const handleProfileImg = (e: React.FormEvent<HTMLInputElement>) => {
     const files = e.currentTarget.files[0];
     if (!files) return;
-    const newFiles = {
-      name: files.name,
-      size: files.size,
-      type: files.type,
-      lastModified: files.lastModified,
-      lastModifiedDate: new Date(files.lastModified).toLocaleString("ko", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      }),
-      webkitRelativePath: files.webkitRelativePath,
-    };
-    formik.values.profileImg = newFiles;
+    formik.values.profileImg = files;
     setProfileImg(files);
   };
 
   const handleFaceImage = (e: React.FormEvent<HTMLInputElement>) => {
     const files = e.currentTarget.files[0];
     if (!files) return;
-    const newFiles = {
-      name: files.name,
-      size: files.size,
-      type: files.type,
-      lastModified: files.lastModified,
-      lastModifiedDate: new Date(files.lastModified).toLocaleString("ko", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      }),
-      webkitRelativePath: files.webkitRelativePath,
-    };
-    formik.values.faceImage = newFiles;
+    formik.values.faceImage = files;
     setFaceImage(files);
   };
 
@@ -300,7 +304,10 @@ function Profile() {
         <Divider />
 
         {/* text fields */}
-        <Box component='form' onSubmit={formik.handleSubmit}>
+        <Box
+          component='form'
+          onSubmit={formik.handleSubmit}
+          encType='multipart/form-data'>
           <Stack sx={{ mt: 2, mb: 1 }} spacing={2}>
             <TextFieldSet fields={fields} size={"medium"} formik={formik} />
 

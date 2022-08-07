@@ -54,7 +54,7 @@ function Diary() {
     <DiaryBlock>
       <Stack direction='row' sx={{ mb: 3, gap: 3 }}>
         <Button variant='outlined'>정렬</Button>
-        <Button variant='outlined' onClick={() => navigate("./write")}>
+        <Button variant='outlined' onClick={() => navigate("./form")}>
           일기 쓰기
         </Button>
       </Stack>
@@ -67,7 +67,7 @@ function Diary() {
             user.nickName ? item.isShare || user.id === item.uid : item.isShare,
           )
           .map((item, idx: number) => (
-            <ImageListItem key={item.title}>
+            <ImageListItem key={item.id}>
               <img src={getRandImg()} alt={item.title} loading='lazy' />
               {!item.isShare && (
                 <Typography

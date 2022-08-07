@@ -43,6 +43,10 @@ function DetailLayout({ diary, emotion }: { diary: any; emotion: any }) {
     navigate("/diary");
   };
 
+  const handleUpdateDiary = () => {
+    navigate(`/diary/form/${id}`);
+  };
+
   return (
     <Container maxWidth='lg'>
       <UserInfo author={author} regdate={regdate} />
@@ -61,12 +65,20 @@ function DetailLayout({ diary, emotion }: { diary: any; emotion: any }) {
             {title}
           </Typography>
           {user && user.id === uid && (
-            <Button
-              variant='contained'
-              color='error'
-              onClick={handleDeleteDiary}>
-              일기 지우기
-            </Button>
+            <Stack direction='row' gap={1}>
+              <Button
+                variant='contained'
+                color='primary'
+                onClick={handleUpdateDiary}>
+                일기 수정
+              </Button>
+              <Button
+                variant='contained'
+                color='error'
+                onClick={handleDeleteDiary}>
+                일기 지우기
+              </Button>
+            </Stack>
           )}
         </Stack>
       </Stack>

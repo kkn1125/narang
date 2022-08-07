@@ -55,6 +55,8 @@ function DynamicSection({
             width: "100%",
             height: "100%",
             zIndex: -1,
+            objectFit: 'cover',
+            objectPosition: '0 calc(-7rem + 10vh)',
             ...(main && { filter: "brightness(0.7)" }),
             ...(background && { backgroundColor: "#fff5f8" }),
           }}

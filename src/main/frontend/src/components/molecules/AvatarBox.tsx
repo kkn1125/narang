@@ -32,11 +32,12 @@ function AvatarBox() {
     new Item("Logout", "/auth/signout", null, isSignin).activateHandler(
       async () => {
         setItems(items.map((item) => item.changeActive()));
-        const result = await signout(cookies.token).finally(() => {
+        await signout(cookies.token).finally(() => {
+          setIsSignin(false);
           dispatch(removeUser());
-          removeCookie("token");
-          navigate("/");
         });
+        removeCookie("token");
+        navigate("/");
       },
     ),
   ]);
