@@ -7,6 +7,6 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import java.util.Optional;
 
 public interface UserRepositoryCustom {
-    public User findByNickName(String nickName);
+    public Optional<User> findByNickName(String nickName);
     public Optional<User> findByEmail(String email);
 }

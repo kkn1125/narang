@@ -14,11 +14,11 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
     MongoTemplate mongo;
 
     @Override
-    public User findByNickName(String nickName) {
+    public Optional<User> findByNickName(String nickName) {
         Criteria cr = new Criteria("nickName");
         cr.is(nickName);
         Query q = new Query(cr);
-        return mongo.findOne(q, User.class);
+        return Optional.of(mongo.findOne(q, User.class));
     }
 
     @Override
