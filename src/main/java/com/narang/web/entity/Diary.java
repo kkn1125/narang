@@ -12,6 +12,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
+import java.util.stream.Collectors;
 
 @Data
 @NoArgsConstructor
@@ -41,4 +42,11 @@ public class Diary {
     private Date updates;
     @Field
     private String _class;
+
+    public Diary replace(Diary compare) {
+        this.title = compare.getTitle();
+        this.content = compare.getContent();
+        this.isShare = compare.getIsShare();
+        return this;
+    }
 }

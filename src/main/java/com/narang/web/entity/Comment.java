@@ -38,4 +38,10 @@ public class Comment {
     private Date updates;
     @Field
     private String _class;
+
+    public Comment replace(Comment compare) {
+        this.content = compare.getContent();
+        this.mention = compare.getMention();
+        return this;
+    }
 }
