@@ -15,9 +15,12 @@ import {
 } from "@mui/material";
 import { Box } from "@mui/system";
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useEffect } from "react";
+import { insertCart } from "../../apis/cart";
 import OverflowContent from "../../components/atoms/OverflowContent";
+import { UserContext } from "../../contexts/UserProvider";
+import Cart from "../../models/Cart";
 
 interface ItemsType {
   title?: string;
@@ -99,6 +102,7 @@ function Items({ handleClickOpen }: ItemsProps) {
 function Recommend() {
   // dialog 설정
   const [open, setOpen] = React.useState(false);
+  const [user, dispatch] = useContext(UserContext);
   const [scroll, setScroll] = React.useState<DialogProps["scroll"]>("paper");
 
   const [product, setProduct] = React.useState<ItemsType>({});
@@ -114,6 +118,17 @@ function Recommend() {
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const handleInsert = (productId: string) => {
+    const cart = new Cart();
+    cart.set('uid', user.id);
+    cart.set('pid', productId);
+    cart.set('amount', 1);
+    cart.set('isOrdered', false);
+    
+    const formData = cart.makeFormData();
+    insertCart(formData);
   };
 
   const descriptionElementRef = React.useRef<HTMLElement>(null);
@@ -149,7 +164,12 @@ function Recommend() {
           <Button onClick={handleClose} variant='outlined'>
             취소
           </Button>
-          <Button onClick={handleClose} variant='contained'>
+          <Button
+            onClick={() => {
+              handleClose();
+              handleInsert(product.title);
+            }}
+            variant='contained'>
             장바구니
           </Button>
         </DialogActions>

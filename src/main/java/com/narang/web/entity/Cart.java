@@ -27,7 +27,7 @@ public class Cart {
 
     private Long amount;
 
-    private Boolean isOrdered = false;
+    private Boolean isOrdered;
 
     @CreatedDate
     private LocalDateTime regdate;
