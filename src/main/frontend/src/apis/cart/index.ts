@@ -24,7 +24,7 @@ const findCartById = (cid: string) => {
 
 const deleteCart = (cid: string) => {
   return axios
-    .get(`/api/cart/${cid}`)
+    .delete(`/api/cart/${cid}`)
     .then(handleReceiveData)
     .catch(handleReceiveError);
 };
