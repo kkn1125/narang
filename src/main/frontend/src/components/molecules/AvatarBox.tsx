@@ -15,6 +15,7 @@ import { signout } from "../../apis/auth";
 import { findByJwt } from "../../apis/user";
 import { decodeJwt } from "jose";
 import { removeUser, setUser, UserContext } from "../../contexts/UserProvider";
+import { profileIamgeOrCat } from "../../tools/utils";
 
 function AvatarBox() {
   const navigate = useNavigate();
@@ -75,7 +76,12 @@ function AvatarBox() {
     <Box sx={{ flexGrow: 0 }}>
       <Tooltip title='Open settings'>
         <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-          <Avatar children={user.nickName?.[0]} />
+          <Avatar
+            children={user.nickName?.[0].toUpperCase()}
+            {...(user.profileImg && {
+              src: profileIamgeOrCat(user),
+            })}
+          />
         </IconButton>
       </Tooltip>
       <Menu

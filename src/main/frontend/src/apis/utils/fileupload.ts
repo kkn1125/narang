@@ -23,4 +23,11 @@ const profileUpload = (file: File, id: string, hashName: string) => {
     .catch(handleReceiveError);
 };
 
-export { fileupload, profileUpload };
+const deleteProfileImage = (id: string) => {
+  return axios
+    .delete("/api/user/profile/" + id)
+    .then(handleReceiveData)
+    .catch(handleReceiveError);
+};
+
+export { fileupload, profileUpload, deleteProfileImage };
