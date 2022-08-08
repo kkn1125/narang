@@ -48,13 +48,7 @@ const fields = [
   },
 ];
 
-export type ValidationSchema = OptionalObjectSchema<
-  {},
-  AnyObject,
-  TypeOfShape<{}>
->;
-
-const validationSchema: ValidationSchema = yup.object({
+const validationSchema = yup.object({
   nickName: nickNameValidation,
   email: emailValidation,
   password: passwordValidation,
@@ -69,18 +63,8 @@ const validationSchema: ValidationSchema = yup.object({
   terms: yup.boolean(),
 });
 
-export interface FormikInitialValue {
-  nickName: string;
-  email: string;
-  password: string;
-  check_password: string;
-  phone: string;
-  terms: boolean;
-}
-
 function SignUp() {
   const navigate = useNavigate();
-  const [user, setUser] = useState(new User());
   const formik = useFormik({
     initialValues: {
       nickName: "",
@@ -88,6 +72,7 @@ function SignUp() {
       password: "",
       check_password: "",
       phone: "",
+      isFaceSign: false,
       terms: false,
     },
     validationSchema: validationSchema,
@@ -99,22 +84,7 @@ function SignUp() {
       navigate("/auth/signin");
     },
   });
-
-  // handler 정리
-  const handleResult = (result: void | User) => {
-    if (!result) {
-      if (process.env.NODE_ENV !== "production")
-        throw new Error("[error] 통신이 잘 못 되었습니다. 서버를 확인하세요.");
-      else throw new Error("[error] 서버에 이상이 발생했습니다.");
-    }
-    user.getResponseData(result as User);
-  };
-
-  const handleError = (err: any) => {
-    if (process.env.NODE_ENV !== "production") console.log(err.message);
-    else alert(err.message);
-  };
-
+  
   return (
     <Stack sx={{ height: "100%" }}>
       <Box sx={{ flex: 1 }} />

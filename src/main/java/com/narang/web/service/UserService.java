@@ -18,10 +18,6 @@ public class UserService {
     private UserRepository userRepository;
     private SecurityService securityService;
 
-//    private String mapper(Object object) throws JsonProcessingException {
-//        return new ObjectMapper().writeValueAsString(object);
-//    }
-
     @Autowired
     UserService(UserRepository userRepository, SecurityService securityService) {
         this.userRepository = userRepository;
@@ -46,19 +42,13 @@ public class UserService {
 
     public String signin(String email, String password) {
         String token = securityService.createToken(email, exp);
-        System.out.println("token: " + token);
-        System.out.println("email: " + email);
-        System.out.println("password: " + password);
         User user = findByEmail(email);
-        System.out.println(user);
         if (user == null) {
             return null;
         }
 
         Boolean isCorrect = securityService.matchPassword(password, user.getPassword());
         if (isCorrect) {
-            System.out.println(isCorrect);
-            System.out.println(user.getPassword());
             return token;
         }
 
@@ -75,12 +65,12 @@ public class UserService {
         return null;
     }
 
-    public User join(User user) {
+    public String join(User user) {
         String hashPassword = securityService.passwordEncode(user.getPassword());
         user.setUserAuth("USER");
         user.setPassword(hashPassword);
         User joinedUser = userRepository.insert(user);
-        return joinedUser;
+        return joinedUser.getId();
     }
 
     public Boolean signout(String token) {

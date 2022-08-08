@@ -24,6 +24,7 @@ import { findFaceImageAll } from "../../apis/faceImage";
 import { faceSignin, signin } from "../../apis/auth";
 import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
+import { dev } from "../../tools/devConsole";
 
 let limitCount = 5;
 
@@ -38,6 +39,7 @@ interface FaceSignProps {
 }
 
 let user: any = {};
+let notFoundCount = 0;
 
 function FaceSign({
   test,
@@ -161,34 +163,47 @@ function FaceSign({
     matchDimensions(canvas, displaySize);
 
     const faceDetecting = async () => {
-      if (!videoRef.current) return;
-      const detections = await detectAllFaces(
-        videoRef.current,
-        new TinyFaceDetectorOptions(),
-      )
-        .withFaceLandmarks()
-        .withFaceExpressions()
-        .withAgeAndGender()
-        .withFaceDescriptors();
+      try {
+        if (!videoRef.current) return;
+        const detections = await detectAllFaces(
+          videoRef.current,
+          new TinyFaceDetectorOptions(),
+        )
+          .withFaceLandmarks()
+          .withFaceExpressions()
+          .withAgeAndGender()
+          .withFaceDescriptors();
 
-      const resizedDetections = resizeResults(detections, displaySize);
-      canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
+        const resizedDetections = resizeResults(detections, displaySize);
+        canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
 
-      const labeledFaceDescriptors = await loadImage();
-      const faceMatcher = new FaceMatcher(labeledFaceDescriptors, 0.6);
+        const labeledFaceDescriptors = await loadImage();
 
-      const matched = resizedDetections[0];
-      if (matched) {
-        const box = matched.detection.box;
-        const label = faceMatcher.findBestMatch(matched.descriptor).toString();
-        const drawBox = new draw.DrawBox(box, {
-          label: label,
-        });
+        const faceMatcher = new FaceMatcher(labeledFaceDescriptors, 0.6);
 
-        drawBox.draw(canvas);
-        return label;
+        const matched = resizedDetections[0];
+        if (matched) {
+          const box = matched.detection.box;
+          const label = faceMatcher
+            .findBestMatch(matched.descriptor)
+            .toString();
+          const drawBox = new draw.DrawBox(box, {
+            label: label,
+          });
+
+          drawBox.draw(canvas);
+          return label;
+        }
+      } catch (e) {
+        // dev.log(e.message as unknown as string);
+        notFoundCount += 1;
+        if (notFoundCount > 5) {
+          notFoundCount = 0;
+          navigate(0);
+          alert('사용자와 일치하는 안면 데이터가 없습니다.');
+        }
+        return null;
       }
-      return null;
     };
 
     const testFaceDetecting = async () => {

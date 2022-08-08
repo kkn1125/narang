@@ -63,7 +63,10 @@ class Dev implements DevFields {
       "timeLog",
       "timeStamp",
     ].forEach((name) => {
-      this[name as FieldTypes] = (message?: any, ...optionalParams: any[]) => {
+      this[name as FieldTypes] = (
+        message?: any,
+        ...optionalParams: any[] | null
+      ) => {
         if (this.mode === MODE.DEV) {
           console.log(`==========${this.label}==========`);
           console.log(message, optionalParams);

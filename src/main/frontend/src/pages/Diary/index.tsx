@@ -7,6 +7,7 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useContext, useEffect, useState } from "react";
+import { useCookies } from "react-cookie";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { findAllDiary } from "../../apis/diary";
@@ -26,6 +27,7 @@ const randomSize = ["/640/480", "/640/300", "/640/500", "/640/250"];
 
 function Diary() {
   const navigate = useNavigate();
+  const [cookies, setCookie] = useCookies(["token"]);
   const [user, dispatch] = useContext(UserContext);
   const [itemData, setItemData] = useState([]);
 
@@ -54,9 +56,11 @@ function Diary() {
     <DiaryBlock>
       <Stack direction='row' sx={{ mb: 3, gap: 3 }}>
         <Button variant='outlined'>정렬</Button>
-        <Button variant='outlined' onClick={() => navigate("./form")}>
-          일기 쓰기
-        </Button>
+        {cookies.token && (
+          <Button variant='outlined' onClick={() => navigate("./form")}>
+            일기 쓰기
+          </Button>
+        )}
       </Stack>
       <Masonry columns={4} spacing={2}>
         {itemData.length === 0 && (

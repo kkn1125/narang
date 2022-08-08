@@ -37,22 +37,16 @@ public class UserRestController {
 
     @GetMapping("/user/{id}")
     public String findById(@PathVariable("id") String id) throws JsonProcessingException {
-        System.out.println(id);
-        User foundUser = userService.findById(id);
         return mapper(userService.findById(id));
     }
 
     @GetMapping("/user/nickname/{nickName}")
     public String findByNickName(@PathVariable("nickName") String nickName) throws JsonProcessingException {
-        System.out.println(nickName);
-        System.out.println(userService.findByNickName(nickName));
         return mapper(userService.findByNickName(nickName));
     }
 
     @GetMapping("/user/email/{email}")
     public String findByEmail(@PathVariable("email") String email) throws JsonProcessingException {
-        System.out.println(email);
-        System.out.println(userService.findByEmail(email));
         return mapper(userService.findByEmail(email));
     }
 
@@ -82,9 +76,8 @@ public class UserRestController {
     }
 
     @PostMapping("/user")
-    public Boolean insert(User user) {
-        userService.join(user);
-        return true;
+    public String insert(User user) {
+        return userService.join(user);
     }
 
     @PostMapping("/fileupload")
