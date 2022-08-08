@@ -63,7 +63,7 @@ function WriteForm() {
 
       const diary = new Diary();
       diary.getResponseData(values as unknown as Diary);
-
+      console.log(diary)
       const diaryFormData = diary.makeFormData();
       let diaryId;
 
