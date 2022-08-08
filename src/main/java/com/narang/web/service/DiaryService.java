@@ -29,8 +29,9 @@ public class DiaryService {
         return newDiary.getId();
     }
 
-    public Boolean update(Diary diary){
-        return diaryRepository.update(diary);
+    public String update(Diary diary){
+        Diary updatedDiary = diaryRepository.update(diary);
+        return updatedDiary.getId();
     }
 
     public Boolean deleteById(String id) {

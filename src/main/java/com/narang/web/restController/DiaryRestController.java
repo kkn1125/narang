@@ -33,7 +33,7 @@ public class DiaryRestController {
     }
 
     @PutMapping("/diary")
-    public Boolean update(Diary diary) {
+    public String update(Diary diary) {
         return diaryService.update(diary);
     }
 

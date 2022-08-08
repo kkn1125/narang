@@ -6,7 +6,10 @@ import com.narang.web.entity.User;
 import com.narang.web.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
+import java.io.File;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -105,6 +108,22 @@ public class UserService {
             System.out.println("일치하는 회원이 없습니다.");
             return false;
         }
+    }
+
+    public Boolean removeProfileImageById(String id) {
+        File file = new File("src/main/frontend/src/profiles/"+id);
+        if(file.isDirectory()) {
+            File[] files = file.listFiles();
+            for(File f : files) {
+                if(f.delete()) {
+                    System.out.println("파일을 성공적으로 삭제 했습니다.");
+                } else {
+                    System.out.println("없는 파일 입니다.");
+                }
+            }
+        }
+        userRepository.removeProfileImageById(id);
+        return true;
     }
 
     public Boolean update(User user) {

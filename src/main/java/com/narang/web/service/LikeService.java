@@ -28,8 +28,8 @@ public class LikeService {
         return likeRepository.findByUid(uid).orElseThrow();
     }
 
-    public Like findByDid(String did) {
-        return likeRepository.findByDid(did).orElseThrow();
+    public List<Like> findByDid(String did) {
+        return likeRepository.findByDid(did);
     }
 
     public String insert(Like like){

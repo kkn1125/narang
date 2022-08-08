@@ -96,15 +96,38 @@ public class UserRestController {
         return m;
     }
 
+    @PostMapping("/profile/fileupload")
+    public Map<String, Object> profileFileupload(MultipartFile multipartFile, String id, String hashName) {
+        File targetFile = new File("src/main/frontend/src/profiles/"
+                + id
+                + "/" + hashName);
+        try {
+            InputStream fileStream = multipartFile.getInputStream();
+            FileUtils.copyInputStreamToFile(fileStream, targetFile);
+        } catch (IOException e) {
+            FileUtils.deleteQuietly(targetFile);
+            e.printStackTrace();
+        }
+        Map<String, Object> m = new HashMap<>();
+        return m;
+    }
+
     @PutMapping("/user")
-    public Boolean update(User user) {
-        return userService.update(user);
+    public String update(User user) throws JsonProcessingException {
+        userService.update(user);
+        return mapper(userService.findById(user.getId()));
     }
 
     @DeleteMapping("/user/{id}")
     public Boolean delete(@PathVariable("id") String id) {
         return userService.deleteById(id);
     }
+
+    @DeleteMapping("/user/profile/{id}")
+    public Boolean removeUserProfile(@PathVariable("id") String id) {
+        return userService.removeProfileImageById(id);
+    }
+
 }
 
 // [UnAuthorized error 날 때] https://subbak2.com/11
