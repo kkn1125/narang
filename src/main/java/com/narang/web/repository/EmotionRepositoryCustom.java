@@ -9,8 +9,6 @@ public interface EmotionRepositoryCustom {
 
     public Optional<Emotion> findByDid(String did);
 
-    public Boolean updateToPart(Emotion emotion);
-
     public Boolean deleteByDid(String did);
 
     public Boolean deleteByUid(String uid);

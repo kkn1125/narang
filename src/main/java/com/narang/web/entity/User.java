@@ -13,8 +13,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.util.Collection;
-import java.util.Date;
+import java.util.*;
+import java.util.function.BiConsumer;
+import java.util.stream.Stream;
 
 @Data
 @NoArgsConstructor
@@ -87,4 +88,22 @@ public class User implements UserDetails {
         return true;
     }
 
+    public User replaceIfNotNull(User compare) {
+        List<java.lang.reflect.Field> fields = Arrays.asList(this.getClass().getDeclaredFields());
+        fields.forEach(field -> {
+            try {
+                field.setAccessible(true);
+                Object compareField = field.get(compare);
+                Object thisField = field.get(this);
+                if (field.getName() == "userAuth") {
+                    field.set(this, "USER");
+                } else {
+                    field.set(this, compareField != null ? compareField : thisField);
+                }
+            } catch (IllegalAccessException e) {
+                System.out.println("The value is null [" + field.getName() + "]");
+            }
+        });
+        return this;
+    }
 }

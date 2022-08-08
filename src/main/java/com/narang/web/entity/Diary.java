@@ -11,7 +11,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Data
@@ -43,10 +45,22 @@ public class Diary {
     @Field
     private String _class;
 
-    public Diary replace(Diary compare) {
-        this.title = compare.getTitle();
-        this.content = compare.getContent();
-        this.isShare = compare.getIsShare();
+    public Diary replaceIfNotNull(Diary compare) {
+        List<java.lang.reflect.Field> fields = Arrays.asList(this.getClass().getDeclaredFields());
+        fields.forEach(field -> {
+            try {
+                field.setAccessible(true);
+                Object compareField = field.get(compare);
+                Object thisField = field.get(this);
+                if (field.getName() == "userAuth") {
+                    field.set(this, "USER");
+                } else {
+                    field.set(this, compareField != null ? compareField : thisField);
+                }
+            } catch (IllegalAccessException e) {
+                System.out.println("The value is null [" + field.getName() + "]");
+            }
+        });
         return this;
     }
 }
