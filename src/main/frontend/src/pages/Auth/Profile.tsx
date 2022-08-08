@@ -12,14 +12,19 @@ import { EncryptJWT } from "jose";
 import { sha256 } from "js-sha256";
 import React, { useContext, useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
+import { useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import { checkPassword } from "../../apis/auth";
 import { handleReceiveError } from "../../apis/commonTypes";
 import { addFaceImage } from "../../apis/faceImage";
 import { userUpdate } from "../../apis/user";
-import { fileupload, profileUpload } from "../../apis/utils/fileupload";
+import {
+  deleteProfileImage,
+  fileupload,
+  profileUpload,
+} from "../../apis/utils/fileupload";
 import TextFieldSet from "../../components/molecules/TextFieldSet";
-import { UserContext } from "../../contexts/UserProvider";
+import { setUser, UserContext } from "../../contexts/UserProvider";
 import FaceImage from "../../models/FaceImage";
 import User, { UserColumn } from "../../models/User";
 import {
@@ -30,8 +35,7 @@ import {
   nickNameValidation,
   passwordValidation,
   phoneValidation,
-  REQUIRED_ERROR,
-  splitToUnderBar,
+  profileIamgeOrCat,
 } from "../../tools/utils";
 
 const validationSchema = yup.object({
@@ -104,6 +108,8 @@ const validationSchema = yup.object({
 
 // http://placekitten.com/200/200
 function Profile() {
+  const navigate = useNavigate();
+  const [faceImages, setFaceImages] = useState([]);
   const [user, dispatch] = useContext(UserContext);
   const [cookies, setCookie] = useCookies(["token"]);
   const [fields, setFields] = useState([
@@ -113,12 +119,12 @@ function Profile() {
       placeholder: "",
       required: true,
     },
-    {
-      name: "email",
-      type: "text",
-      placeholder: "",
-      required: true,
-    },
+    // {
+    //   name: "email",
+    //   type: "text",
+    //   placeholder: "",
+    //   required: true,
+    // },
     {
       name: "phone",
       type: "text",
@@ -151,8 +157,7 @@ function Profile() {
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      console.log(values);
-
+      formik.values.email = user.email;
       checkPassword(values.check_password, user.id)
         .then((result) => {
           if (result) {
@@ -160,37 +165,50 @@ function Profile() {
             Object.entries(values).forEach(([column, value]) => {
               userInfo.set(column as UserColumn, value);
             });
-            userInfo.set("id", user.id);
-            userInfo.set("profileImg", values.profileImg?.name);
 
             const face = new FaceImage();
-            const profileSplit = values.profileImg?.name.split(".");
-            const imgSplit = values.faceImage?.name.split(".");
-            const profileType = profileSplit.pop();
-            const profileName = profileSplit.join();
-            const type = imgSplit.pop();
-            const name = imgSplit.join();
-            face.set("uid", user.id);
-            face.set("imgPath", `${sha256(name)}.${type}`);
+            const profileSplit = values.profileImg?.name?.split(".");
+            const imgSplit = values.faceImage?.name?.split(".");
+            const profileType = profileSplit?.pop();
+            const profileName = profileSplit?.join();
+            const type = imgSplit?.pop();
+            const name = imgSplit?.join();
+
+            userInfo.set("id", user.id);
 
             const userFormData = userInfo.makeFormData();
             const faceFormData = face.makeFormData();
+            console.log(values.faceImage, values.profileImg);
 
-            console.log(userInfo, face, user.id);
-            console.log(type, name);
-
-            if (values.profileImg) {
-              profileUpload(
-                values.profileImg,
-                user.id,
+            if (values.profileImg && values.profileImg instanceof File) {
+              userFormData.set(
+                "profileImg",
                 `${sha256(profileName)}.${profileType}`,
               );
+              deleteProfileImage(user.id).then(() => {
+                profileUpload(
+                  values.profileImg,
+                  user.id,
+                  `${sha256(profileName)}.${profileType}`,
+                );
+              });
             }
-            if (values.faceImage) {
+            if (values.faceImage && values.faceImage instanceof File) {
+              faceFormData.append("uid", user.id);
+              faceFormData.append("imgPath", `${sha256(name)}.${type}`);
               fileupload(values.faceImage, user.id, `${sha256(name)}.${type}`);
               addFaceImage(faceFormData);
+              userFormData.append("isFaceSign", "true");
             }
-            userUpdate(userFormData);
+            userFormData.append("id", user.id);
+            userFormData.delete("password");
+            userUpdate(userFormData).then((result: any) => {
+              if (result) {
+                delete result["password"];
+                dispatch(setUser(result));
+                navigate(0);
+              }
+            });
           } else {
             alert("비밀번호를 다시 확인 해 주세요.");
           }
@@ -269,7 +287,7 @@ function Profile() {
           elevation={5}>
           <Stack spacing={2}>
             <Avatar
-              src='http://placekitten.com/300/200'
+              src={profileIamgeOrCat(user)}
               sx={{ width: 60, height: 60, display: "block", margin: "auto" }}
             />
             <Box>
@@ -335,6 +353,15 @@ function Profile() {
                 onChange={handleFaceImage}
               />
             </Button>
+            {user.isFaceSign &&
+              faceImages.map((face) => (
+                <Box>
+                  <Typography>{face.imgPath}</Typography>
+                  <Button size='small' color='error'>
+                    &times;
+                  </Button>
+                </Box>
+              ))}
           </Stack>
           <Divider />
           <Box sx={{ p: 2 }}>

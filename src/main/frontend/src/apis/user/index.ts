@@ -48,7 +48,7 @@ const findUserById = async (id: string) => {
 
 // 회원 수정
 const userUpdate = (formData: FormData) => {
-  axios
+  return axios
     .put(`/api/user`, formData)
     .then(handleReceiveData)
     .catch(handleReceiveError);

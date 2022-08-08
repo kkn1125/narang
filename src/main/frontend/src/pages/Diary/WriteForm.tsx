@@ -12,7 +12,7 @@ import Emotions from "../../models/Emotions";
 import "suneditor/dist/css/suneditor.min.css";
 import Diary from "../../models/Diary";
 import SwitchLabels from "../../components/molecules/SwitchLabels";
-import { insertEmotions } from "../../apis/emotions";
+import { deleteEmotionByDid, insertEmotions } from "../../apis/emotions";
 import { useCookies } from "react-cookie";
 import { checkToken } from "../../apis/auth";
 import { UserContext } from "../../contexts/UserProvider";
@@ -65,14 +65,14 @@ function WriteForm() {
       diary.getResponseData(values as unknown as Diary);
 
       const diaryFormData = diary.makeFormData();
+      let diaryId;
 
       if (params.id) {
         diaryFormData.append("id", params.id);
+        diaryId = await updateDiary(diaryFormData);
+      } else {
+        diaryId = await insertDiary(diaryFormData);
       }
-
-      const diaryId = params.id
-        ? await updateDiary(diaryFormData)
-        : await insertDiary(diaryFormData);
 
       const emotion = new Emotions();
       emotion.getResponseData(
@@ -85,6 +85,10 @@ function WriteForm() {
 
       if (!params.id) {
         insertEmotions(emotionFormData);
+      } else {
+        deleteEmotionByDid(diaryId).then(() => {
+          insertEmotions(emotionFormData);
+        });
       }
 
       navigate("/diary");
@@ -213,7 +217,11 @@ function WriteForm() {
             type='submit'>
             일기 저장하기
           </Button>
-          <Button variant='contained' size='medium' color='warning'>
+          <Button
+            variant='contained'
+            size='medium'
+            color='warning'
+            onClick={() => navigate(-1)}>
             취소
           </Button>
         </Stack>

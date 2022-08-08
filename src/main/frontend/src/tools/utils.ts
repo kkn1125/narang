@@ -13,7 +13,7 @@ export const nickNameValidation = yup
 export const emailValidation = yup
   .string()
   .matches(
-    /^([A-z]+([0-9]*))+\@[A-z]{2,}(\.[A-z]{2,}){1,}$/g,
+    /^([A-z_.\-0-9]+)+\@[A-z]{2,}(\.[A-z]{2,}){1,}$/g,
     "이메일 형식과 맞지 않습니다.",
   )
   .required("이메일은 필수 항목 입니다.");
@@ -21,14 +21,14 @@ export const passwordValidation = yup
   .string()
   .matches(
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/g,
-    "비밀번호는 숫자 + 대문자 + 특수문자로 구성되어야 합니다. (대문자 및 특수문자는 최소 1자 이상 포함되어야 합니다.",
+    "비밀번호는 숫자 + 소문자 + 대문자 + 특수문자로 구성되어야 합니다. (대문자 및 특수문자는 최소 1자 이상 포함되어야 합니다.",
   )
   .required("이메일은 필수 항목 입니다.");
 export const phoneValidation = yup
   .string()
   .matches(
     /^[0-9]{2,4}(-[0-9]{3,5}){2,3}$/,
-    "전화번호 형식과 일치하지 않습니다.",
+    "전화번호 형식과 일치하지 않습니다. ex) 010-0000-0000",
   );
 
 export const AVAILABLE_FILE_TYPE = ["JPG", "PNG", "GIF", "MP4", "WEBM"];
@@ -79,6 +79,20 @@ const convertLongToDate = (time: number): string => {
 
 const isEmpty = (object: object): boolean => Object.keys(object).length === 0;
 
+const profileIamgeOrCat = (user: any) => {
+  let path;
+  try {
+    if (user && user.id && user.profileImg) {
+      path = require(`../profiles/${user.id}/${user.profileImg}`);
+    }
+  } catch (e) {
+    // console.log(e);
+    path = "http://placekitten.com/300/200";
+  } finally {
+    return path;
+  }
+};
+
 export {
   upperCase,
   splitToUnderBar,
@@ -86,4 +100,5 @@ export {
   mapToQuery,
   convertLongToDate,
   isEmpty,
+  profileIamgeOrCat,
 };

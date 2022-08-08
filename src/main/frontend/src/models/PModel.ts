@@ -11,7 +11,7 @@ export class PModel {
   public log(): void {
     console.log(
       `[${this.constructor.name}_Class]:`,
-      JSON.stringify(this, null, 2)
+      JSON.stringify(this, null, 2),
     );
   }
 
@@ -21,7 +21,7 @@ export class PModel {
       (el: HTMLInputElement) =>
         el instanceof Element &&
         el.tagName === "INPUT" &&
-        this.hasOwnProperty(el.name)
+        this.hasOwnProperty(el.name),
     );
   }
 
@@ -53,7 +53,9 @@ export class PModel {
         case "updates":
           break;
         default:
-          formData.append(column, value);
+          if (value) {
+            formData.append(column, value);
+          }
           break;
       }
     });
