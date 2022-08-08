@@ -34,7 +34,6 @@ public class LikeRestController {
     @GetMapping("/like/did/{did}")
     public String findByDid(@PathVariable("did") String did) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
-
         return mapper.writeValueAsString(likeService.findByDid(did));
     }
 

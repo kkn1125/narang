@@ -6,6 +6,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
+import java.util.List;
 import java.util.Optional;
 
 public class LikeRepositoryCustomImpl implements LikeRepositoryCustom {
@@ -25,11 +26,11 @@ public class LikeRepositoryCustomImpl implements LikeRepositoryCustom {
     }
 
     @Override
-    public Optional<Like> findByDid(String did) {
+    public List<Like> findByDid(String did) {
         Criteria cr = new Criteria("did").is(did);
         Query q = new Query(cr);
-        Like foundLike = likeTemplate.findOne(q, Like.class);
-        return Optional.of(foundLike);
+        List<Like> foundLike = likeTemplate.find(q, Like.class);
+        return foundLike;
     }
 
     @Override

@@ -37,4 +37,11 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
         userTemplate.save(foundUser, "user");
         return true;
     }
+
+    @Override
+    public User removeProfileImageById(String id) {
+        User foundedUser = userTemplate.findById(id, User.class);
+        foundedUser.setProfileImg("");
+        return userTemplate.save(foundedUser, "user");
+    }
 }
