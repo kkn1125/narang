@@ -51,7 +51,7 @@ function DrawerBlock() {
       <List>
         {sideMenu.top
           .filter((menu: any, index: number) =>
-            user.nickName ? true : index !== 1 && index !== 3,
+            user.nickName ? true : index !== 1 && index !== 2 && index !== 3,
           )
           .map(({ text, url, icon }: MenuItem, index: number) => (
             <ListItem key={text} disablePadding onClick={() => navigate(url)}>

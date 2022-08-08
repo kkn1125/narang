@@ -17,7 +17,7 @@ import { checkPassword } from "../../apis/auth";
 import { handleReceiveError } from "../../apis/commonTypes";
 import { addFaceImage } from "../../apis/faceImage";
 import { userUpdate } from "../../apis/user";
-import { fileupload } from "../../apis/utils/fileupload";
+import { fileupload, profileUpload } from "../../apis/utils/fileupload";
 import TextFieldSet from "../../components/molecules/TextFieldSet";
 import { UserContext } from "../../contexts/UserProvider";
 import FaceImage from "../../models/FaceImage";
@@ -164,7 +164,10 @@ function Profile() {
             userInfo.set("profileImg", values.profileImg?.name);
 
             const face = new FaceImage();
+            const profileSplit = values.profileImg?.name.split(".");
             const imgSplit = values.faceImage?.name.split(".");
+            const profileType = profileSplit.pop();
+            const profileName = profileSplit.join();
             const type = imgSplit.pop();
             const name = imgSplit.join();
             face.set("uid", user.id);
@@ -176,9 +179,18 @@ function Profile() {
             console.log(userInfo, face, user.id);
             console.log(type, name);
 
-            fileupload(values.faceImage, user.id, `${sha256(name)}.${type}`);
+            if (values.profileImg) {
+              profileUpload(
+                values.profileImg,
+                user.id,
+                `${sha256(profileName)}.${profileType}`,
+              );
+            }
+            if (values.faceImage) {
+              fileupload(values.faceImage, user.id, `${sha256(name)}.${type}`);
+              addFaceImage(faceFormData);
+            }
             userUpdate(userFormData);
-            addFaceImage(faceFormData);
           } else {
             alert("비밀번호를 다시 확인 해 주세요.");
           }
