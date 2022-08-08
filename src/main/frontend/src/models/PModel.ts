@@ -53,7 +53,7 @@ export class PModel {
         case "updates":
           break;
         default:
-          if (value) {
+          if (value !== null) {
             formData.append(column, value);
           }
           break;
