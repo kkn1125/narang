@@ -38,7 +38,7 @@ public class UserRestController {
     @GetMapping("/user/{id}")
     public String findById(@PathVariable("id") String id) throws JsonProcessingException {
         System.out.println(id);
-        System.out.println(userService.findById(id));
+        User foundUser = userService.findById(id);
         return mapper(userService.findById(id));
     }
 
@@ -105,8 +105,7 @@ public class UserRestController {
 
     @PutMapping("/user")
     public Boolean update(User user) {
-        userService.update(user);
-        return true;
+        return userService.update(user);
     }
 
     @DeleteMapping("/user/{id}")

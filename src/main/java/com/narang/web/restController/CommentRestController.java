@@ -41,8 +41,7 @@ public class CommentRestController {
 
     @PutMapping("/comment")
     public Boolean update(Comment comment) {
-        commentService.updateToPart(comment);
-        return true;
+        return commentService.update(comment);
     }
 
     @DeleteMapping("/comment/{id}")

@@ -117,8 +117,8 @@ public class UserService {
         }
     }
 
-    public User update(User user) {
-        return userRepository.save(user);
+    public Boolean update(User user) {
+        return userRepository.update(user);
     }
 
     public Boolean deleteById(String id) {

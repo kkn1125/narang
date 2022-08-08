@@ -15,9 +15,9 @@ public class DiaryRepositoryCustomImpl implements DiaryRepositoryCustom {
     }
 
     @Override
-    public Boolean updateToPart(Diary diary) {
+    public Boolean update(Diary diary) {
         Diary foundDiary = diaryTemplate.findById(diary.getId(), Diary.class);
-        foundDiary.replace(diary);
+        foundDiary.replaceIfNotNull(diary);
         diaryTemplate.save(foundDiary, "diary");
         return true;
     }

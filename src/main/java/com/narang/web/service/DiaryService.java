@@ -30,7 +30,7 @@ public class DiaryService {
     }
 
     public Boolean update(Diary diary){
-        return diaryRepository.updateToPart(diary);
+        return diaryRepository.update(diary);
     }
 
     public Boolean deleteById(String id) {

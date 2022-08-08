@@ -84,7 +84,7 @@ function Home() {
     <Box>
       <DynamicSection
         main
-        title='UPGRADE YOUR DAY'
+        title='당신의 이야기를 들려주세요 😊'
         titleSize='l'
         img='https://cdn.pixabay.com/photo/2020/05/24/11/14/sea-5213746_1280.jpg'
         slot={
@@ -107,7 +107,7 @@ function Home() {
                 )}
               </Typography>
             </Box>
-            {!cookies.token && (
+            {/* {!cookies.token && (
               <Button
                 component={Link}
                 to='/auth/signup'
@@ -117,7 +117,7 @@ function Home() {
                 회원 가입
               </Button>
             )}
-            <Typography variant='body2'>당신의 이야기를 들려주세요.</Typography>
+            <Typography variant='body2'>당신의 이야기를 들려주세요.</Typography> */}
           </Stack>
         }
       />

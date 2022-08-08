@@ -21,9 +21,9 @@ public class CommentRepositoryCustomImpl implements CommentRepositoryCustom {
     }
 
     @Override
-    public Boolean updateToPart(Comment comment) {
+    public Boolean update(Comment comment) {
         Comment foundComment = commentTemplate.findById(comment.getId(), Comment.class);
-        foundComment.replace(comment);
+        foundComment.replaceIfNotNull(comment);
         commentTemplate.save(foundComment, "comment");
         return true;
     }

@@ -16,11 +16,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import javax.servlet.Filter;
-
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
+@SuppressWarnings({"WebSecurityConfigurerAdapter"})
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Bean
     public PasswordEncoder encoder() {
@@ -44,15 +43,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().requestMatchers(PathRequest.toStaticResources().atCommonLocations());
-//                .antMatchers("/favicon.ico",
-//                "/api/user/**",
-//                "/api/diaries",
-//                "/api/diary/**",
-//                "/api/likes",
-//                "/api/like/**",
-//                "/api/emotions",
-//                "/api/emotion/**",
-//                "/api/products");
     }
 
     @Override

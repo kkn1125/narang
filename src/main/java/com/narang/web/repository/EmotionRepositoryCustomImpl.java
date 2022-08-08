@@ -35,15 +35,6 @@ public class EmotionRepositoryCustomImpl implements EmotionRepositoryCustom {
     }
 
     @Override
-    public Boolean updateToPart(Emotion emotion) {
-        Criteria cr = new Criteria("did").is(emotion.getDid());
-        Query q = new Query(cr);
-        emotionTemplate.remove(q, "emotion");
-        emotionTemplate.insert(emotion, "emotion");
-        return true;
-    }
-
-    @Override
     public Boolean deleteByDid(String did) {
         Criteria cr = new Criteria("did").is(did);
         Query q = new Query(cr);
