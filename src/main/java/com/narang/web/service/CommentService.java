@@ -33,8 +33,8 @@ public class CommentService {
         return newComment.getId();
     }
 
-    public Boolean updateToPart(Comment comment) {
-        return commentRepository.updateToPart(comment);
+    public Boolean update(Comment comment) {
+        return commentRepository.update(comment);
     }
 
     public Boolean deleteById(String id) {

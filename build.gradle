@@ -19,6 +19,9 @@ repositories {
 }
 
 dependencies {
+	// https://mvnrepository.com/artifact/com.google.code.findbugs/jsr305
+	implementation 'com.google.code.findbugs:jsr305:3.0.2'
+	// warning error 해결 방안 https://simple-ing.tistory.com/48 참조
 	// https://mvnrepository.com/artifact/org.glassfish.jaxb/jaxb-runtime
 	// java 11 버전 이상은 에러 발생하기 때문에 추가
 	implementation group: 'org.glassfish.jaxb', name: 'jaxb-runtime', version: '4.0.0'

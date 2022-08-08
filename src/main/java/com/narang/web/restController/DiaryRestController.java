@@ -34,8 +34,7 @@ public class DiaryRestController {
 
     @PutMapping("/diary")
     public Boolean update(Diary diary) {
-        diaryService.update(diary);
-        return true;
+        return diaryService.update(diary);
     }
 
     @DeleteMapping("/diary/{id}")

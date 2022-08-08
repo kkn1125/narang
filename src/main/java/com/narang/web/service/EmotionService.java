@@ -35,11 +35,6 @@ public class EmotionService {
         return newEmotion.getId();
     }
 
-    public Boolean update(Emotion emotion) {
-        emotionRepository.updateToPart(emotion);
-        return true;
-    }
-
     public Boolean delete(String id){
         emotionRepository.deleteById(id);
         return true;
