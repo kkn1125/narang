@@ -40,4 +40,17 @@ public class Product {
 
     @LastModifiedDate
     private LocalDateTime updates;
+
+    public Product replace(Product compare) {
+        this.setCategory(compare.getCategory() != null ? compare.getCategory() : this.getCategory());
+        this.setName(compare.getName() != null ? compare.getName() : this.getName());
+        this.setPrice(compare.getPrice() != null ? compare.getPrice() : this.getPrice());
+        this.setAmount(compare.getAmount() != null ? compare.getAmount() : this.getAmount());
+        this.setContent(compare.getContent() != null ? compare.getContent() : this.getContent());
+        this.setSeller(compare.getSeller() != null ? compare.getSeller() : this.getSeller());
+        this.setIsSoldOut(compare.getIsSoldOut() == true ? compare.getIsSoldOut() : this.getIsSoldOut());
+        return this;
+    }
 }
+
+
