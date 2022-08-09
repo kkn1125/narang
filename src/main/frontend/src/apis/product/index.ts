@@ -24,7 +24,7 @@ const findProductById = (pid: string) => {
 
 const deleteProduct = (pid: string) => {
   return axios
-    .get(`/api/product/${pid}`)
+    .delete(`/api/product/${pid}`)
     .then(handleReceiveData)
     .catch(handleReceiveError);
 };

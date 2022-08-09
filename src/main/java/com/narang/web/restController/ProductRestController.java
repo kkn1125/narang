@@ -54,13 +54,7 @@ public class ProductRestController {
         Optional<Product> productOptional = productRepository.findById(id);
         if (productOptional.isPresent()) {
             Product productToSave = productOptional.get();
-            productToSave.setCategory(product.getCategory() != null ? product.getCategory() : productToSave.getCategory());
-            productToSave.setName(product.getName() != null ? product.getName() : productToSave.getName());
-            productToSave.setPrice(product.getPrice() != null ? product.getPrice() : productToSave.getPrice());
-            productToSave.setAmount(product.getAmount() != null ? product.getAmount() : productToSave.getAmount());
-            productToSave.setContent(product.getContent() != null ? product.getContent() : productToSave.getContent());
-            productToSave.setSeller(product.getSeller() != null ? product.getSeller() : productToSave.getSeller());
-            productToSave.setIsSoldOut(product.getIsSoldOut() == true ? product.getIsSoldOut() : productToSave.getIsSoldOut());
+            productToSave.replace(product);
             productRepository.save(productToSave);
             return new ResponseEntity<>(productToSave, HttpStatus.OK);
         } else {
