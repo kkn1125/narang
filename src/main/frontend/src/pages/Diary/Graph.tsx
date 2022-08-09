@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import { Chart } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -7,56 +7,91 @@ import {
   BarElement,
   PointElement,
   LineElement,
-  ChartTypeRegistry,
-  ChartData,
-  Tooltip,
   Legend,
+  Tooltip,
+  LineController,
+  BarController,
+  Title,
 } from "chart.js";
 import { Typography } from "@mui/material";
 
+// option #1
 ChartJS.register(
-  CategoryScale,
   LinearScale,
+  CategoryScale,
+  BarElement,
   PointElement,
   LineElement,
-  BarElement,
   Legend,
-  Tooltip
+  Tooltip,
+  LineController,
+  BarController,
+  Title, // option #2
 );
 
+// option #2
+// ChartJS.register(
+//   CategoryScale,
+//   LinearScale,
+//   BarElement,
+//   Title,
+//   Tooltip,
+//   Legend
+// );
+
+const labels = ["7/24", "7/25", "7/31", "8/1", "8/2", "8/4", "8/7", "8/8", "8/10", "8/15"];
+
+// option #2
 const options = {
+  // plugins: {
+  //   title: {
+  //     display: true,
+  //     text: '감정 그래프', 
+  //   },
+  // },
+  responsive: true,
+  interaction: {
+    mode: 'index' as const,
+    intersect: false,
+  },
   scales: {
+    x: {
+      stacked: true,
+    },
     y: {
-      beginAtZero: true,
+      stacked: true,
     },
   },
 };
 
-const labels = ["January", "February", "March", "April", "May", "June"];
-
-const data: ChartData<keyof ChartTypeRegistry, number[], string> = {
-  labels: labels,
+const data = {
+  labels,
   datasets: [
     {
-      type: "line",
-      label: "My First dataset",
-      backgroundColor: "rgb(255, 99, 132)",
-      borderColor: "rgb(255, 99, 132)",
-      data: [0, 10, 5, 2, 20, 30, 45],
-    },
-    {
-      type: "bar",
-      label: "Dataset 2",
-      backgroundColor: "rgb(255, 99, 132)",
-      data: [1, 2, 3, 4, 5, 6],
-      borderColor: "red",
+      type: "line" as const,
+      label: "total score",
+      borderColor: "rgb(75, 192, 192)",
       borderWidth: 2,
+      fill: false,
+      data: [10, 2, -9, 6, 3, 7, 7, 17, -15, 31],
     },
     {
-      type: "bar",
-      label: "Dataset 3",
-      backgroundColor: "rgb(75, 192, 192)",
-      data: [1, 2, 3, 4, 5, 6],
+      type: "bar" as const,
+      label: "negative word",
+      backgroundColor: "rgb(53, 162, 235)",
+      data: [0, -3, -15, -10, -6, -2, -11, -2, -30, -5],
+      borderColor: "white",
+      borderWidth: 2,
+      // stack: 'Stack 0', // option #2
+    },
+    {
+      type: "bar" as const,
+      label: "positive word",
+      backgroundColor: "rgb(255, 99, 132)",
+      data: [10, 5, 6, 16, 9, 9, 18, 19, 15, 36],
+      borderColor: "white",
+      borderWidth: 2,
+      // stack: 'Stack 0', // option #2
     },
   ],
 };
@@ -64,7 +99,8 @@ const data: ChartData<keyof ChartTypeRegistry, number[], string> = {
 function Graph() {
   return (
     <div>
-      <Chart data={data} type={"bar"} options={options} />
+      <Chart data={data} type='bar' />
+      {/* <Chart data={data} type='bar' options={options} /> */} // option #2
 
       <Typography variant='h5'>감정 그래프</Typography>
       <Typography variant='body1'>이번 주</Typography>
