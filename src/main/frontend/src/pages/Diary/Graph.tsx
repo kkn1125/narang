@@ -15,7 +15,6 @@ import {
 } from "chart.js";
 import { Typography } from "@mui/material";
 
-// option #1
 ChartJS.register(
   LinearScale,
   CategoryScale,
@@ -26,7 +25,7 @@ ChartJS.register(
   Tooltip,
   LineController,
   BarController,
-  Title, // option #2
+  Title,  
 );
 
 // option #2
@@ -43,12 +42,12 @@ const labels = ["7/24", "7/25", "7/31", "8/1", "8/2", "8/4", "8/7", "8/8", "8/10
 
 // option #2
 const options = {
-  // plugins: {
-  //   title: {
-  //     display: true,
-  //     text: '감정 그래프', 
-  //   },
-  // },
+  plugins: {
+    title: {
+      display: true,
+      text: '감정 그래프', 
+    },
+  },
   responsive: true,
   interaction: {
     mode: 'index' as const,
@@ -82,7 +81,7 @@ const data = {
       data: [0, -3, -15, -10, -6, -2, -11, -2, -30, -5],
       borderColor: "white",
       borderWidth: 2,
-      // stack: 'Stack 0', // option #2
+      stack: 'Stack 0', // option #2
     },
     {
       type: "bar" as const,
@@ -91,7 +90,7 @@ const data = {
       data: [10, 5, 6, 16, 9, 9, 18, 19, 15, 36],
       borderColor: "white",
       borderWidth: 2,
-      // stack: 'Stack 0', // option #2
+      stack: 'Stack 0', // option #2
     },
   ],
 };
@@ -99,17 +98,17 @@ const data = {
 function Graph() {
   return (
     <div>
-      <Chart data={data} type='bar' />
-      {/* <Chart data={data} type='bar' options={options} /> */} // option #2
+      {/* <Chart data={data} type='bar' /> */}
+      <Chart data={data} type='bar' options={options} /> 
 
-      <Typography variant='h5'>감정 그래프</Typography>
+      {/* <Typography variant='h5'>감정 그래프</Typography>
       <Typography variant='body1'>이번 주</Typography>
       <Typography variant='body1'>긍정 점수</Typography>
       <Typography variant='body1'>2</Typography>
       <Typography variant='body1'>부정 점수</Typography>
       <Typography variant='body1'>-1</Typography>
       <Typography variant='body1'>총 점수</Typography>
-      <Typography variant='body1'>1</Typography>
+      <Typography variant='body1'>1</Typography> */}
     </div>
   );
 }
