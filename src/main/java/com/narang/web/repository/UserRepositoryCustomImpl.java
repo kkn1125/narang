@@ -13,8 +13,12 @@ import java.util.Optional;
 
 
 public class UserRepositoryCustomImpl implements UserRepositoryCustom {
-    @Autowired
     MongoTemplate userTemplate;
+
+    @Autowired
+    UserRepositoryCustomImpl (MongoTemplate userTemplate){
+        this.userTemplate = userTemplate;
+    }
 
     @Override
     public Optional<User> findByNickName(String nickName) {
@@ -51,11 +55,10 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
         return Optional.of(userTemplate.findOne(q, User.class));
     }
 
-    public Boolean update(User user) {
+    public User update(User user) {
         User foundUser = userTemplate.findById(user.getId(), User.class);
         foundUser.replaceIfNotNull(user);
-        userTemplate.save(foundUser, "user");
-        return true;
+        return userTemplate.save(foundUser, "user");
     }
 
     @Override

@@ -42,6 +42,7 @@ public class UserService {
     public User findByNickName(String nickName) {
         return userRepository.findByNickName(nickName).orElseThrow();
     }
+
     public List<User> findByNickNames(List<String> nickNames) {
         return userRepository.findByNickNames(nickNames);
     }
@@ -114,11 +115,11 @@ public class UserService {
     }
 
     public Boolean removeProfileImageById(String id) {
-        File file = new File("src/main/frontend/src/profiles/"+id);
-        if(file.isDirectory()) {
+        File file = new File("src/main/frontend/src/profiles/" + id);
+        if (file.isDirectory()) {
             File[] files = file.listFiles();
-            for(File f : files) {
-                if(f.delete()) {
+            for (File f : files) {
+                if (f.delete()) {
                     System.out.println("파일을 성공적으로 삭제 했습니다.");
                 } else {
                     System.out.println("없는 파일 입니다.");
@@ -129,7 +130,7 @@ public class UserService {
         return true;
     }
 
-    public Boolean update(User user) {
+    public User update(User user) {
         return userRepository.update(user);
     }
 

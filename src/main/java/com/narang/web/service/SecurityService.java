@@ -15,8 +15,12 @@ import java.util.Date;
 
 @Service
 public class SecurityService {
+    private PasswordEncoder encoder;
+
     @Autowired
-    PasswordEncoder encoder;
+    SecurityService(PasswordEncoder encoder) {
+        this.encoder = encoder;
+    }
 
     @Value("${jwt.secret}")
     private String SECRET_KEY;

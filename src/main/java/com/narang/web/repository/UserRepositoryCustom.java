@@ -14,7 +14,7 @@ public interface UserRepositoryCustom {
 
     public Optional<User> findByEmail(String email);
 
-    public Boolean update(User user);
+    public User update(User user);
 
     public User removeProfileImageById(String id);
 }

@@ -16,7 +16,7 @@ public class CommentService {
         this.commentRepository = commentRepository;
     }
 
-    public List<Comment> findAll(){
+    public List<Comment> findAll() {
         return commentRepository.findAll();
     }
 
@@ -33,7 +33,7 @@ public class CommentService {
         return newComment.getId();
     }
 
-    public Boolean update(Comment comment) {
+    public Comment update(Comment comment) {
         return commentRepository.update(comment);
     }
 

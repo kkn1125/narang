@@ -1,7 +1,11 @@
 package com.narang.web.restController;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.narang.web.entity.Bill;
 import com.narang.web.repository.BillRepository;
+import com.narang.web.service.BillService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,51 +17,46 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api")
 public class BillRestController {
+    private BillService billService;
 
     @Autowired
-    private BillRepository billRepository;
-
-    @GetMapping("/bills")
-    public ResponseEntity<?> getAllBills() {
-        List<Bill> bills = billRepository.findAll();
-        if (bills.size() > 0) {
-            return new ResponseEntity<List<Bill>>(bills, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>("조회할 영수증이 없습니다.", HttpStatus.NOT_FOUND);
-        }
+    BillRestController(BillService billService) {
+        this.billService = billService;
     }
 
-    @GetMapping("/bills/{uid}")
-    public ResponseEntity<?> getSingleBill(@PathVariable("uid") String id) {
-        Optional<Bill> billOptional = billRepository.findById(id);
-        if (billOptional.isPresent()) {
-            return new ResponseEntity<>(billOptional.get(), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>("uid가 [" + id + "]인 영수증이 존재하지 않습니다.", HttpStatus.NOT_FOUND);
-        }
+    private String mapper(Object object) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        // properties 설정도 있지만 java 구문으로 해결하는 방법 채택 (보기 쉽게 하기 위함)
+        mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+        return mapper.writeValueAsString(object);
+    }
+
+    @GetMapping("/bills")
+    public String findAll() throws JsonProcessingException {
+        return mapper(billService.findAll());
+    }
+
+    @GetMapping("/bill/{id}")
+    public String findById(@PathVariable("id") String id) throws JsonProcessingException {
+        return mapper(billService.findById(id));
+    }
+
+    @GetMapping("/bill/uid/{uid}")
+    public String findByUid(@PathVariable("uid") String uid) throws JsonProcessingException {
+        return mapper(billService.findByUid(uid));
     }
 
     @PostMapping("/bill")
-    public ResponseEntity<?> createBill(@RequestBody Bill bill) {
-        try {
-            billRepository.save(bill);
-            return new ResponseEntity<Bill>(bill, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    public String insert(Bill bill) {
+        return billService.insert(bill);
     }
 
     /**
      * 개발자용 삭제 로직
      * (덧, 영수증은 수정할 수 없으므로 수정 로직은 없음)
      */
-    @DeleteMapping("/bill/{bid}")
-    public ResponseEntity<?> deleteBill(@PathVariable("bid") String id) {
-        try{
-            billRepository.deleteById(id);
-            return new ResponseEntity<>("bid [" + id + "]인 영수증이 성공적으로 삭제되었습니다.", HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-        }
+    @DeleteMapping("/bill/{id}")
+    public Boolean deleteById(@PathVariable("id") String id) {
+        return billService.deleteById(id);
     }
 }
