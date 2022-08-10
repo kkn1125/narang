@@ -21,9 +21,12 @@ import java.util.*;
 @RequestMapping("/api")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class UserRestController {
+    private UserService userService;
 
     @Autowired
-    private UserService userService;
+    UserRestController(UserService userService) {
+        this.userService = userService;
+    }
 
     private String mapper(Object object) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
@@ -126,8 +129,7 @@ public class UserRestController {
 
     @PutMapping("/user")
     public String update(User user) throws JsonProcessingException {
-        userService.update(user);
-        return mapper(userService.findById(user.getId()));
+        return mapper(userService.update(user));
     }
 
     @DeleteMapping("/user/{id}")
@@ -139,7 +141,6 @@ public class UserRestController {
     public Boolean removeUserProfile(@PathVariable("id") String id) {
         return userService.removeProfileImageById(id);
     }
-
 }
 
 // [UnAuthorized error 날 때] https://subbak2.com/11

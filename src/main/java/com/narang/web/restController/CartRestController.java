@@ -1,7 +1,11 @@
 package com.narang.web.restController;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.narang.web.entity.Cart;
 import com.narang.web.repository.CartRepository;
+import com.narang.web.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,62 +17,42 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api")
 public class CartRestController {
+    private CartService cartService;
 
     @Autowired
-    private CartRepository cartRepository;
-
-    @GetMapping("/carts")
-    public ResponseEntity<?> getAllCarts() {
-        List<Cart> carts = cartRepository.findAll();
-        if (carts.size() > 0) {
-            return new ResponseEntity<List<Cart>>(carts, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>("장바구니가 없습니다.", HttpStatus.NOT_FOUND);
-        }
+    CartRestController(CartService cartService) {
+        this.cartService = cartService;
     }
 
-    @GetMapping("/carts/{cid}")
-    public ResponseEntity<?> getSingleCart(@PathVariable("cid") String id) {
-        Optional<Cart> cartOptional = cartRepository.findById(id);
-        if (cartOptional.isPresent()) {
-            return new ResponseEntity<>(cartOptional.get(), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>("cid가 [" + id + "]인 카트가 존재하지 않습니다.", HttpStatus.NOT_FOUND);
-        }
+    private String mapper(Object object) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        // properties 설정도 있지만 java 구문으로 해결하는 방법 채택 (보기 쉽게 하기 위함)
+        mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+        return mapper.writeValueAsString(object);
+    }
+
+    @GetMapping("/carts")
+    public String findAll() throws JsonProcessingException {
+        return mapper(cartService.findAll());
+    }
+
+    @GetMapping("/cart/{id}")
+    public String findById(@PathVariable("id") String id) throws JsonProcessingException {
+        return mapper(cartService.findById(id));
     }
 
     @PostMapping("/cart")
-    public ResponseEntity<?> createCart(@RequestBody Cart cart) {
-        try {
-            cartRepository.save(cart);
-            return new ResponseEntity<Cart>(cart, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    public String insert(Cart cart) {
+        return cartService.insert(cart);
     }
 
-    @PutMapping("/cart/{cid}")
-    public ResponseEntity<?> updateCart(@PathVariable("cid") String id, @RequestBody Cart cart) {
-        Optional<Cart> cartOptional = cartRepository.findById(id);
-        if (cartOptional.isPresent()) {
-            Cart cartToSave = cartOptional.get();
-            cartToSave.setAmount(cart.getAmount() != null ? cart.getAmount() : cartToSave.getAmount());
-            cartToSave.setIsOrdered(cart.getIsOrdered() == true ? cart.getIsOrdered() : cartToSave.getIsOrdered());
-            cartRepository.save(cartToSave);
-            return new ResponseEntity<>(cartToSave, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>("cid가 [" + id + "]인 카트가 존재하지 않습니다.", HttpStatus.NOT_FOUND);
-        }
+    @PutMapping("/cart")
+    public String update(Cart cart) throws JsonProcessingException {
+        return mapper(cartService.update(cart));
     }
 
-    @DeleteMapping("/cart/{cid}")
-    public ResponseEntity<?> deleteCart(@PathVariable("cid") String id) {
-        try {
-            cartRepository.deleteById(id);
-            return new ResponseEntity<>("cart가 성공적으로 삭제되었습니다.", HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-        }
+    @DeleteMapping("/cart/{id}")
+    public Boolean deleteById(@PathVariable("id") String id) {
+        return cartService.deleteById(id);
     }
-
 }

@@ -12,9 +12,6 @@ import java.util.List;
 import java.util.Optional;
 
 public class FaceImageRepositoryCustomImpl implements FaceImageRepositoryCustom {
-    private static final String COLLECTION = "faceImage";
-    private static final Class<FaceImage> CLASS = FaceImage.class;
-
     private MongoTemplate faceTemplate;
 
     @Autowired
@@ -56,7 +53,7 @@ public class FaceImageRepositoryCustomImpl implements FaceImageRepositoryCustom 
         q.addCriteria(orCriteria.orOperator(orExp.toArray(new Criteria[orExp.size()])));
 
         System.out.println(q);
-        faceTemplate.remove(q, COLLECTION);
+        faceTemplate.remove(q, "faceImage");
         return true;
     }
 }

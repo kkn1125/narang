@@ -9,7 +9,7 @@ import java.util.List;
 
 @Service
 public class FaceImageService {
-    FaceImageRepository faceRepository;
+    private FaceImageRepository faceRepository;
 
     @Autowired
     FaceImageService(FaceImageRepository faceRepository) {

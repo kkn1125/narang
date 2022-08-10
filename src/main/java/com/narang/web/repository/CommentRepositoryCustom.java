@@ -7,5 +7,5 @@ import java.util.List;
 public interface CommentRepositoryCustom {
     public List<Comment> findByDid(String did);
 
-    public Boolean update(Comment comment);
+    public Comment update(Comment comment);
 }
