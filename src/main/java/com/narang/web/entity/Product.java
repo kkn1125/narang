@@ -1,5 +1,9 @@
 package com.narang.web.entity;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,8 +12,12 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import java.lang.reflect.Field;
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
 
 @Setter
 @Getter
@@ -35,20 +43,30 @@ public class Product {
 
     private Boolean isSoldOut = false;
 
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @CreatedDate
     private LocalDateTime regdate;
 
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @LastModifiedDate
     private LocalDateTime updates;
 
-    public Product replace(Product compare) {
-        this.setCategory(compare.getCategory() != null ? compare.getCategory() : this.getCategory());
-        this.setName(compare.getName() != null ? compare.getName() : this.getName());
-        this.setPrice(compare.getPrice() != null ? compare.getPrice() : this.getPrice());
-        this.setAmount(compare.getAmount() != null ? compare.getAmount() : this.getAmount());
-        this.setContent(compare.getContent() != null ? compare.getContent() : this.getContent());
-        this.setSeller(compare.getSeller() != null ? compare.getSeller() : this.getSeller());
-        this.setIsSoldOut(compare.getIsSoldOut() == true ? compare.getIsSoldOut() : this.getIsSoldOut());
+    public Product replaceIfNotNull(Product compare) {
+        List<Field> fields = Arrays.asList(this.getClass().getDeclaredFields());
+        fields.forEach(field -> {
+            try {
+                field.setAccessible(true);
+                Object compareField = field.get(compare);
+                Object thisField = field.get(this);
+                field.set(this, compareField != null ? compareField : thisField);
+            } catch (IllegalAccessException e) {
+                System.out.println("The value is null [" + field.getName() + "]");
+            }
+        });
         return this;
     }
 }

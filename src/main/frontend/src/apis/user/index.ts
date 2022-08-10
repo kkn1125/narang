@@ -1,30 +1,13 @@
-import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
+import axios from "axios";
 import { decodeJwt } from "jose";
-import User from "../../models/User";
-import { mapToQuery } from "../../tools/utils";
-import { METHOD } from "../commonTypes";
-import {
-  Params,
-  UserDELETE,
-  UserGET,
-  UserPOST,
-  UserPUT,
-  USER_URL,
-} from "./types";
+import { handleReceiveData, handleReceiveError } from "../commonTypes";
 
-const handleReceiveData = (res: AxiosResponse<any, any>): User | null =>
-  res.data as User;
-
-const handleReceiveError = (err: { message: any }) => {
-  console.log(err.message);
-};
-
+// 토큰의 이메일로 회원 정보 얻기
 const findByJwt = async (token: string) => {
   try {
     const email = decodeJwt(token).sub;
-    // console.log(email)
     return await axios
-      .get(`/api/user/email/${email}`)
+      .get(`/api/user/email/${encodeURIComponent(email)}`)
       .then(handleReceiveData)
       .catch(handleReceiveError);
   } catch (e) {
@@ -32,6 +15,7 @@ const findByJwt = async (token: string) => {
   }
 };
 
+// 회원 전체 조회
 const findUserAll = async () => {
   return await axios
     .get(`/api/users`)
@@ -39,9 +23,17 @@ const findUserAll = async () => {
     .catch(handleReceiveError);
 };
 
+// 회원 단건 조회
 const findUserById = async (id: string) => {
   return await axios
     .get(`/api/user/${id}`)
+    .then(handleReceiveData)
+    .catch(handleReceiveError);
+};
+
+const findUserByNickNames = async (formData: FormData) => {
+  return await axios
+    .post(`/api/user/nicknames`, formData)
     .then(handleReceiveData)
     .catch(handleReceiveError);
 };
@@ -62,4 +54,11 @@ const userDeleteById = async (id: string) => {
     .catch(handleReceiveError);
 };
 
-export { findUserAll, findUserById, userUpdate, userDeleteById, findByJwt };
+export {
+  findUserAll,
+  findUserById,
+  findUserByNickNames,
+  userUpdate,
+  userDeleteById,
+  findByJwt,
+};

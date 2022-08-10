@@ -1,12 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 import FaceImage from "../../models/FaceImage";
-
-const handleReceiveData = (res: AxiosResponse<any, any>): FaceImage | null =>
-  res.data as FaceImage;
-
-const handleReceiveError = (err: { message: any }) => {
-  console.log(err.message);
-};
+import { handleReceiveData, handleReceiveError } from "../commonTypes";
 
 const findFaceImageAll = () => {
   return axios
@@ -22,7 +16,7 @@ const addFaceImage = (formData: FormData) => {
     .catch(handleReceiveError);
 };
 
-const deleteAll = (uid: string) => {
+const deleteFaceImageAll = (uid: string) => {
   axios
     .delete(`/api/face/${uid}`)
     .then(handleReceiveData)
@@ -44,4 +38,9 @@ const deleteFaceImageById = (uid: string, ids: string[]) => {
     .catch(handleReceiveError);
 };
 
-export { findFaceImageAll, addFaceImage, deleteAll, deleteFaceImageById };
+export {
+  findFaceImageAll,
+  addFaceImage,
+  deleteFaceImageAll,
+  deleteFaceImageById,
+};

@@ -1,17 +1,7 @@
-import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
-import User from "../../models/User";
-import { handleReceiveData, handleReceiveError, METHOD } from "../commonTypes";
-import { USER_URL } from "../user/types";
+import axios from "axios";
+import { handleReceiveData, handleReceiveError } from "../commonTypes";
 
-const checkUserByNickName = async (nickName: string) => {
-  const findUserByNickName = await axios[
-    USER_URL["FIND_BY_NICKNAME"].method as METHOD
-  ](`${USER_URL["FIND_BY_NICKNAME"].url}/${nickName}`)
-    .then(handleReceiveData)
-    .catch(handleReceiveError);
-  console.log(findUserByNickName);
-};
-
+// 이메일 로그인
 const checkUserByEmail = async ({
   email,
   password,
@@ -22,15 +12,10 @@ const checkUserByEmail = async ({
   const formData = new FormData();
   formData.append("email", email);
   formData.append("password", password);
-  console.log(email, password);
-  const session = await axios[USER_URL["SIGNIN_BY_EMAIL"].method as METHOD](
-    `${USER_URL["SIGNIN_BY_EMAIL"].url}`,
-    formData,
-  )
+  const session = await axios
+    .post(`/api/user/signin`, formData)
     .then(handleReceiveData)
     .catch(handleReceiveError);
-  console.log(session);
-
   return session;
 };
 
@@ -45,6 +30,7 @@ const signin = async ({
   return await checkUserByEmail({ email, password });
 };
 
+// 안면 로그인
 const faceSignin = async ({
   email,
   password,
@@ -63,14 +49,13 @@ const faceSignin = async ({
 
 // 회원 가입
 const signup = (data: FormData) => {
-  return axios[USER_URL["INSERT"].method as METHOD](
-    USER_URL["INSERT"].url,
-    data,
-  )
+  return axios
+    .post("/api/user", data)
     .then(handleReceiveData)
     .catch(handleReceiveError);
 };
 
+// 로그아웃
 const signout = async (token: string) => {
   const formData = new FormData();
   formData.append("token", token);
@@ -80,10 +65,8 @@ const signout = async (token: string) => {
     .catch(handleReceiveError);
 };
 
-const checkPassword = async (
-  password: string,
-  id: string,
-): Promise<boolean> => {
+// 비밀번호 검증
+const checkPassword = async (password: string, id: string) => {
   const formData = new FormData();
   formData.append("password", password);
   formData.append("id", id);
@@ -93,6 +76,7 @@ const checkPassword = async (
     .catch(handleReceiveError);
 };
 
+// 토큰 검증
 const checkToken = async (token: string) => {
   const formData = new FormData();
   formData.append("token", token);

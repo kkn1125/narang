@@ -2,6 +2,7 @@ package com.narang.web.restController;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.narang.web.entity.User;
 import com.narang.web.service.UserService;
 import org.apache.commons.io.FileUtils;
@@ -14,9 +15,7 @@ import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api")
@@ -27,7 +26,10 @@ public class UserRestController {
     private UserService userService;
 
     private String mapper(Object object) throws JsonProcessingException {
-        return new ObjectMapper().writeValueAsString(object);
+        ObjectMapper mapper = new ObjectMapper();
+        // properties 설정도 있지만 java 구문으로 해결하는 방법 채택 (보기 쉽게 하기 위함)
+        mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+        return mapper.writeValueAsString(object);
     }
 
     @GetMapping("/users")
@@ -45,8 +47,18 @@ public class UserRestController {
         return mapper(userService.findByNickName(nickName));
     }
 
+    @PostMapping("/user/nicknames")
+    public String findByNickName(String[] userNickNames) throws JsonProcessingException {
+        List<String> nickNames = Arrays.asList(userNickNames);
+        if(nickNames.size() == 0) return mapper(new ArrayList<>());
+
+        List<User> users = userService.findByNickNames(nickNames);
+        return mapper(users);
+    }
+
     @GetMapping("/user/email/{email}")
     public String findByEmail(@PathVariable("email") String email) throws JsonProcessingException {
+        System.out.println(email);
         return mapper(userService.findByEmail(email));
     }
 

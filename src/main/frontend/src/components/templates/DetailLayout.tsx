@@ -1,13 +1,5 @@
-import {
-  Avatar,
-  Box,
-  Button,
-  Container,
-  Divider,
-  Stack,
-  Typography,
-} from "@mui/material";
-import React, { memo, useContext } from "react";
+import { Button, Container, Divider, Stack, Typography } from "@mui/material";
+import React, { memo, useContext, useEffect, useState } from "react";
 import parse, {
   DOMNode,
   Element,
@@ -19,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { deleteDiaryById } from "../../apis/diary";
 import { deleteEmotionByDid } from "../../apis/emotions";
 import { UserContext } from "../../contexts/UserProvider";
+import { findUserById } from "../../apis/user";
 
 const options: HTMLReactParserOptions = {
   replace: (domNode: DOMNode) => {
@@ -36,6 +29,13 @@ function DetailLayout({ diary, emotion }: { diary: any; emotion: any }) {
   const { id, uid, title, content, author, regdate, updates } = diary;
   const navigate = useNavigate();
   const [user, dispatch] = useContext(UserContext);
+  const [diaryOwner, setDiaryOwner] = useState(null);
+
+  useEffect(() => {
+    findUserById(uid).then((result) => {
+      setDiaryOwner(result);
+    });
+  }, []);
 
   const handleDeleteDiary = async (e: React.MouseEvent) => {
     await deleteDiaryById(id);
@@ -49,7 +49,7 @@ function DetailLayout({ diary, emotion }: { diary: any; emotion: any }) {
 
   return (
     <Container maxWidth='lg'>
-      <UserInfo author={author} regdate={regdate} />
+      <UserInfo author={author} regdate={regdate} diaryOwner={diaryOwner} />
 
       {/* title */}
       <Stack
@@ -102,7 +102,7 @@ function DetailLayout({ diary, emotion }: { diary: any; emotion: any }) {
       <Typography>종합 이모지: {emotion.emoji}</Typography>
       <Divider sx={{ my: 2 }} />
 
-      <CommentList comments={[]} />
+      <CommentList />
     </Container>
   );
 }

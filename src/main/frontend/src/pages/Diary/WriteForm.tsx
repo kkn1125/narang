@@ -14,7 +14,7 @@ import Diary from "../../models/Diary";
 import SwitchLabels from "../../components/molecules/SwitchLabels";
 import { deleteEmotionByDid, insertEmotions } from "../../apis/emotions";
 import { useCookies } from "react-cookie";
-import { checkToken } from "../../apis/auth";
+import { checkToken, signout } from "../../apis/auth";
 import { UserContext } from "../../contexts/UserProvider";
 
 interface FormikProps {
@@ -63,7 +63,7 @@ function WriteForm() {
 
       const diary = new Diary();
       diary.getResponseData(values as unknown as Diary);
-      console.log(diary)
+
       const diaryFormData = diary.makeFormData();
       let diaryId;
 
@@ -98,12 +98,6 @@ function WriteForm() {
   useEffect(() => {
     if (!cookies.token) {
       navigate("/diary");
-    } else {
-      checkToken(cookies.token).then((res) => {
-        if (res.result === false) {
-          navigate("/diary");
-        }
-      });
     }
     if (params.id) {
       const origin = findDiaryById(params.id);

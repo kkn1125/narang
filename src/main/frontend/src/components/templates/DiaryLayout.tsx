@@ -127,7 +127,7 @@ function DiaryLayout(props: Props) {
             p: 3,
             // width: { sm: `calc(100% - ${drawerWidth}px)` },
             backgroundColor: bgBlack ? "#252525" : "#ffffff",
-            minHeight: "100%",
+            minHeight: "50%",
             // marginLeft: "auto",
             // marginRight: "auto",
           }}>

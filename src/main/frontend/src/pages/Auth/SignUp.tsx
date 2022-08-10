@@ -80,11 +80,16 @@ function SignUp() {
       const user = new User();
       user.getResponseData(values as unknown as User);
       const formData = user.makeFormData();
-      signup(formData);
-      navigate("/auth/signin");
+      signup(formData)
+        .then(() => {
+          navigate("/auth/signin");
+        })
+        .catch(() => {
+          alert("서버에 문제가 있는지 확인하십시오.");
+        });
     },
   });
-  
+
   return (
     <Stack sx={{ height: "100%" }}>
       <Box sx={{ flex: 1 }} />

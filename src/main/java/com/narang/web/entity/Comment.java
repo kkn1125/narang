@@ -1,5 +1,9 @@
 package com.narang.web.entity;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.mongodb.lang.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,32 +16,38 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
 @Document("comment")
 public class Comment {
     @Id
     private String id;
     @Field
+    private String did;
+    @Field
     private String content;
     @Field
     private String mention;
     @Field
     private String author;
-    @DateTimeFormat(style = "M-")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @CreatedDate
     @Field
-    private Date regdate;
-    @DateTimeFormat(style = "M-")
+    private LocalDateTime regdate;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @LastModifiedDate
     @Field
-    private Date updates;
+    private LocalDateTime updates;
     @Field
     private String _class;
 
@@ -60,3 +70,4 @@ public class Comment {
         return this;
     }
 }
+

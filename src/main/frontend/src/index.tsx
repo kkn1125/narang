@@ -9,6 +9,7 @@ import { GlobalStyles } from "@mui/material";
 import { CookiesProvider } from "react-cookie";
 import axios from "axios";
 import UserProvider from "./contexts/UserProvider";
+import CommentProvider from "./contexts/CommentProvider";
 
 const rootElement = document.getElementById("root");
 const root = createRoot(rootElement!);
@@ -30,15 +31,16 @@ root.render(
         },
       }}
     />
-
-    <UserProvider>
-      <CookiesProvider>
-        <BrowserRouter>
-          {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-          <CssBaseline />
-          <App />
-        </BrowserRouter>
-      </CookiesProvider>
-    </UserProvider>
+    <CommentProvider>
+      <UserProvider>
+        <CookiesProvider>
+          <BrowserRouter>
+            {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+            <CssBaseline />
+            <App />
+          </BrowserRouter>
+        </CookiesProvider>
+      </UserProvider>
+    </CommentProvider>
   </ThemeProvider>,
 );

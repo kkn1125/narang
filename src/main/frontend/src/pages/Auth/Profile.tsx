@@ -154,6 +154,9 @@ function Profile() {
       phone: "",
       profileImg: null,
       faceImage: null,
+      isFaceSign:
+        user && user.id && user.isFaceSign !== null ? user.isFaceSign : false,
+      terms: user && user.id && user.terms !== null ? user.terms : false,
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
@@ -178,7 +181,6 @@ function Profile() {
 
             const userFormData = userInfo.makeFormData();
             const faceFormData = face.makeFormData();
-            console.log(values.faceImage, values.profileImg);
 
             if (values.profileImg && values.profileImg instanceof File) {
               userFormData.set(
@@ -193,13 +195,14 @@ function Profile() {
                 );
               });
             }
+
             if (values.faceImage && values.faceImage instanceof File) {
               faceFormData.append("uid", user.id);
               faceFormData.append("imgPath", `${sha256(name)}.${type}`);
               fileupload(values.faceImage, user.id, `${sha256(name)}.${type}`);
               addFaceImage(faceFormData);
-              userFormData.append("isFaceSign", "true");
             }
+
             userFormData.append("id", user.id);
             userFormData.delete("password");
             userUpdate(userFormData).then((result: any) => {

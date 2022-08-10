@@ -16,7 +16,7 @@ const updateDiary = (formData: FormData) => {
     .catch(handleReceiveError);
 };
 
-const findAllDiary = () => {
+const findDiaryAll = () => {
   return axios
     .get("/api/diaries")
     .then(handleReceiveData)
@@ -40,7 +40,7 @@ const deleteDiaryById = (id: string) => {
 export {
   insertDiary,
   updateDiary,
-  findAllDiary,
+  findDiaryAll,
   findDiaryById,
   deleteDiaryById,
 };

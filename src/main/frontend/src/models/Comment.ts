@@ -29,14 +29,16 @@ enum CommentColumnStrings {
 }
 
 class Comment extends PModel implements IModel<Comment, CommentColumn> {
+  private did: string;
   private content: string;
   private author: string;
   private mention: string;
 
   // setter
   public set(column: CommentColumn, value: ModelValue) {
-    console.log("set:", column, value);
+    // console.log("set:", column, value);
     switch (column) {
+      case "did":
       case "content":
       case "author":
       case "mention":

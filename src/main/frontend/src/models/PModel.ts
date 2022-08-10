@@ -45,7 +45,7 @@ export class PModel {
         case "positive":
         case "normal":
           Object.entries(value).forEach(([key, val]) => {
-            formData.append(`${column}.${key}`, val);
+            formData.append(`${column}.${key}`, val === undefined ? "" : val);
           });
           break;
         case "id":
@@ -54,7 +54,7 @@ export class PModel {
           break;
         default:
           if (value !== null) {
-            formData.append(column, value);
+            formData.append(column, value === undefined ? "" : value);
           }
           break;
       }

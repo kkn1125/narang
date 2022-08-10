@@ -28,7 +28,7 @@ public class CommentRestController {
     }
 
     @GetMapping("/comment/did/{did}")
-    public String findByDid(String did) throws JsonProcessingException {
+    public String findByDid(@PathVariable("did") String did) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         return mapper.writeValueAsString(commentService.findByDid(did));
     }

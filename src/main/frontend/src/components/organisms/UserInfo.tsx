@@ -5,14 +5,14 @@ import { convertLongToDate, profileIamgeOrCat } from "../../tools/utils";
 
 interface UserInfoProps {
   author: string;
-  regdate: number;
+  regdate: number[];
+  diaryOwner?: any;
   slot?: React.ReactElement | React.ReactElement[];
 }
 
-function UserInfo({ author, regdate, slot }: UserInfoProps) {
-  const [user, dispatch] = useContext(UserContext);
+function UserInfo({ author, regdate, diaryOwner, slot }: UserInfoProps) {
   const getFirstWord = (name: string) => {
-    return name[0].toUpperCase();
+    return name?.substring(0, 1).toUpperCase();
   };
 
   return (
@@ -20,7 +20,7 @@ function UserInfo({ author, regdate, slot }: UserInfoProps) {
       <Avatar
         children={getFirstWord(author)}
         sx={{ width: 48, height: 48 }}
-        src={profileIamgeOrCat(user)}
+        src={profileIamgeOrCat(diaryOwner)}
       />
       <Stack justifyContent='space-between'>
         <Typography>{author}</Typography>
