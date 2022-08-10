@@ -17,7 +17,6 @@ function Detail() {
       const getDiary = await findDiaryById(diaryId);
       setDiary(getDiary);
       const getEmotion = await findEmotionByDid(diaryId);
-      console.log(getEmotion);
       setEmotion(getEmotion);
     };
 
@@ -26,7 +25,6 @@ function Detail() {
   return (
     <Stack>
       {diary && emotion && <DetailLayout diary={diary} emotion={emotion} />}
-      <Footer />
     </Stack>
   );
 }
