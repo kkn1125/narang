@@ -35,7 +35,9 @@ function AvatarBox() {
           setIsSignin(false);
           dispatch(removeUser());
         });
-        removeCookie("token");
+        removeCookie("token", {
+          path: "/",
+        });
         navigate("/");
       },
     ),

@@ -95,22 +95,6 @@ public class UserRestController {
         return userService.join(user);
     }
 
-    @PostMapping("/fileupload")
-    public Map<String, Object> fileupload(MultipartFile multipartFile, String id, String hashName) {
-        File targetFile = new File("src/main/frontend/src/upload/"
-                + id
-                + "/" + hashName);
-        try {
-            InputStream fileStream = multipartFile.getInputStream();
-            FileUtils.copyInputStreamToFile(fileStream, targetFile);
-        } catch (IOException e) {
-            FileUtils.deleteQuietly(targetFile);
-            e.printStackTrace();
-        }
-        Map<String, Object> m = new HashMap<>();
-        return m;
-    }
-
     @PostMapping("/profile/fileupload")
     public Map<String, Object> profileFileupload(MultipartFile multipartFile, String id, String hashName) {
         File targetFile = new File("src/main/frontend/src/profiles/"
