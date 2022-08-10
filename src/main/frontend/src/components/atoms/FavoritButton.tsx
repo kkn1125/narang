@@ -1,13 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
-import { Box, IconButton, Stack, SvgIcon, Typography } from "@mui/material";
-import {
-  addLike,
-  deleteLikeByDid,
-  deleteLikeById,
-  findByDid,
-} from "../../apis/like";
+import { IconButton, Stack, SvgIcon, Typography } from "@mui/material";
+import { addLike, deleteLikeByDid, findLikeByDid } from "../../apis/like";
 import Like from "../../models/Like";
 
 interface FavoritButton {
@@ -15,7 +10,7 @@ interface FavoritButton {
   onClick?: (
     e: React.MouseEvent,
     setIsClicked: React.Dispatch<boolean>,
-    isClicked: boolean
+    isClicked: boolean,
   ) => void;
 }
 
@@ -25,7 +20,7 @@ function FavoritButton({ diaryId, onClick }: FavoritButton) {
 
   useEffect(() => {
     const getInitialLikes = async () => {
-      const likes = await findByDid(diaryId);
+      const likes = await findLikeByDid(diaryId);
       setCount(likes.length);
     };
     getInitialLikes();

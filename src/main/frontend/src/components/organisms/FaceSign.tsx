@@ -51,7 +51,6 @@ function FaceSign({
   const navigate = useNavigate();
   const [cookies, setCookie] = useCookies(["token"]);
   const [captureVideo, setCaptureVideo] = useState(true);
-  // const [user, setUser] = useState<any>({});
   const [target, setTarget] = useState(null);
   const count = useRef(0);
 
@@ -200,7 +199,7 @@ function FaceSign({
         if (notFoundCount > 5) {
           notFoundCount = 0;
           navigate(0);
-          alert('사용자와 일치하는 안면 데이터가 없습니다.');
+          alert("사용자와 일치하는 안면 데이터가 없습니다.");
         }
         return null;
       }
@@ -247,26 +246,24 @@ function FaceSign({
           if (label && label.match(user.nickName)) {
             updateCount((count.current += 1));
           }
-
           if (count.current > limitCount) {
             setModelsLoaded?.(false);
             setCaptureVideo(false);
             clearCount(0);
             faceSignin({ email: user.email, password: user.password })
               .then((result) => {
-                setCookie("token", result);
+                setCookie("token", result, {
+                  path: "/",
+                });
                 navigate("/");
               })
               .catch(() => {
                 alert(
                   "등록된 안면 이미지와 일치하는 정보가 없습니다. 안면 인식을 등록했는지 일반 로그인 후 프로필에서 확인해주세요.",
                 );
-                navigate("/");
-                navigate("/auth/signin");
+                navigate(0);
               });
-            // alert("로그인 되었습니다");
           } else {
-            // console.log("인식 중...");
             setTimeout(loop, 1);
           }
         });
