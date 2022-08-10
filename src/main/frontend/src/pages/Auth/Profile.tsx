@@ -16,7 +16,11 @@ import { useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import { checkPassword } from "../../apis/auth";
 import { handleReceiveError } from "../../apis/commonTypes";
-import { addFaceImage } from "../../apis/faceImage";
+import {
+  addFaceImage,
+  deleteFaceImageById,
+  findFaceImageAll,
+} from "../../apis/faceImage";
 import { userUpdate } from "../../apis/user";
 import {
   deleteProfileImage,
@@ -170,12 +174,12 @@ function Profile() {
             });
 
             const face = new FaceImage();
-            const profileSplit = values.profileImg?.name?.split(".");
-            const imgSplit = values.faceImage?.name?.split(".");
+            const profileSplit = values.profileImg?.name?.split(/[.]/g);
+            const imgSplit = values.faceImage?.name?.split(/[.]/g);
             const profileType = profileSplit?.pop();
-            const profileName = profileSplit?.join();
+            const profileName = profileSplit?.join(".");
             const type = imgSplit?.pop();
-            const name = imgSplit?.join();
+            const name = imgSplit?.join(".");
 
             userInfo.set("id", user.id);
 
@@ -197,10 +201,11 @@ function Profile() {
             }
 
             if (values.faceImage && values.faceImage instanceof File) {
-              faceFormData.append("uid", user.id);
-              faceFormData.append("imgPath", `${sha256(name)}.${type}`);
+              faceFormData.set("uid", user.id);
+              faceFormData.set("imgPath", `${sha256(name)}.${type}`);
               fileupload(values.faceImage, user.id, `${sha256(name)}.${type}`);
               addFaceImage(faceFormData);
+              userFormData.set("isFaceSign", "true");
             }
 
             userFormData.append("id", user.id);
@@ -258,6 +263,20 @@ function Profile() {
     if (!files) return;
     formik.values.faceImage = files;
     setFaceImage(files);
+  };
+
+  const handleRemoveFaceImage = (uid: string, ids: string) => {
+    deleteFaceImageById(uid, [ids]);
+    findFaceImageAll().then((result) => {
+      if (result.length === 0) {
+        const updateUser = new User();
+        updateUser.getResponseData(user);
+        const formData = updateUser.makeFormData();
+        formData.set("id", user.id);
+        formData.set("isFaceSign", "false");
+        userUpdate(formData);
+      }
+    });
   };
 
   return (
@@ -356,15 +375,17 @@ function Profile() {
                 onChange={handleFaceImage}
               />
             </Button>
-            {user.isFaceSign &&
-              faceImages.map((face) => (
-                <Box>
-                  <Typography>{face.imgPath}</Typography>
-                  <Button size='small' color='error'>
-                    &times;
-                  </Button>
-                </Box>
-              ))}
+            {faceImages.map((face) => (
+              <Box>
+                <Typography>{face.imgPath}</Typography>
+                <Button
+                  size='small'
+                  color='error'
+                  onClick={() => handleRemoveFaceImage(user.id, face.id)}>
+                  &times;
+                </Button>
+              </Box>
+            ))}
           </Stack>
           <Divider />
           <Box sx={{ p: 2 }}>
