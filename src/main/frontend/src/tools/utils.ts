@@ -69,12 +69,30 @@ const mapToQuery = (maps: Map<string, ModelValue>): string => {
   return stringBuilder.join("&");
 };
 
-const convertLongToDate = (time: number): string => {
-  return new Date(time).toLocaleString("ko", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
+const convertLongToDate = (time: number | number[]): string => {
+  let date = new Date();
+  try {
+    if (typeof time === "number") {
+      date = new Date(time);
+    } else {
+      const [year, month, day, hours, minutes, seconds, milliseconds] = time;
+      date.setFullYear(year);
+      date.setMonth(month);
+      date.setDate(day);
+      date.setHours(hours);
+      date.setMinutes(minutes);
+      date.setSeconds(seconds);
+      date.setMilliseconds(milliseconds);
+    }
+  } catch (e) {
+    return null;
+  } finally {
+    return date.toLocaleString("ko", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  }
 };
 
 const isEmpty = (object: object): boolean => Object.keys(object).length === 0;
@@ -86,12 +104,17 @@ const profileIamgeOrCat = (user: any) => {
       path = require(`../profiles/${user.id}/${user.profileImg}`);
     }
   } catch (e) {
-    // console.log(e);
     path = "http://placekitten.com/300/200";
   } finally {
     return path;
   }
 };
+
+const reverse = (arr: any[]) =>
+  arr.reduce((acc, cur) => {
+    acc.unshift(cur);
+    return acc;
+  }, []);
 
 export {
   upperCase,
@@ -101,4 +124,5 @@ export {
   convertLongToDate,
   isEmpty,
   profileIamgeOrCat,
+  reverse,
 };
