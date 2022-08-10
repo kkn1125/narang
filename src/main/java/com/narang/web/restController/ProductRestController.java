@@ -1,7 +1,11 @@
 package com.narang.web.restController;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.narang.web.entity.Product;
 import com.narang.web.repository.ProductRepository;
+import com.narang.web.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,61 +19,41 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api")
 public class ProductRestController {
+    private ProductService productService;
 
     @Autowired
-    private ProductRepository productRepository;
-
-    @GetMapping("/products")
-    public ResponseEntity<?> getAllProducts() {
-        List<Product> products = productRepository.findAll();
-        if (products.size() > 0) {
-            return new ResponseEntity<List<Product>>(products, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>("상품이 없습니다!", HttpStatus.NOT_FOUND);
-        }
+    ProductRestController(ProductService productService) {
+        this.productService = productService;
     }
 
-    @GetMapping("/product/{pid}")
-    public ResponseEntity<?> getSingleProduct(@PathVariable("pid") String id) {
-        Optional<Product> productOptional = productRepository.findById(id);
-        if (productOptional.isPresent()) {
-            return new ResponseEntity<>(productOptional.get(), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>("pid가 [" + id + "]인 상품이 존재하지 않습니다.", HttpStatus.NOT_FOUND);
-        }
+    private String mapper(Object object) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+        return mapper.writeValueAsString(object);
+    }
+
+    @GetMapping("/products")
+    public String findAll() throws JsonProcessingException {
+        return mapper(productService.findAll());
+    }
+
+    @GetMapping("/product/{id}")
+    public String findById(@PathVariable("id") String id) throws JsonProcessingException {
+        return mapper(productService.findById(id));
     }
 
     @PostMapping("/product")
-    public ResponseEntity<?> createProduct(@RequestBody Product product) {
-        try {
-            productRepository.save(product);
-            return new ResponseEntity<Product>(product, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    public String insert(Product product) {
+        return productService.insert(product);
     }
 
-    @PutMapping("/product/{pid}")
-    public ResponseEntity<?> updateProduct(@PathVariable("pid") String id, @RequestBody Product product) {
-        Optional<Product> productOptional = productRepository.findById(id);
-        if (productOptional.isPresent()) {
-            Product productToSave = productOptional.get();
-            productToSave.replaceIfNotNull(product);
-            productRepository.save(productToSave);
-            return new ResponseEntity<>(productToSave, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>("pid가 [" + id + "]인 상품이 존재하지 않습니다.", HttpStatus.NOT_FOUND);
-        }
+    @PutMapping("/product")
+    public String update(Product product) throws JsonProcessingException {
+        return mapper(productService.update(product));
     }
 
-    @DeleteMapping("/product/{pid}")
-    public ResponseEntity<?> deleteProduct(@PathVariable("pid") String id) {
-        try {
-            productRepository.deleteById(id);
-            // id 잘못 입력시에도 리턴 찍히는 것 다시 체크하기!
-            return new ResponseEntity<>("pid [" + id + "]인 상품이 성공적으로 삭제되었습니다.", HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-        }
+    @DeleteMapping("/product/{id}")
+    public Boolean deleteById(@PathVariable("id") String id) {
+        return productService.deleteById(id);
     }
 }

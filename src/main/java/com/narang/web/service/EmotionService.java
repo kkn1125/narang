@@ -35,7 +35,7 @@ public class EmotionService {
         return newEmotion.getId();
     }
 
-    public Boolean delete(String id){
+    public Boolean deleteById(String id){
         emotionRepository.deleteById(id);
         return true;
     }

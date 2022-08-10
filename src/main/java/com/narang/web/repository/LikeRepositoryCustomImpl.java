@@ -50,5 +50,4 @@ public class LikeRepositoryCustomImpl implements LikeRepositoryCustom {
         likeTemplate.remove(q, "like");
         return true;
     }
-
 }

@@ -29,14 +29,12 @@ public class DiaryService {
         return newDiary.getId();
     }
 
-    public String update(Diary diary){
-        Diary updatedDiary = diaryRepository.update(diary);
-        return updatedDiary.getId();
+    public Diary update(Diary diary){
+        return diaryRepository.update(diary);
     }
 
     public Boolean deleteById(String id) {
         diaryRepository.deleteById(id);
         return true;
     }
-
 }

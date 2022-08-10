@@ -17,7 +17,6 @@ public class EmotionRepositoryCustomImpl implements EmotionRepositoryCustom {
         this.emotionTemplate = emotionTemplate;
     }
 
-
     @Override
     public Optional<Emotion> findByUid(String uid) {
         Criteria cr = new Criteria("uid").is(uid);

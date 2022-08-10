@@ -10,8 +10,12 @@ import org.springframework.data.mongodb.core.query.Query;
 import java.util.List;
 
 public class CommentRepositoryCustomImpl implements CommentRepositoryCustom {
-    @Autowired
     private MongoTemplate commentTemplate;
+
+    @Autowired
+    CommentRepositoryCustomImpl(MongoTemplate commentTemplate) {
+        this.commentTemplate = commentTemplate;
+    }
 
     @Override
     public List<Comment> findByDid(String did) {
@@ -21,10 +25,9 @@ public class CommentRepositoryCustomImpl implements CommentRepositoryCustom {
     }
 
     @Override
-    public Boolean update(Comment comment) {
+    public Comment update(Comment comment) {
         Comment foundComment = commentTemplate.findById(comment.getId(), Comment.class);
         foundComment.replaceIfNotNull(comment);
-        commentTemplate.save(foundComment, "comment");
-        return true;
+        return commentTemplate.save(foundComment, "comment");
     }
 }

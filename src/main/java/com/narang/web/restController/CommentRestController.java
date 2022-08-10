@@ -2,6 +2,7 @@ package com.narang.web.restController;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.narang.web.entity.Comment;
 import com.narang.web.entity.Diary;
 import com.narang.web.repository.CommentRepository;
@@ -21,33 +22,35 @@ public class CommentRestController {
         this.commentService = commentService;
     }
 
+    private String mapper(Object object) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+        return mapper.writeValueAsString(object);
+    }
+
     @GetMapping("/comments")
     public String findAll() throws JsonProcessingException {
-        ObjectMapper mapper = new ObjectMapper();
-        return mapper.writeValueAsString(commentService.findAll());
+        return mapper(commentService.findAll());
     }
 
     @GetMapping("/comment/did/{did}")
     public String findByDid(@PathVariable("did") String did) throws JsonProcessingException {
-        ObjectMapper mapper = new ObjectMapper();
-        return mapper.writeValueAsString(commentService.findByDid(did));
+        return mapper(commentService.findByDid(did));
     }
 
     @PostMapping("/comment")
     public String insert(Comment comment) {
-        System.out.println(comment);
         return commentService.insert(comment);
     }
 
     @PutMapping("/comment")
-    public Boolean update(Comment comment) {
-        return commentService.update(comment);
+    public String update(Comment comment) throws JsonProcessingException {
+        return mapper(commentService.update(comment));
     }
 
     @DeleteMapping("/comment/{id}")
-    public Boolean delete(@PathVariable("id") String id) {
+    public Boolean deleteById(@PathVariable("id") String id) {
         commentService.deleteById(id);
         return true;
     }
-
 }
