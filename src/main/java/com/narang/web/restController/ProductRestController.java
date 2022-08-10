@@ -54,7 +54,7 @@ public class ProductRestController {
         Optional<Product> productOptional = productRepository.findById(id);
         if (productOptional.isPresent()) {
             Product productToSave = productOptional.get();
-            productToSave.replace(product);
+            productToSave.replaceIfNotNull(product);
             productRepository.save(productToSave);
             return new ResponseEntity<>(productToSave, HttpStatus.OK);
         } else {

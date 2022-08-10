@@ -42,6 +42,9 @@ public class UserService {
     public User findByNickName(String nickName) {
         return userRepository.findByNickName(nickName).orElseThrow();
     }
+    public List<User> findByNickNames(List<String> nickNames) {
+        return userRepository.findByNickNames(nickNames);
+    }
 
     public String signin(String email, String password) {
         String token = securityService.createToken(email, exp);
