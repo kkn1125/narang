@@ -41,7 +41,7 @@ function Diary() {
       height,
       src: `https://picsum.photos/seed/${parseInt(
         (Math.random() * 1000).toString(),
-      )}/${size}`,
+      )}/${size.join("/")}`,
     };
   };
 
