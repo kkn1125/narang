@@ -2,7 +2,8 @@ import axios from "axios";
 import Like from "../../models/Like";
 import { handleReceiveData, handleReceiveError } from "../commonTypes";
 
-const findByDid = (did: string) => {
+// 
+const findLikeByDid = (did: string) => {
   return axios
     .get(`/api/like/did/${did}`)
     .then(handleReceiveData)
@@ -39,4 +40,4 @@ const deleteLikeByDid = (did: string, formData: FormData) => {
     .catch(handleReceiveError);
 };
 
-export { findByDid, addLike, deleteLikeById, deleteLikeByUid, deleteLikeByDid };
+export { findLikeByDid, addLike, deleteLikeById, deleteLikeByUid, deleteLikeByDid };
