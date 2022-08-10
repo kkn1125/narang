@@ -27,7 +27,7 @@ import java.util.List;
 public class Product {
 
     @Id
-    private String pid;
+    private String id;
 
     private String category;
 
