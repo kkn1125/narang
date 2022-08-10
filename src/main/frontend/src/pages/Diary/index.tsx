@@ -2,15 +2,16 @@ import { Masonry } from "@mui/lab";
 import {
   Button,
   ImageListItem,
+  Paper,
   Stack,
   styled,
   Typography,
 } from "@mui/material";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import { useCookies } from "react-cookie";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { findAllDiary } from "../../apis/diary";
+import { findDiaryAll } from "../../apis/diary";
 import FavoritButton from "../../components/atoms/FavoritButton";
 import OverflowContent from "../../components/atoms/OverflowContent";
 import { UserContext } from "../../contexts/UserProvider";
@@ -23,7 +24,7 @@ import { UserContext } from "../../contexts/UserProvider";
 
 // https://merrily-code.tistory.com/8
 
-const randomSize = ["/640/480", "/640/300", "/640/500", "/640/250"];
+const randomSize = ["640/480", "640/300", "640/500", "640/250"];
 
 function Diary() {
   const navigate = useNavigate();
@@ -32,9 +33,16 @@ function Diary() {
   const [itemData, setItemData] = useState([]);
 
   const getRandImg = () => {
-    return `https://picsum.photos/seed/${parseInt(
-      (Math.random() * 1000).toString(),
-    )}${randomSize[parseInt((Math.random() * 3).toString())]}`;
+    const size =
+      randomSize[parseInt((Math.random() * 3).toString())].split("/");
+    const [width, height] = size;
+    return {
+      width,
+      height,
+      src: `https://picsum.photos/seed/${parseInt(
+        (Math.random() * 1000).toString(),
+      )}/${size}`,
+    };
   };
 
   const getContent = (strings: string) => {
@@ -44,13 +52,21 @@ function Diary() {
 
   useEffect(() => {
     const getDiaryData = async () => {
-      const diaries = await findAllDiary();
+      const diaries = await findDiaryAll();
       if (diaries) {
         setItemData(diaries);
       }
     };
     getDiaryData();
   }, []);
+
+  const filteredItemData = useMemo(
+    () =>
+      itemData.filter((item) =>
+        user.nickName ? item.isShare || user.id === item.uid : item.isShare,
+      ),
+    [itemData],
+  );
 
   return (
     <DiaryBlock>
@@ -63,16 +79,24 @@ function Diary() {
         )}
       </Stack>
       <Masonry columns={4} spacing={2}>
-        {itemData.length === 0 && (
+        {filteredItemData.length === 0 && (
           <Typography variant='body1'>공유된 일기가 없습니다 🥲</Typography>
         )}
-        {itemData
-          .filter((item) =>
-            user.nickName ? item.isShare || user.id === item.uid : item.isShare,
-          )
-          .map((item, idx: number) => (
-            <ImageListItem key={item.id}>
-              <img src={getRandImg()} alt={item.title} loading='lazy' />
+        {filteredItemData.map((item, idx: number) => {
+          const rand = getRandImg();
+          return (
+            <ImageListItem
+              key={item.id}
+              component={Paper}
+              elevation={5}
+              sx={{ "&.MuiImageListItem-root": { border: "none" } }}>
+              <img
+                src={rand.src}
+                alt={item.title}
+                loading='lazy'
+                width={rand.width}
+                height={rand.height}
+              />
               {!item.isShare && (
                 <Typography
                   sx={{
@@ -92,7 +116,8 @@ function Diary() {
               </Cover>
               <FavoritButton diaryId={item.id} />
             </ImageListItem>
-          ))}
+          );
+        })}
       </Masonry>
     </DiaryBlock>
   );

@@ -1,50 +1,45 @@
-import { Box, Button, Container, Stack, Typography } from "@mui/material";
-import React, { useRef, useState } from "react";
-import { insertComment } from "../../apis/comment";
-import Comment from "../../models/Comment";
+import { Container, Stack } from "@mui/material";
+import React, { useContext, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { findCommentByDid } from "../../apis/comment";
+import {
+  CommentContext,
+  loadComment,
+} from "../../contexts/CommentProvider";
+import { reverse } from "../../tools/utils";
 import CommentItem from "../molecules/CommentItem";
 import CommentInsert from "./CommentInsert";
 
-function CommentList({ comments }: { comments: any[] }) {
-  const [content, setContent] = useState("");
+function CommentList() {
+  const params = useParams();
+  const [comments, commentDispatch] = useContext(CommentContext);
 
-  const handleInsertComment = (e: React.MouseEvent | React.KeyboardEvent) => {
-    if (
-      (e.type === "keydown" &&
-        e.ctrlKey &&
-        (e as React.KeyboardEvent).key === "Enter") ||
-      e.type === "click"
-    ) {
-      const comment = new Comment();
-      comment.set("content", content);
-      comment.set("mention", "");
-      comment.set("author", "author");
-
-      const formData = comment.makeFormData();
-
-      console.log(comment);
-      if (e.type === "keydown") {
-        insertComment(formData);
-      } else if (e.type === "click") {
-        insertComment(formData);
-      }
-    }
-  };
+  useEffect(() => {
+    findCommentByDid(params.id).then((result: any[]) => {
+      commentDispatch(loadComment(result));
+    });
+  }, []);
 
   return (
-    <Container maxWidth='md'>
+    <Container maxWidth='lg'>
       <CommentInsert
-        content={content}
-        setContent={setContent}
-        handleInsertComment={handleInsertComment}
+      // content={content}
+      // setContent={setContent}
+      // handleInsertComment={handleInsertComment}
       />
 
-      {comments.length === 0 && (
-        <CommentItem>등록된 댓글이 없습니다 🥲</CommentItem>
-      )}
-      {comments.map((comment, idx) => (
-        <CommentItem key={idx} comment={comment} />
-      ))}
+      <Stack
+        gap={3}
+        sx={{
+          mb: 10,
+        }}>
+        {comments.length === 0 && (
+          <CommentItem>등록된 댓글이 없습니다 🥲</CommentItem>
+        )}
+        {reverse(comments).map((comment: any, idx: React.Key) => (
+          <CommentItem key={idx} comment={comment} />
+        ))}
+      </Stack>
     </Container>
   );
 }
