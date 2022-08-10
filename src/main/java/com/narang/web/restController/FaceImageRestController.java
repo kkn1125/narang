@@ -4,10 +4,17 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.narang.web.entity.FaceImage;
 import com.narang.web.service.FaceImageService;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
@@ -37,6 +44,22 @@ public class FaceImageRestController {
     @PostMapping("/face")
     public String insert(FaceImage face) {
         return faceService.insert(face);
+    }
+
+    @PostMapping("/fileupload")
+    public Map<String, Object> fileupload(MultipartFile multipartFile, String id, String hashName) {
+        File targetFile = new File("src/main/frontend/src/upload/"
+                + id
+                + "/" + hashName);
+        try {
+            InputStream fileStream = multipartFile.getInputStream();
+            FileUtils.copyInputStreamToFile(fileStream, targetFile);
+        } catch (IOException e) {
+            FileUtils.deleteQuietly(targetFile);
+            e.printStackTrace();
+        }
+        Map<String, Object> m = new HashMap<>();
+        return m;
     }
 
     @DeleteMapping("/face/{id}")

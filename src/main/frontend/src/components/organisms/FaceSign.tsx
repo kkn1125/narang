@@ -52,6 +52,8 @@ function FaceSign({
   const [cookies, setCookie] = useCookies(["token"]);
   const [captureVideo, setCaptureVideo] = useState(true);
   const [target, setTarget] = useState(null);
+  const [images, setImages] = useState(null);
+  const [users, setUsers] = useState(null);
   const count = useRef(0);
 
   const displayRef = useRef(null);
@@ -71,7 +73,14 @@ function FaceSign({
   };
 
   useEffect(() => {
+    const loadInfo = async () => {
+      const users = (await findUserAll()) as unknown as any[];
+      const images = await findFaceImageAll();
+      setImages(images);
+      setUsers(users);
+    };
     handleOnVideo();
+    loadInfo();
     return () => {
       if (localStream) {
         localStream.getTracks().forEach((track: any) => {
@@ -83,22 +92,25 @@ function FaceSign({
   }, []);
 
   const loadImage = async () => {
-    const users = (await findUserAll()) as unknown as any[];
-    const images = await findFaceImageAll();
+    if (users === null || images === null) return null;
     const labels = images as unknown as any[];
     return Promise.all(
       labels.map(async (label: any) => {
-        const images = await fetchImage(
+        console.log(label.uid);
+        console.log(label.imgPath);
+        const faceImages = await fetchImage(
           require(`../../upload/${label.uid}/${label.imgPath}`),
         );
 
         const descriptions = [];
-        const detections = await detectSingleFace(images)
+        const detections = await detectSingleFace(faceImages)
           .withFaceLandmarks()
           .withFaceDescriptor();
         descriptions.push(detections.descriptor);
 
-        const foundUser: any = users.filter((u) => u.id === label.uid)?.pop();
+        const foundUser: any = users
+          .filter((u: any) => u.id === label.uid)
+          ?.pop();
         user = foundUser;
         return new LabeledFaceDescriptors(foundUser?.nickName, descriptions);
       }),
@@ -176,7 +188,11 @@ function FaceSign({
         const resizedDetections = resizeResults(detections, displaySize);
         canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
 
-        const labeledFaceDescriptors = await loadImage();
+        const labeledFaceDescriptors: any = await loadImage();
+
+        console.log(labeledFaceDescriptors);
+
+        if (labeledFaceDescriptors === null) return;
 
         const faceMatcher = new FaceMatcher(labeledFaceDescriptors, 0.6);
 
@@ -194,6 +210,7 @@ function FaceSign({
           return label;
         }
       } catch (e) {
+        console.log(e);
         // dev.log(e.message as unknown as string);
         notFoundCount += 1;
         if (notFoundCount > 5) {

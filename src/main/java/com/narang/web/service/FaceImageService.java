@@ -5,6 +5,7 @@ import com.narang.web.repository.FaceImageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.util.List;
 
 @Service
@@ -44,6 +45,21 @@ public class FaceImageService {
     }
 
     public Boolean deleteByTwo(String uid, List<String> ids) {
+        for(String id: ids) {
+            File file = new File("src/main/frontend/src/upload/" + uid);
+            if (file.isDirectory()) {
+                File[] files = file.listFiles();
+                for (File f : files) {
+                    if(f.getName().equals(id)) {
+                        if (f.delete()) {
+                            System.out.println("파일을 성공적으로 삭제 했습니다.");
+                        } else {
+                            System.out.println("없는 파일 입니다.");
+                        }
+                    }
+                }
+            }
+        }
         faceRepository.deleteByTwo(uid, ids);
         return true;
     }

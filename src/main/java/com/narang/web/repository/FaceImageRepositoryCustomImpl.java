@@ -2,6 +2,7 @@ package com.narang.web.repository;
 
 import com.narang.web.entity.Emotion;
 import com.narang.web.entity.FaceImage;
+import com.narang.web.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
