@@ -72,11 +72,11 @@ function SignIn() {
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
-      // console.log(values);
       const token = await signin(values);
-      console.log(token);
       if (token) {
-        setCookie("token", token);
+        setCookie("token", token, {
+          path: "/",
+        });
         navigate("/");
       } else {
         alert("이메일과 비밀번호를 확인해주세요.");
@@ -85,7 +85,7 @@ function SignIn() {
   });
 
   useEffect(() => {
-    console.log(cookies);
+    // console.log(cookies);
   }, []);
 
   const handleFaceSignStart = () => {

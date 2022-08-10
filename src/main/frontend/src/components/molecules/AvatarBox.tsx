@@ -11,9 +11,8 @@ import Item from "../../models/MenuItem";
 import React, { useContext, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
-import { signout } from "../../apis/auth";
+import { checkToken, signout } from "../../apis/auth";
 import { findByJwt } from "../../apis/user";
-import { decodeJwt } from "jose";
 import { removeUser, setUser, UserContext } from "../../contexts/UserProvider";
 import { profileIamgeOrCat } from "../../tools/utils";
 
@@ -21,7 +20,6 @@ function AvatarBox() {
   const navigate = useNavigate();
   const [user, dispatch] = useContext(UserContext);
   const [cookies, setCookie, removeCookie] = useCookies(["token"]);
-
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
   const [isSignin, setIsSignin] = useState(false);
 
@@ -55,9 +53,17 @@ function AvatarBox() {
     const { token } = cookies;
     if (token) {
       // console.log(decodeJwt(token))
-      if (decodeJwt(token).exp * 1000 <= Date.now()) {
-        removeCookie("token");
-      }
+      // if (decodeJwt(token).exp * 1000 <= Date.now()) {
+      //   removeCookie("token");
+      // }
+      checkToken(cookies.token).then((res) => {
+        if (res.result === false) {
+          signout(token);
+          navigate("/auth/signin");
+          removeCookie("token");
+          alert("토큰이 만료 되었습니다.");
+        }
+      });
       setIsSignin(true);
       setItems(items.map((item) => item.changeActive()));
       findByJwt(token).then((res) => {
