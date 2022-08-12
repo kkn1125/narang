@@ -84,10 +84,6 @@ function SignIn() {
     },
   });
 
-  useEffect(() => {
-    // console.log(cookies);
-  }, []);
-
   const handleFaceSignStart = () => {
     setFaceSignStart(!faceSignStart);
   };

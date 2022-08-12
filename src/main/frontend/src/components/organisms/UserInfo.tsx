@@ -1,7 +1,7 @@
 import { Avatar, Stack, Typography } from "@mui/material";
 import React, { useContext } from "react";
 import { UserContext } from "../../contexts/UserProvider";
-import { convertLongToDate, profileIamgeOrCat } from "../../tools/utils";
+import { convertLongToDate, profileImageOrCat } from "../../tools/utils";
 
 interface UserInfoProps {
   author: string;
@@ -20,7 +20,7 @@ function UserInfo({ author, regdate, diaryOwner, slot }: UserInfoProps) {
       <Avatar
         children={getFirstWord(author)}
         sx={{ width: 48, height: 48 }}
-        src={profileIamgeOrCat(diaryOwner)}
+        src={profileImageOrCat(diaryOwner)}
       />
       <Stack justifyContent='space-between'>
         <Typography>{author}</Typography>

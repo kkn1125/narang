@@ -97,15 +97,39 @@ const convertLongToDate = (time: number | number[]): string => {
 
 const isEmpty = (object: object): boolean => Object.keys(object).length === 0;
 
-const profileIamgeOrCat = (user: any) => {
+const profileImageOrCat = (user: any) => {
+  let prefix = (user: any) => `/images/profiles/${user.id}/${user.profileImg}`;
+  // process.env.NODE_ENV !== "production"
+  //   ? require(`../profiles/${user.id}/${user.profileImg}`)
+  //   : `/images/profiles/${user.id}/${user.profileImg}`;
   let path;
   try {
     if (user && user.id && user.profileImg) {
-      path = require(`../profiles/${user.id}/${user.profileImg}`);
+      path = prefix(user);
     }
   } catch (e) {
     path = "http://placekitten.com/300/200";
+    console.log(e);
   } finally {
+    // console.log(path);
+    return path;
+  }
+};
+
+const uploadImageOrNull = (user: any) => {
+  let prefix = (user: any) => `/images/upload/${user.id}/${user.profileImg}`;
+  // process.env.NODE_ENV !== "production"
+  //   ? require(`../upload/${user.id}/${user.profileImg}`)
+  //   : `/images/upload/${user.id}/${user.profileImg}`;
+  let path;
+  try {
+    if (user && user.id && user.profileImg) {
+      path = prefix(user);
+    }
+  } catch (e) {
+    console.log(e);
+  } finally {
+    // console.log(path);
     return path;
   }
 };
@@ -123,6 +147,7 @@ export {
   mapToQuery,
   convertLongToDate,
   isEmpty,
-  profileIamgeOrCat,
+  profileImageOrCat,
+  uploadImageOrNull,
   reverse,
 };

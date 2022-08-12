@@ -1,9 +1,11 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import { IconButton, Stack, SvgIcon, Typography } from "@mui/material";
 import { addLike, deleteLikeByDid, findLikeByDid } from "../../apis/like";
 import Like from "../../models/Like";
+import { UserContext } from "../../contexts/UserProvider";
+import { useCookies } from "react-cookie";
 
 interface FavoritButton {
   diaryId: string;
@@ -15,6 +17,8 @@ interface FavoritButton {
 }
 
 function FavoritButton({ diaryId, onClick }: FavoritButton) {
+  const [cookies, setCookie] = useCookies(["token"]);
+  const [user, dispatch] = useContext(UserContext);
   const [isClicked, setIsClicked] = useState(false);
   const [count, setCount] = useState(0);
 
@@ -22,6 +26,13 @@ function FavoritButton({ diaryId, onClick }: FavoritButton) {
     const getInitialLikes = async () => {
       const likes = await findLikeByDid(diaryId);
       setCount(likes.length);
+      likes.forEach((like: any) => {
+        if (cookies.token && like.uid === user.id) {
+          setIsClicked(true);
+        } else {
+          setIsClicked(false);
+        }
+      });
     };
     getInitialLikes();
   }, []);
@@ -32,17 +43,21 @@ function FavoritButton({ diaryId, onClick }: FavoritButton) {
       const like = new Like();
       like.set("did", diaryId);
       like.set("isLike", true);
-      like.set("uid", "kimson");
+      like.set("uid", user.id);
       addLike(like.makeFormData());
       setIsClicked(true);
       // TODO: setIsClicked는 로그인 JWT 구현 후 설정해야 함
     } else {
       setCount(count - 1);
       const formData = new FormData();
-      formData.append("uid", "kimson");
+      formData.append("uid", user.id);
       deleteLikeByDid(diaryId, formData);
       setIsClicked(false);
     }
+  };
+
+  const noSignAlert = () => {
+    alert("로그인 후 사용할 수 있는 기능 입니다.");
   };
 
   return (
@@ -50,9 +65,11 @@ function FavoritButton({ diaryId, onClick }: FavoritButton) {
       <IconButton
         size='small'
         onClick={
-          onClick
-            ? (e) => onClick(e, setIsClicked, isClicked)
-            : handleFavoritCount
+          cookies.token
+            ? onClick
+              ? (e) => onClick(e, setIsClicked, isClicked)
+              : handleFavoritCount
+            : () => noSignAlert()
         }>
         <SvgIcon fontSize='small' color='error'>
           {isClicked ? <FavoriteIcon /> : <FavoriteBorderOutlinedIcon />}

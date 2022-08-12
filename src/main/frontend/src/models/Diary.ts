@@ -39,7 +39,6 @@ class Diary extends PModel implements IModel<Diary, DiaryColumn> {
 
   // setter
   public set(column: DiaryColumn, value: ModelValue) {
-    console.log("set:", column, value);
     switch (column) {
       case "uid":
       case "title":

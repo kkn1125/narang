@@ -14,7 +14,7 @@ import { useCookies } from "react-cookie";
 import { checkToken, signout } from "../../apis/auth";
 import { findByJwt } from "../../apis/user";
 import { removeUser, setUser, UserContext } from "../../contexts/UserProvider";
-import { profileIamgeOrCat } from "../../tools/utils";
+import { profileImageOrCat } from "../../tools/utils";
 
 function AvatarBox() {
   const navigate = useNavigate();
@@ -87,7 +87,7 @@ function AvatarBox() {
           <Avatar
             children={user.nickName?.[0].toUpperCase()}
             {...(user.profileImg && {
-              src: profileIamgeOrCat(user),
+              src: profileImageOrCat(user),
             })}
           />
         </IconButton>

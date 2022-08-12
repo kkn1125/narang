@@ -47,7 +47,6 @@ class User extends PModel implements IModel<User, UserColumn> {
 
   // setter
   public set(column: UserColumn, value: ModelValue) {
-    console.log("set:", column, value);
     switch (column) {
       case "id":
       case "nickName":
