@@ -61,7 +61,6 @@ const reducer = (state: any[], action: Action) => {
     case UPDATE_COMMENT:
       comment.getResponseData(action.comment);
       formData = comment.makeFormData();
-      console.log(action.comment)
       formData.append("id", action.comment.id);
       updateCommentById(formData);
       return state.map((c) => {

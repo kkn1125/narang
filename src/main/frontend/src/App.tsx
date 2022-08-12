@@ -1,6 +1,6 @@
-import * as React from "react";
+import React from "react";
 import Layout from "./components/templates/Layout";
-import { Route, Routes, useRoutes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import NotFound from "./pages/NotFound";
@@ -13,11 +13,9 @@ import Usage from "./pages/Diary/Usage";
 import AuthLayout from "./components/templates/AuthLayout";
 import SignIn from "./pages/Auth/SignIn";
 import SignUp from "./pages/Auth/SignUp";
-// import FaceLogin from "./pages/Auth/[x]FaceLogin";
 import Profile from "./pages/Auth/Profile";
 import Detail from "./pages/Diary/Detail";
 import Cart from "./pages/Diary/Cart";
-import { withCookies } from "react-cookie";
 
 function App() {
   return (
@@ -29,7 +27,6 @@ function App() {
       <Route path='/auth' element={<AuthLayout />}>
         <Route path='signin' element={<SignIn />} />
         <Route path='signup' element={<SignUp />} />
-        {/* <Route path='facesign' element={<FaceLogin />} /> */}
       </Route>
       <Route path='/auth' element={<DiaryLayout />}>
         <Route path='profile' element={<Profile />} />
@@ -44,6 +41,7 @@ function App() {
         <Route path='cart' element={<Cart />} />
         <Route path='usage' element={<Usage />} />
       </Route>
+      <Route path='*' element={<NotFound />} />
     </Routes>
   );
 }

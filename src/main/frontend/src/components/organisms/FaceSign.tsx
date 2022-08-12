@@ -12,23 +12,19 @@ import {
   TinyFaceDetectorOptions,
 } from "face-api.js";
 import React, { memo, useEffect, useRef, useState } from "react";
-import {
-  Box,
-  Button,
-  CircularProgress,
-  styled,
-  Typography,
-} from "@mui/material";
+import { Box, styled } from "@mui/material";
 import { findUserAll } from "../../apis/user";
 import { findFaceImageAll } from "../../apis/faceImage";
-import { faceSignin, signin } from "../../apis/auth";
+import { faceSignin } from "../../apis/auth";
 import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
-import { dev } from "../../tools/devConsole";
+import { uploadImageOrNull } from "../../tools/utils";
 
 let limitCount = 5;
 
 let localStream: any;
+
+let turn = false;
 
 interface FaceSignProps {
   test?: boolean;
@@ -63,12 +59,10 @@ function FaceSign({
   const videoHeight = 360;
 
   const constraints = {
-    video: captureVideo
-      ? {
-          width: videoWidth,
-          height: videoHeight,
-        }
-      : false,
+    video: {
+      width: videoWidth,
+      height: videoHeight,
+    },
     audio: false,
   };
 
@@ -96,11 +90,7 @@ function FaceSign({
     const labels = images as unknown as any[];
     return Promise.all(
       labels.map(async (label: any) => {
-        console.log(label.uid);
-        console.log(label.imgPath);
-        const faceImages = await fetchImage(
-          require(`../../upload/${label.uid}/${label.imgPath}`),
-        );
+        const faceImages = await fetchImage(uploadImageOrNull(label));
 
         const descriptions = [];
         const detections = await detectSingleFace(faceImages)
@@ -159,7 +149,15 @@ function FaceSign({
     setProcessing?.(num);
   };
 
+  const onPause = () => {
+    turn = false;
+    displayRef.current
+      .querySelectorAll("canvas")
+      .forEach((_: HTMLCanvasElement) => _.remove());
+  };
+
   const onPlay = async (e: React.SyntheticEvent) => {
+    turn = true;
     // video loaded
     setModelsLoaded?.(true);
 
@@ -190,8 +188,6 @@ function FaceSign({
 
         const labeledFaceDescriptors: any = await loadImage();
 
-        console.log(labeledFaceDescriptors);
-
         if (labeledFaceDescriptors === null) return;
 
         const faceMatcher = new FaceMatcher(labeledFaceDescriptors, 0.6);
@@ -210,8 +206,6 @@ function FaceSign({
           return label;
         }
       } catch (e) {
-        console.log(e);
-        // dev.log(e.message as unknown as string);
         notFoundCount += 1;
         if (notFoundCount > 5) {
           notFoundCount = 0;
@@ -254,7 +248,7 @@ function FaceSign({
     const loop = () => {
       if (test) {
         testFaceDetecting().then(() => {
-          if (captureVideo) {
+          if (turn) {
             setTimeout(loop, 1);
           }
         });
@@ -302,6 +296,7 @@ function FaceSign({
                 autoPlay
                 muted
                 onPlay={onPlay}
+                onPause={onPause}
               />
             </>
           )}

@@ -42,7 +42,6 @@ class Product extends PModel implements IModel<Product, ProductColumn> {
 
   // setter
   public set(column: ProductColumn, value: ModelValue) {
-    console.log("set:", column, value);
     switch (column) {
       case "category":
       case "name":

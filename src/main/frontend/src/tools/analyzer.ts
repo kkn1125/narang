@@ -89,7 +89,7 @@ class Analyzer {
         this.config
       );
     const translatedText = await res.data;
-    console.log("[TranslatedText]", translatedText);
+    // console.log("[TranslatedText]", translatedText);
     this.result = translatedText.message.result.translatedText;
   }
 
@@ -97,7 +97,7 @@ class Analyzer {
   analyze(options?: Sentiment.AnalysisOptions): Sentiment.AnalysisResult {
     const sentiment = new Sentiment();
     this.analyzedResult = sentiment.analyze(this.result, options);
-    console.log("[Sentiment]", this.analyzedResult);
+    // console.log("[Sentiment]", this.analyzedResult);
     return this.analyzedResult;
   }
 

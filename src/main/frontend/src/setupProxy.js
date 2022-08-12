@@ -11,6 +11,12 @@ module.exports = function (app) {
     })
   );
   app.use(
+    createProxyMiddleware("/images", {
+      target: `http://${REACT_APP_SERVER_HOST}:${REACT_APP_SERVER_PORT}`,
+      changeOrigin: true,
+    })
+  );
+  app.use(
     createProxyMiddleware("/v1/payment/ready", {
       target: `https://kapi.kakao.com`,
       changeOrigin: true,

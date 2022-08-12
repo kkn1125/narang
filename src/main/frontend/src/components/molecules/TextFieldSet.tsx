@@ -48,11 +48,6 @@ function TextFieldSet({ fields, size = "medium", formik }: TextFieldSetProps) {
             </Stack>
           ) : (
             <Stack key={idx}>
-              {/* {(() => {
-                console.log(formik.values[splitToUnderBar(name)]);
-                console.log(formik.errors[splitToUnderBar(name)]);
-                return "";
-              })()} */}
               <TextField
                 value={formik.values[splitToUnderBar(name)]}
                 onChange={formik.handleChange}

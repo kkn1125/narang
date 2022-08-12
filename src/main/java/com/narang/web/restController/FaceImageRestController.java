@@ -51,18 +51,8 @@ public class FaceImageRestController {
 
     @PostMapping("/fileupload")
     public Map<String, Object> fileupload(MultipartFile multipartFile, String id, String hashName) {
-        File targetFile = new File("src/main/frontend/src/upload/"
-                + id
-                + "/" + hashName);
-        try {
-            InputStream fileStream = multipartFile.getInputStream();
-            FileUtils.copyInputStreamToFile(fileStream, targetFile);
-        } catch (IOException e) {
-            FileUtils.deleteQuietly(targetFile);
-            e.printStackTrace();
-        }
-        Map<String, Object> m = new HashMap<>();
-        return m;
+
+        return faceService.fileUpload(multipartFile, id, hashName);
     }
 
     @DeleteMapping("/face/{id}")
