@@ -51,7 +51,8 @@ function DiaryLayout(props: Props) {
           // width: { sm: `calc(100% - ${drawerWidth}px)` },
           ml: { sm: `${drawerWidth}px` },
           color: bgBlack ? "#ffffff" : "#000000",
-          backgroundColor: bgBlack ? "#252525" : "inherit",
+          backgroundColor: "white",
+          // backgroundColor: bgBlack ? "#252525" : "inherit",
         }}>
         <Toolbar
           sx={{
