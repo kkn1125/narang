@@ -85,7 +85,7 @@ function Home() {
       <DynamicSection
         main
         title='당신의 이야기를 들려주세요 😊'
-        titleSize='l'
+        titleSize='m'
         img='https://cdn.pixabay.com/photo/2020/05/24/11/14/sea-5213746_1280.jpg'
         slot={
           <Stack alignItems='center' gap={3}>
@@ -107,17 +107,6 @@ function Home() {
                 )}
               </Typography>
             </Box>
-            {/* {!cookies.token && (
-              <Button
-                component={Link}
-                to='/auth/signup'
-                size='large'
-                variant='contained'
-                color='error'>
-                회원 가입
-              </Button>
-            )}
-            <Typography variant='body2'>당신의 이야기를 들려주세요.</Typography> */}
           </Stack>
         }
       />

@@ -33,7 +33,7 @@ const sizeType: {
   xs: "body1",
   s: "h5",
   m: "h4",
-  l: "h2",
+  l: "h3",
 };
 
 function Title({ title, size, align, noGutter, main }: TitleProps) {

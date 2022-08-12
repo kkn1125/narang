@@ -4,18 +4,27 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.narang.web.entity.User;
 import com.narang.web.repository.UserRepository;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 @Service
 public class UserService {
+//    @Value("${dev.profileupload}")
+    @Value("${prod.profileupload}")
+    private String profileUploadPath;
     private final static long exp = 1000 * 60 * 60;
 
     private UserRepository userRepository;
@@ -114,8 +123,23 @@ public class UserService {
         }
     }
 
+    public Map<String, Object> fileUpload(MultipartFile multipartFile, String id, String hashName) {
+        File targetFile = new File(profileUploadPath
+                + id
+                + "/" + hashName);
+        try {
+            InputStream fileStream = multipartFile.getInputStream();
+            FileUtils.copyInputStreamToFile(fileStream, targetFile);
+        } catch (IOException e) {
+            FileUtils.deleteQuietly(targetFile);
+            e.printStackTrace();
+        }
+        Map<String, Object> m = new HashMap<>();
+        return m;
+    }
+
     public Boolean removeProfileImageById(String id) {
-        File file = new File("src/main/frontend/src/profiles/" + id);
+        File file = new File(profileUploadPath + id);
         if (file.isDirectory()) {
             File[] files = file.listFiles();
             for (File f : files) {

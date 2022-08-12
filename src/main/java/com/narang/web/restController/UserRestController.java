@@ -7,6 +7,7 @@ import com.narang.web.entity.User;
 import com.narang.web.service.UserService;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,6 +22,9 @@ import java.util.*;
 @RequestMapping("/api")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class UserRestController {
+    // 배포 시 dev -> prod 변경 할 것
+    @Value("${dev.fileupload}")
+    private String uploadPath;
     private UserService userService;
 
     @Autowired
@@ -53,7 +57,7 @@ public class UserRestController {
     @PostMapping("/user/nicknames")
     public String findByNickName(String[] userNickNames) throws JsonProcessingException {
         List<String> nickNames = Arrays.asList(userNickNames);
-        if(nickNames.size() == 0) return mapper(new ArrayList<>());
+        if (nickNames.size() == 0) return mapper(new ArrayList<>());
 
         List<User> users = userService.findByNickNames(nickNames);
         return mapper(users);
@@ -61,7 +65,6 @@ public class UserRestController {
 
     @GetMapping("/user/email/{email}")
     public String findByEmail(@PathVariable("email") String email) throws JsonProcessingException {
-        System.out.println(email);
         return mapper(userService.findByEmail(email));
     }
 
@@ -97,18 +100,7 @@ public class UserRestController {
 
     @PostMapping("/profile/fileupload")
     public Map<String, Object> profileFileupload(MultipartFile multipartFile, String id, String hashName) {
-        File targetFile = new File("src/main/frontend/src/profiles/"
-                + id
-                + "/" + hashName);
-        try {
-            InputStream fileStream = multipartFile.getInputStream();
-            FileUtils.copyInputStreamToFile(fileStream, targetFile);
-        } catch (IOException e) {
-            FileUtils.deleteQuietly(targetFile);
-            e.printStackTrace();
-        }
-        Map<String, Object> m = new HashMap<>();
-        return m;
+        return userService.fileUpload(multipartFile, id, hashName);
     }
 
     @PutMapping("/user")

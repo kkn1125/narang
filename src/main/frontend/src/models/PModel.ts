@@ -39,7 +39,6 @@ export class PModel {
   public makeFormData(): FormData {
     const formData = new FormData();
     Object.entries(this).forEach(([column, value]: [string, string]) => {
-      console.log(column, value);
       switch (column) {
         case "negative":
         case "positive":
@@ -66,7 +65,6 @@ export class PModel {
   public makeFormDataWithUpdate(): FormData {
     const formData = new FormData();
     Object.entries(this).forEach(([column, value]: [string, string]) => {
-      console.log(column, value);
       switch (column) {
         case "negative":
         case "positive":

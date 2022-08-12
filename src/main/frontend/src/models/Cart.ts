@@ -30,7 +30,6 @@ class Cart extends PModel implements IModel<Cart, CartColumn> {
 
   // setter
   public set(column: CartColumn, value: ModelValue) {
-    console.log("set:", column, value);
     switch (column) {
       case "uid":
       case "pid":

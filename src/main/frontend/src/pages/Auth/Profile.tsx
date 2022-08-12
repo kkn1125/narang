@@ -39,7 +39,7 @@ import {
   nickNameValidation,
   passwordValidation,
   phoneValidation,
-  profileIamgeOrCat,
+  profileImageOrCat,
 } from "../../tools/utils";
 
 const validationSchema = yup.object({
@@ -221,7 +221,11 @@ function Profile() {
             alert("비밀번호를 다시 확인 해 주세요.");
           }
         })
-        .catch(handleReceiveError);
+        .catch(handleReceiveError)
+        .finally(() => {
+          formik.values.password = "";
+          formik.values.check_password = "";
+        });
     },
   });
 
@@ -309,7 +313,7 @@ function Profile() {
           elevation={5}>
           <Stack spacing={2}>
             <Avatar
-              src={profileIamgeOrCat(user)}
+              src={profileImageOrCat(user)}
               sx={{ width: 60, height: 60, display: "block", margin: "auto" }}
             />
             <Box>
