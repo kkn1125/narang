@@ -1,9 +1,6 @@
 package com.narang.web.repository;
 
-import com.narang.web.entity.Comment;
 import com.narang.web.entity.User;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoTemplate;
 
 import java.util.List;
 import java.util.Optional;

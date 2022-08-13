@@ -4,68 +4,89 @@
 
 ## 참여자
 
-|[@ohoraming](https://github.com/ohoraming)|[@kkn1125](https://github.com/kkn1125)|
-|---|---|
+| [@ohoraming](https://github.com/ohoraming)                                     | [@kkn1125](https://github.com/kkn1125)                                         |
+| ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ |
 | <img src="https://avatars.githubusercontent.com/u/77590526?v=4" width="120" /> | <img src="https://avatars.githubusercontent.com/u/71887242?v=4" width="120" /> |
 
 ## 기획
 
-"Narang"서비스는 개개인의 일기를 작성하면서 감정을 분석하고 해석된 감정 데이터를 그래프로 변환하여 연, 월, 주 단위로 자신을 관찰 가능하게 하는 감정 케어 서비스입니다.
+"Narang"서비스는 개개인의 일기를 작성하면서 감정을 분석하고 해석된 감정 데이터를 그래프로 변환하여 월, 주 단위로 자신을 관찰 가능하게 하는 감정 케어 서비스입니다.
 
-주요 서비스는 일기를 작성하고, 일기의 내용을 분석하여 감정 데이터를 얻어 연, 월, 주 단위로 그래프를 자동으로 작성합니다. 해당 데이터를 작성자가 활용하여 자신의 감정을 케어하는데 도움을 주기 위함이 목적이며, 로그인의 편의를 돕기 위해 안면 인식 로그인 기능을 고안하여 개발을 진행 했습니다.
+주요 서비스는 일기를 작성하고, 일기의 내용을 분석하여 감정 데이터를 얻어 월, 주 단위로 그래프를 자동으로 작성합니다. 해당 데이터를 작성자가 활용하여 자신의 감정을 케어하는데 도움을 주기 위함이 목적이며, 로그인의 편의를 돕기 위해 안면 인식 로그인 기능을 고안하여 개발을 진행 했습니다.
 
-### 컨셉
+## 컨셉
 
 감정 케어 웹 서비스
 
-### 기술 스택
-
-![image](https://user-images.githubusercontent.com/71887242/184310200-dfd9091c-7937-4f47-b2fd-074d6608c0c9.png)
-
-### 서비스 목록
+## 서비스 목록
 
 1. 안면 인식 로그인
 2. 소셜 계정 로그인
 3. 일기
-  - 일기 내용을 기반으로 감정 판별
-  - 감정 분석
-  - 감정 분석 데이터 기반 그래프 (주, 월, 연 단위) 생성
-4. 판매 시스템
-  - 감정 인식 -> 감정 점수에 따라 상품 추천
+
+- 일기 내용을 기반으로 감정 판별
+- 감정 분석
+- 감정 분석 데이터 기반 그래프 (주, 월 단위) 생성
+
+1. 판매 시스템
+
+- 감정 인식 -> 감정 점수에 따라 상품 추천
+
 5. 결제 시스템
+
+## 기술 스택
+
+![image](https://user-images.githubusercontent.com/71887242/184470592-80216efb-7df5-4f29-8c2d-c8672fa65903.png)
 
 ### 개발 환경
 
-1. back-end
-   - aws 서버 배포
+1. common
+   - babel
+   - prettier
+2. front-end
+   - react
+   - typescript
+   - http-proxy-middleware
+   - html-react-parser
+   - formik
+   - yup
+   - jose
+   - js-sha256
+   - material-ui
+   - emotion
+   - kadvice
+   - suneditor
+   - react-cookie
+   - react-dom
+   - react-router-dom
+   - chart.js
+   - react-chartjs-2
+   - dotenv
+   - date-fns
+   - axios
+3. back-end
+   - Spring Boot
+   - Spring Security
+   - Json Web Token
+   - Lombok
+   - jackson data-bind
+   - common-io
+   - gradle
+4. AI
+   - sentiment - 텍스트 감정 분석
+   - face-api.js - 안면 인식 + 감정 분석 + 인물 매칭
+   - naver papago - 번역
+5. deploy
+   - AWS
+   - mobaXterm
 
-#### front-end
+### Database
 
-- react (typescript)
-- react-router-dom
-- mui + emotion - css 부분
-- axios
-- http-proxy-middleware
-- face-api.js - 안면인식
-- 맞춤법api (조사)
-- dotenv - 환경변수
-- formidable - 파일 업로드 라이브러리
-- formik - form 데이터 검증 라이브러리
-- chart.js - 이모션 그래프
-- yup - form 데이터 검증
-- prop-types - prop의 타입 검증
+- MongoDB
 
-#### back-end
+## API 문서
 
-- spring boot
-- lombok
-- spring security
-
-#### Database
-
-- 개발 : MongoDB
-- prod : mysql + jpa
-
+... : notion 작업
 
 ---
 

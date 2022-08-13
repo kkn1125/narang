@@ -5,15 +5,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.narang.web.entity.FaceImage;
 import com.narang.web.service.FaceImageService;
-import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -39,7 +34,7 @@ public class FaceImageRestController {
         return mapper(faceService.findAll());
     }
 
-    @GetMapping("/face/{uid}")
+    @GetMapping("/face/uid/{uid}")
     public String findByUid(@PathVariable("uid") String uid) throws JsonProcessingException {
         return mapper(faceService.findByUid(uid));
     }
@@ -61,11 +56,11 @@ public class FaceImageRestController {
     }
 
     @DeleteMapping("/face/uid/{uid}")
-    public Boolean deleteByUid(@PathVariable("uid") String uid, @RequestParam("ids") List<String> ids) {
+    public Boolean deleteByUid(@PathVariable("uid") String uid, @RequestParam("ids") List<String> ids, @RequestParam("imgPath") String imgPath) {
         if (ids == null) {
             return faceService.deleteByUid(uid);
         } else {
-            return faceService.deleteByTwo(uid, ids);
+            return faceService.deleteByTwo(uid, ids, imgPath);
         }
     }
     // https://stackoverflow.com/questions/17987380/combine-get-and-post-request-methods-in-spring 메서드 값 받아오기
