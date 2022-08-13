@@ -23,7 +23,7 @@ const OverflowContent = ({
       const en: number = getLengthOrZero(children.match(/[A-z]/g));
       const ko: number = getLengthOrZero(children.match(/[ㄱ-힣]/g));
       const whitespace: number = getLengthOrZero(
-        children.match(/[^A-zㄱ-힣]/g)
+        children.match(/[^A-zㄱ-힣]/g),
       );
 
       if (ko * 2 + en + whitespace > limit) {

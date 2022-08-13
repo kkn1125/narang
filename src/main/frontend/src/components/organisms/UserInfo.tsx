@@ -1,6 +1,5 @@
 import { Avatar, Stack, Typography } from "@mui/material";
-import React, { useContext } from "react";
-import { UserContext } from "../../contexts/UserProvider";
+import React from "react";
 import { convertLongToDate, profileImageOrCat } from "../../tools/utils";
 
 interface UserInfoProps {

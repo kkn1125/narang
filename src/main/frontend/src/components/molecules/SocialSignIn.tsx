@@ -1,4 +1,4 @@
-import { Button, Stack, SvgIcon, Typography } from "@mui/material";
+import { Button, Stack, Typography } from "@mui/material";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 

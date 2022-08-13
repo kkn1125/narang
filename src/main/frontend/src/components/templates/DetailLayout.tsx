@@ -1,17 +1,17 @@
 import { Button, Container, Divider, Stack, Typography } from "@mui/material";
-import React, { memo, useContext, useEffect, useState } from "react";
 import parse, {
   DOMNode,
   Element,
-  HTMLReactParserOptions,
+  HTMLReactParserOptions
 } from "html-react-parser";
-import CommentList from "../organisms/CommentList";
-import UserInfo from "../organisms/UserInfo";
+import React, { memo, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { deleteDiaryById } from "../../apis/diary";
 import { deleteEmotionByDid } from "../../apis/emotions";
-import { UserContext } from "../../contexts/UserProvider";
 import { findUserById } from "../../apis/user";
+import { UserContext } from "../../contexts/UserProvider";
+import CommentList from "../organisms/CommentList";
+import UserInfo from "../organisms/UserInfo";
 
 const options: HTMLReactParserOptions = {
   replace: (domNode: DOMNode) => {

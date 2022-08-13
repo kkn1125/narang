@@ -1,7 +1,4 @@
-import { Button } from "@mui/material";
-import axios from "axios";
 import React, { useEffect } from "react";
-import Sentiment from "sentiment";
 
 function Usage() {
   useEffect(() => {

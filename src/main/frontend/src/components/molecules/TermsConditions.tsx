@@ -5,7 +5,7 @@ import {
   FormGroup,
   Modal,
   Typography,
-  useTheme,
+  useTheme
 } from "@mui/material";
 import React, { useState } from "react";
 

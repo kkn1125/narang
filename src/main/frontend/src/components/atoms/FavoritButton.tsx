@@ -1,11 +1,11 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import { IconButton, Stack, SvgIcon, Typography } from "@mui/material";
-import { addLike, deleteLikeByDid, findLikeByDid } from "../../apis/like";
-import Like from "../../models/Like";
-import { UserContext } from "../../contexts/UserProvider";
+import React, { useContext, useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
+import { addLike, deleteLikeByDid, findLikeByDid } from "../../apis/like";
+import { UserContext } from "../../contexts/UserProvider";
+import Like from "../../models/Like";
 
 interface FavoritButton {
   diaryId: string;

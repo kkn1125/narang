@@ -1,21 +1,19 @@
-import { Box, TextField, Button, Stack, FormHelperText } from "@mui/material";
-import React, { useContext, useEffect, useRef, useState } from "react";
-import SunEditor from "suneditor-react";
-import SunEditorCore from "suneditor/src/lib/core";
-import Analyzer from "../../tools/analyzer";
+import { Box, Button, FormHelperText, Stack, TextField } from "@mui/material";
 import { useFormik } from "formik";
-import { useNavigate, useParams } from "react-router-dom";
-import * as yup from "yup";
-import axios from "axios";
-import { findDiaryById, insertDiary, updateDiary } from "../../apis/diary";
-import Emotions from "../../models/Emotions";
-import "suneditor/dist/css/suneditor.min.css";
-import Diary from "../../models/Diary";
-import SwitchLabels from "../../components/molecules/SwitchLabels";
-import { deleteEmotionByDid, insertEmotions } from "../../apis/emotions";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { useCookies } from "react-cookie";
-import { checkToken, signout } from "../../apis/auth";
+import { useNavigate, useParams } from "react-router-dom";
+import SunEditor from "suneditor-react";
+import "suneditor/dist/css/suneditor.min.css";
+import SunEditorCore from "suneditor/src/lib/core";
+import * as yup from "yup";
+import { findDiaryById, insertDiary, updateDiary } from "../../apis/diary";
+import { deleteEmotionByDid, insertEmotions } from "../../apis/emotions";
+import SwitchLabels from "../../components/molecules/SwitchLabels";
 import { UserContext } from "../../contexts/UserProvider";
+import Diary from "../../models/Diary";
+import Emotions from "../../models/Emotions";
+import Analyzer from "../../tools/analyzer";
 
 interface FormikProps {
   title: string;

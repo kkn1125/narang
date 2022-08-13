@@ -1,4 +1,4 @@
-import { Box, SxProps, Theme } from "@mui/material";
+import { Box } from "@mui/material";
 import React from "react";
 
 interface WaveBGProps {
