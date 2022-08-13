@@ -71,7 +71,7 @@ const checkPassword = async (password: string, id: string) => {
   formData.append("password", password);
   formData.append("id", id);
   return await axios
-    .post("/api/user/checkPassword", formData)
+    .post("/api/user/checkpassword", formData)
     .then(handleReceiveData)
     .catch(handleReceiveError);
 };
@@ -87,3 +87,4 @@ const checkToken = async (token: string) => {
 };
 
 export { signin, faceSignin, signup, signout, checkToken, checkPassword };
+

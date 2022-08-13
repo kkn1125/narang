@@ -31,3 +31,4 @@ const deleteProfileImage = (id: string) => {
 };
 
 export { fileupload, profileUpload, deleteProfileImage };
+

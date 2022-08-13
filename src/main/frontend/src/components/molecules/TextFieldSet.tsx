@@ -1,5 +1,5 @@
-import { Box, Checkbox, FormHelperText, Stack, TextField } from "@mui/material";
-import React, { Fragment } from "react";
+import { Checkbox, FormHelperText, Stack, TextField } from "@mui/material";
+import React from "react";
 import { splitToUnderBar, upperCase } from "../../tools/utils";
 
 export interface TextFieldItem {

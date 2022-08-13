@@ -73,7 +73,7 @@ class Analyzer {
   constructor(
     private source: string = "ko",
     private target: string = "en",
-    private text: string
+    private text: string,
   ) {
     axios.defaults.withCredentials = true;
   }
@@ -84,9 +84,9 @@ class Analyzer {
       .post(
         this.url,
         `source=${encodeURIComponent(this.source)}&target=${encodeURIComponent(
-          this.target
+          this.target,
         )}&text=${encodeURIComponent(this.text)}`,
-        this.config
+        this.config,
       );
     const translatedText = await res.data;
     // console.log("[TranslatedText]", translatedText);
@@ -128,7 +128,7 @@ class Analyzer {
     let compared;
     compared = Math.abs(isPositive ? comparative - 1 : comparative);
     const index = Math.ceil(
-      (Math.ceil(compared * 10) / 10) * (isPositive ? baseIndex : 9)
+      (Math.ceil(compared * 10) / 10) * (isPositive ? baseIndex : 9),
     );
     const lastIndex = isPositive ? baseIndex - index : baseIndex + index;
     return this.emojis[lastIndex] as string;

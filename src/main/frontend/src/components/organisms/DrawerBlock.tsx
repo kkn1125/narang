@@ -1,3 +1,7 @@
+import BarChartIcon from "@mui/icons-material/BarChart";
+import MenuBookIcon from "@mui/icons-material/MenuBook";
+import RecommendIcon from "@mui/icons-material/Recommend";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import {
   Divider,
   List,
@@ -6,23 +10,13 @@ import {
   ListItemText,
   SvgIcon,
   Toolbar,
-  Typography,
+  Typography
 } from "@mui/material";
-
 import ListItemIcon from "@mui/material/ListItemIcon";
-import RecommendIcon from "@mui/icons-material/Recommend";
-// import ShareIcon from "@mui/icons-material/Share";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import QuestionMarkIcon from "@mui/icons-material/QuestionMark";
-
-import MenuBookIcon from "@mui/icons-material/MenuBook";
-import BarChartIcon from "@mui/icons-material/BarChart";
-
-import React, { useCallback, useContext } from "react";
-import MenuItem from "../../models/MenuItem";
-import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
+import React, { useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "../../contexts/UserProvider";
+import MenuItem from "../../models/MenuItem";
 
 const sideMenu: any = {
   top: [

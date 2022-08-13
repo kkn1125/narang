@@ -5,15 +5,15 @@ import {
   Menu,
   MenuItem,
   Tooltip,
-  Typography,
+  Typography
 } from "@mui/material";
-import Item from "../../models/MenuItem";
-import React, { useContext, useEffect, useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useContext, useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
+import { useNavigate } from "react-router-dom";
 import { checkToken, signout } from "../../apis/auth";
 import { findByJwt } from "../../apis/user";
 import { removeUser, setUser, UserContext } from "../../contexts/UserProvider";
+import Item from "../../models/MenuItem";
 import { profileImageOrCat } from "../../tools/utils";
 
 function AvatarBox() {

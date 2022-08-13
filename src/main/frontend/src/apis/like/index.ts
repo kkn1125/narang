@@ -1,8 +1,7 @@
 import axios from "axios";
-import Like from "../../models/Like";
 import { handleReceiveData, handleReceiveError } from "../commonTypes";
 
-// 
+// 좋아요 단건 조회
 const findLikeByDid = (did: string) => {
   return axios
     .get(`/api/like/did/${did}`)
@@ -10,6 +9,7 @@ const findLikeByDid = (did: string) => {
     .catch(handleReceiveError);
 };
 
+// 좋아요 추가
 const addLike = (formData: FormData) => {
   axios
     .post("/api/like", formData)
@@ -17,6 +17,7 @@ const addLike = (formData: FormData) => {
     .catch(handleReceiveError);
 };
 
+// 좋아요 삭제
 const deleteLikeById = (id: string) => {
   axios
     .delete(`/api/like/${id}`)
@@ -24,6 +25,7 @@ const deleteLikeById = (id: string) => {
     .catch(handleReceiveError);
 };
 
+// 좋아요 삭제
 const deleteLikeByUid = (uid: string) => {
   axios
     .delete(`/api/like/uid/${uid}`)
@@ -31,6 +33,7 @@ const deleteLikeByUid = (uid: string) => {
     .catch(handleReceiveError);
 };
 
+// 좋아요 삭제
 const deleteLikeByDid = (did: string, formData: FormData) => {
   axios
     .delete(`/api/like/did/${did}`, {
@@ -40,4 +43,10 @@ const deleteLikeByDid = (did: string, formData: FormData) => {
     .catch(handleReceiveError);
 };
 
-export { findLikeByDid, addLike, deleteLikeById, deleteLikeByUid, deleteLikeByDid };
+export {
+  findLikeByDid,
+  addLike,
+  deleteLikeById,
+  deleteLikeByUid,
+  deleteLikeByDid,
+};

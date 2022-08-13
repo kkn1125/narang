@@ -17,7 +17,7 @@ function MonthPicker() {
         onChange={(newValue) => {
           setValue(newValue);
           console.log(
-            `선택 연/월: ${newValue.getFullYear()}/${newValue.getMonth()}`
+            `선택 연/월: ${newValue.getFullYear()}/${newValue.getMonth()}`,
           );
         }}
         renderInput={(params) => <TextField {...params} helperText={null} />}

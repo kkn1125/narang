@@ -1,3 +1,6 @@
+import BookIcon from "@mui/icons-material/Book";
+import EmailIcon from "@mui/icons-material/Email";
+import GitHubIcon from "@mui/icons-material/GitHub";
 import {
   Avatar,
   Badge,
@@ -12,14 +15,11 @@ import {
   Stack,
   styled,
   Tooltip,
-  Typography,
+  Typography
 } from "@mui/material";
 import React, { Fragment } from "react";
 import WavesBG from "../components/common/WavesBG";
 import FaceSign from "../components/organisms/FaceSign";
-import GitHubIcon from "@mui/icons-material/GitHub";
-import BookIcon from "@mui/icons-material/Book";
-import EmailIcon from "@mui/icons-material/Email";
 
 const diaryProcess = [
   {
