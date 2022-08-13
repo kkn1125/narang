@@ -1,6 +1,5 @@
 package com.narang.web.repository;
 
-import com.narang.web.entity.Diary;
 import com.narang.web.entity.Emotion;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;

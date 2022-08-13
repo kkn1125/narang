@@ -36,8 +36,8 @@ public class FaceImageService {
         return faceRepository.findById(id).orElseThrow();
     }
 
-    public FaceImage findByUid(String uid) {
-        return faceRepository.findByUid(uid).orElseThrow();
+    public List<FaceImage> findByUid(String uid) {
+        return faceRepository.findByUid(uid);
     }
 
     public String insert(FaceImage face) {
@@ -70,23 +70,23 @@ public class FaceImageService {
         return true;
     }
 
-    public Boolean deleteByTwo(String uid, List<String> ids) {
-        for (String id : ids) {
-            File file = new File(uploadPath + uid);
-            if (file.isDirectory()) {
-                File[] files = file.listFiles();
-                for (File f : files) {
-                    if (f.getName().equals(id)) {
-                        if (f.delete()) {
-                            System.out.println("파일을 성공적으로 삭제 했습니다.");
-                        } else {
-                            System.out.println("없는 파일 입니다.");
-                        }
+    public Boolean deleteByTwo(String uid, List<String> ids, String imgPath) {
+        faceRepository.deleteByTwo(uid, ids);
+        File file = new File(uploadPath + uid);
+        System.out.println(file.isDirectory());
+        if (file.isDirectory()) {
+            File[] files = file.listFiles();
+            for (File f : files) {
+                System.out.println(f.getName());
+                if (f.getName().equals(imgPath)) {
+                    if (f.delete()) {
+                        System.out.println("파일을 성공적으로 삭제 했습니다.");
+                    } else {
+                        System.out.println("없는 파일 입니다.");
                     }
                 }
             }
         }
-        faceRepository.deleteByTwo(uid, ids);
         return true;
     }
 }
