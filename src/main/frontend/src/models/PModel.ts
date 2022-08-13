@@ -1,4 +1,4 @@
-import { ModelData, ModelStringValue, ModelValue } from "./IModel";
+import { ModelStringValue, ModelValue } from "./IModel";
 
 // parent model의 줄인 이름, 공통의 변수 및 함수 상속하기 위함
 export class PModel {

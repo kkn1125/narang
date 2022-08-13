@@ -1,8 +1,8 @@
-import { Box, Button, Container, IconButton, Typography } from "@mui/material";
-import React from "react";
-import { ReactComponent as NotFoundIcon } from "../svg/NotFound.svg";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { Box, Button, Container, Typography } from "@mui/material";
+import React from "react";
 import { useNavigate } from "react-router-dom";
+import { ReactComponent as NotFoundIcon } from "../svg/NotFound.svg";
 
 const ERROR_MSG = `404: The page you are looking for isn’t here`;
 const ERROR_COMMENTS = `You either tried some shady route or you came here by mistake. Whichever it is, try using the navigation

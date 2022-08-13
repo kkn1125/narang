@@ -1,5 +1,5 @@
-import { ModelValue } from "../models/IModel";
 import * as yup from "yup";
+import { ModelValue } from "../models/IModel";
 
 export const nickNameValidation = yup
   .string()
@@ -99,9 +99,6 @@ const isEmpty = (object: object): boolean => Object.keys(object).length === 0;
 
 const profileImageOrCat = (user: any) => {
   let prefix = (user: any) => `/images/profiles/${user.id}/${user.profileImg}`;
-  // process.env.NODE_ENV !== "production"
-  //   ? require(`../profiles/${user.id}/${user.profileImg}`)
-  //   : `/images/profiles/${user.id}/${user.profileImg}`;
   let path;
   try {
     if (user && user.id && user.profileImg) {
@@ -111,16 +108,12 @@ const profileImageOrCat = (user: any) => {
     path = "http://placekitten.com/300/200";
     console.log(e);
   } finally {
-    // console.log(path);
     return path;
   }
 };
 
 const uploadImageOrNull = (user: any) => {
   let prefix = (user: any) => `/images/upload/${user.id}/${user.profileImg}`;
-  // process.env.NODE_ENV !== "production"
-  //   ? require(`../upload/${user.id}/${user.profileImg}`)
-  //   : `/images/upload/${user.id}/${user.profileImg}`;
   let path;
   try {
     if (user && user.id && user.profileImg) {
@@ -129,7 +122,6 @@ const uploadImageOrNull = (user: any) => {
   } catch (e) {
     console.log(e);
   } finally {
-    // console.log(path);
     return path;
   }
 };
@@ -139,6 +131,16 @@ const reverse = (arr: any[]) =>
     acc.unshift(cur);
     return acc;
   }, []);
+
+const cutMiddleText = (text: string) => {
+  let temp = text;
+  if (text.length > 50) {
+    temp = text.substring(0, 10);
+    temp += `...`;
+    temp += text.substring(text.length - 11, text.length - 1);
+  }
+  return temp;
+};
 
 export {
   upperCase,
@@ -150,4 +152,6 @@ export {
   profileImageOrCat,
   uploadImageOrNull,
   reverse,
+  cutMiddleText,
 };
+

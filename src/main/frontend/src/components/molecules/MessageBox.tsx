@@ -1,17 +1,14 @@
-import { AccountCircle } from "@mui/icons-material";
 import MailIcon from "@mui/icons-material/Mail";
 import NotificationsIcon from "@mui/icons-material/Notifications";
-
 import {
   Badge,
   Box,
   IconButton,
   Menu,
   MenuItem,
-  Typography,
+  Typography
 } from "@mui/material";
-
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 import { findCommentAll } from "../../apis/comment";

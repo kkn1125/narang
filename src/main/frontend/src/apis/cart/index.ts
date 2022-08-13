@@ -1,6 +1,7 @@
 import axios from "axios";
 import { handleReceiveData, handleReceiveError } from "../commonTypes";
 
+// 카트 추가
 const insertCart = (formData: FormData) => {
   return axios
     .post("/api/cart", formData)
@@ -8,6 +9,7 @@ const insertCart = (formData: FormData) => {
     .catch(handleReceiveError);
 };
 
+// 카트 전체 조회
 const findAllCart = () => {
   return axios
     .get("/api/carts")
@@ -15,6 +17,7 @@ const findAllCart = () => {
     .catch(handleReceiveError);
 };
 
+// 카트 단건 조회
 const findCartById = (cid: string) => {
   return axios
     .get(`/api/carts/${cid}`)
@@ -22,6 +25,7 @@ const findCartById = (cid: string) => {
     .catch(handleReceiveError);
 };
 
+// 카트 단건 삭제
 const deleteCart = (cid: string) => {
   return axios
     .delete(`/api/cart/${cid}`)
@@ -30,3 +34,4 @@ const deleteCart = (cid: string) => {
 };
 
 export { insertCart, findAllCart, findCartById, deleteCart };
+

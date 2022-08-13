@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import { findCommentByDid } from "../../apis/comment";
 import {
   CommentContext,
-  loadComment,
+  loadComment
 } from "../../contexts/CommentProvider";
 import { reverse } from "../../tools/utils";
 import CommentItem from "../molecules/CommentItem";

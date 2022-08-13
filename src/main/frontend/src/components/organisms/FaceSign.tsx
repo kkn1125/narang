@@ -1,3 +1,4 @@
+import { Box, styled } from "@mui/material";
 import {
   createCanvasFromMedia,
   detectAllFaces,
@@ -9,15 +10,14 @@ import {
   matchDimensions,
   nets,
   resizeResults,
-  TinyFaceDetectorOptions,
+  TinyFaceDetectorOptions
 } from "face-api.js";
 import React, { memo, useEffect, useRef, useState } from "react";
-import { Box, styled } from "@mui/material";
-import { findUserAll } from "../../apis/user";
-import { findFaceImageAll } from "../../apis/faceImage";
-import { faceSignin } from "../../apis/auth";
-import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
+import { useNavigate } from "react-router-dom";
+import { faceSignin } from "../../apis/auth";
+import { findFaceImageAll } from "../../apis/faceImage";
+import { findUserAll } from "../../apis/user";
 import { uploadImageOrNull } from "../../tools/utils";
 
 let limitCount = 5;

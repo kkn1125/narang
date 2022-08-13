@@ -1,3 +1,7 @@
+import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
+import CheckIcon from "@mui/icons-material/Check";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import EditIcon from "@mui/icons-material/Edit";
 import {
   Box,
   Chip,
@@ -5,30 +9,23 @@ import {
   Paper,
   Stack,
   TextField,
-  Typography,
+  Typography
 } from "@mui/material";
 import React, {
   Fragment,
   useCallback,
   useContext,
-  useEffect,
-  useMemo,
-  useState,
+  useEffect, useState
 } from "react";
+import { useCookies } from "react-cookie";
 import { findUserByNickNames } from "../../apis/user";
 import {
   CommentContext,
   removeComment,
-  updateComment,
+  updateComment
 } from "../../contexts/CommentProvider";
-import UserInfo from "../organisms/UserInfo";
-import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-import EditIcon from "@mui/icons-material/Edit";
-import { useCookies } from "react-cookie";
 import { UserContext } from "../../contexts/UserProvider";
-import CheckIcon from "@mui/icons-material/Check";
-import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
-import { isWhileStatement } from "typescript";
+import UserInfo from "../organisms/UserInfo";
 
 function CommentItem({
   comment,

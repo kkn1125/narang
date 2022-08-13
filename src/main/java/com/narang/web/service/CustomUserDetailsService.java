@@ -2,7 +2,6 @@ package com.narang.web.service;
 
 import com.narang.web.entity.User;
 import com.narang.web.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;

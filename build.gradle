@@ -51,6 +51,7 @@ dependencies {
     implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.13.3'
 }
 
+def deployDev = project.hasProperty("dev")
 def frontendDir = "$projectDir/src/main/frontend"
 
 sourceSets {
@@ -97,3 +98,17 @@ tasks.named('test') {
     useJUnitPlatform()
 }
 
+// https://perfectacle.github.io/2017/09/23/Spring-boot-gradle-profile/
+// https://stackoverflow.com/questions/40792069/conditional-logic-in-gradle-build-to-only-execute-certain-code-when-a-specific-t
+// https://blog.naver.com/PostView.nhn?blogId=sharplee7&logNo=221413629068
+// https://title-developer.tistory.com/11
+
+// https://stackoverflow.com/questions/66214555/gradle-sync-failed-removecontententry-removed-content-entry-url-still-ex
+// https://youtrack.jetbrains.com/issue/IDEA-279183
+// gradle annotation 지운 파일이 존재한다고 에러 날 때 .idea 파일 날려버리고 다시 인텔리를 켠다.
+// 그래도 안되면 C:\Users\user-pc\AppData\Local\JetBrains\IdeaIE2022.1\external_build_system 폴더를 날린다.
+// 다시 켠다.
+
+// https://jjunii486.tistory.com/219 프로퍼티 설정
+
+// 시간 검색 mongodb https://stackoverflow.com/questions/10311061/spring-data-mongodb-date-between

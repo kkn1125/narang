@@ -5,10 +5,9 @@ import {
   Card,
   Divider,
   Stack,
-  Typography,
+  Typography
 } from "@mui/material";
 import { useFormik } from "formik";
-import { EncryptJWT } from "jose";
 import { sha256 } from "js-sha256";
 import React, { useContext, useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
@@ -20,18 +19,20 @@ import {
   addFaceImage,
   deleteFaceImageById,
   findFaceImageAll,
+  findFaceImageByUid
 } from "../../apis/faceImage";
 import { userUpdate } from "../../apis/user";
 import {
   deleteProfileImage,
   fileupload,
-  profileUpload,
+  profileUpload
 } from "../../apis/utils/fileupload";
 import TextFieldSet from "../../components/molecules/TextFieldSet";
 import { setUser, UserContext } from "../../contexts/UserProvider";
 import FaceImage from "../../models/FaceImage";
 import User, { UserColumn } from "../../models/User";
 import {
+  cutMiddleText,
   emailValidation,
   FILE_NAME_REGEXP,
   FILE_TYPE_ERROR,
@@ -39,7 +40,7 @@ import {
   nickNameValidation,
   passwordValidation,
   phoneValidation,
-  profileImageOrCat,
+  profileImageOrCat
 } from "../../tools/utils";
 
 const validationSchema = yup.object({
@@ -123,12 +124,6 @@ function Profile() {
       placeholder: "",
       required: true,
     },
-    // {
-    //   name: "email",
-    //   type: "text",
-    //   placeholder: "",
-    //   required: true,
-    // },
     {
       name: "phone",
       type: "text",
@@ -229,10 +224,12 @@ function Profile() {
     },
   });
 
-  const [profileImg, setProfileImg] = useState(null);
   const [faceImage, setFaceImage] = useState(null);
 
   useEffect(() => {
+    findFaceImageByUid(user.id).then((result) => {
+      setFaceImages(result);
+    });
     Object.entries(user).forEach(([key, value]) => {
       switch (key) {
         case "nickName":
@@ -248,10 +245,6 @@ function Profile() {
           break;
       }
     });
-    setProfileImg("");
-    setTimeout(() => {
-      setProfileImg(null);
-    }, 1);
   }, [user]);
 
   // formik 상세화면 배경 이미지 파일 직접 지정
@@ -259,7 +252,6 @@ function Profile() {
     const files = e.currentTarget.files[0];
     if (!files) return;
     formik.values.profileImg = files;
-    setProfileImg(files);
   };
 
   const handleFaceImage = (e: React.FormEvent<HTMLInputElement>) => {
@@ -269,8 +261,8 @@ function Profile() {
     setFaceImage(files);
   };
 
-  const handleRemoveFaceImage = (uid: string, ids: string) => {
-    deleteFaceImageById(uid, [ids]);
+  const handleRemoveFaceImage = (uid: string, ids: string, imgPath: string) => {
+    deleteFaceImageById(uid, [ids], imgPath);
     findFaceImageAll().then((result) => {
       if (result.length === 0) {
         const updateUser = new User();
@@ -366,7 +358,6 @@ function Profile() {
           encType='multipart/form-data'>
           <Stack sx={{ mt: 2, mb: 1 }} spacing={2}>
             <TextFieldSet fields={fields} size={"medium"} formik={formik} />
-
             {/* https://mui.com/material-ui/react-button/#upload-button */}
             <Button component='label'>
               Upload Face Login Picture
@@ -380,12 +371,14 @@ function Profile() {
               />
             </Button>
             {faceImages.map((face) => (
-              <Box>
-                <Typography>{face.imgPath}</Typography>
+              <Box key={face.imgPath}>
+                <Typography>{cutMiddleText(face.imgPath)}</Typography>
                 <Button
                   size='small'
                   color='error'
-                  onClick={() => handleRemoveFaceImage(user.id, face.id)}>
+                  onClick={() =>
+                    handleRemoveFaceImage(user.id, face.id, face.imgPath)
+                  }>
                   &times;
                 </Button>
               </Box>

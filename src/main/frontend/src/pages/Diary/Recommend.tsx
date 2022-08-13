@@ -11,14 +11,12 @@ import {
   DialogProps,
   DialogTitle,
   Grid,
-  Typography,
+  Typography
 } from "@mui/material";
 import { Box } from "@mui/system";
 import axios from "axios";
-import React, { useContext, useState } from "react";
-import { useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { insertCart } from "../../apis/cart";
-import OverflowContent from "../../components/atoms/OverflowContent";
 import { UserContext } from "../../contexts/UserProvider";
 import Cart from "../../models/Cart";
 

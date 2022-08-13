@@ -1,22 +1,17 @@
-import * as React from "react";
-import { createRoot } from "react-dom/client";
+import { GlobalStyles } from "@mui/material";
 import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider } from "@mui/material/styles";
-import App from "./App";
-import theme from "./theme";
-import { BrowserRouter } from "react-router-dom";
-import { GlobalStyles } from "@mui/material";
+import * as React from "react";
 import { CookiesProvider } from "react-cookie";
-import axios from "axios";
-import UserProvider from "./contexts/UserProvider";
+import { createRoot } from "react-dom/client";
+import { BrowserRouter } from "react-router-dom";
+import App from "./App";
 import CommentProvider from "./contexts/CommentProvider";
+import UserProvider from "./contexts/UserProvider";
+import theme from "./theme";
 
 const rootElement = document.getElementById("root");
 const root = createRoot(rootElement!);
-
-// axios.defaults.withCredentials = true;
-// axios.defaults.xsrfCookieName = "csrftoken";
-// axios.defaults.xsrfHeaderName = "X-CSRFToken";
 
 root.render(
   <ThemeProvider theme={theme}>
@@ -35,7 +30,6 @@ root.render(
       <UserProvider>
         <CookiesProvider>
           <BrowserRouter>
-            {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
             <CssBaseline />
             <App />
           </BrowserRouter>

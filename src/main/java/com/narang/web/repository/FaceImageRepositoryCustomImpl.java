@@ -1,8 +1,6 @@
 package com.narang.web.repository;
 
-import com.narang.web.entity.Emotion;
 import com.narang.web.entity.FaceImage;
-import com.narang.web.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -10,7 +8,6 @@ import org.springframework.data.mongodb.core.query.Query;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class FaceImageRepositoryCustomImpl implements FaceImageRepositoryCustom {
     private MongoTemplate faceTemplate;
@@ -21,11 +18,11 @@ public class FaceImageRepositoryCustomImpl implements FaceImageRepositoryCustom 
     }
 
     @Override
-    public Optional<FaceImage> findByUid(String uid) {
+    public List<FaceImage> findByUid(String uid) {
         Criteria cr = new Criteria("uid").is(uid);
         Query q = new Query(cr);
-        FaceImage newFaceImage = faceTemplate.findOne(q, FaceImage.class);
-        return Optional.of(newFaceImage);
+        List<FaceImage> newFaceImage = faceTemplate.find(q, FaceImage.class);
+        return newFaceImage;
     }
 
     @Override
