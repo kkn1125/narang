@@ -1,6 +1,16 @@
 import axios from "axios";
 import { handleReceiveData, handleReceiveError } from "../commonTypes";
 
+// 감정 데이터 시작~끝 날짜로 조회
+const findEmotionByDateRange = (uid: string, start: Date, end: Date) => {
+  return axios
+    .get(
+      `/api/emotion/date/${uid}?start=${start.toISOString()}&end=${end.toISOString()}`,
+    )
+    .catch(handleReceiveData)
+    .catch(handleReceiveError);
+};
+
 // 감정 데이터 단건 조회
 const findEmotionByDid = (did: string) => {
   return axios
@@ -25,4 +35,9 @@ const deleteEmotionByDid = (did: string) => {
     .catch(handleReceiveError);
 };
 
-export { findEmotionByDid, insertEmotions, deleteEmotionByDid };
+export {
+  findEmotionByDateRange,
+  findEmotionByDid,
+  insertEmotions,
+  deleteEmotionByDid,
+};

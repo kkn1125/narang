@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { Chart } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -21,6 +21,8 @@ import {
 } from "@mui/material";
 import WeekPicker from "../../components/molecules/WeekPicker";
 import MonthPicker from "../../components/molecules/MonthPicker";
+import { UserContext } from '../../contexts/UserProvider';
+import { findEmotionByDateRange } from '../../apis/emotions';
 
 ChartJS.register(
   LinearScale,
@@ -143,6 +145,28 @@ const data = {
 
 function Graph() {
   const [alignment, setAlignment] = React.useState("weekly");
+  const [user, dispatch] = useContext(UserContext);
+  useEffect(() => {
+    console.log(user);
+    let timezoneOffset = new Date().getTimezoneOffset() * 60000;
+    let timezoneDate = new Date(
+      Date.now() - timezoneOffset - 1000 * 60 * 60 * 24 * 12,
+    );
+    /**
+     * var timezoneOffset = new Date().getTimezoneOffset() * 60000;
+     * var timezoneDate = new Date(Date.now() - timezoneOffset);
+     * timezoneDate.toISOString(); // 요고!
+     */
+    if (user) {
+      findEmotionByDateRange(
+        user.id,
+        timezoneDate,
+        new Date(timezoneDate.getTime() + 1000 * 60 * 60 * 24 * 7),
+      ).then((result) => {
+        console.log(`result: `, result.data);
+      });
+    }
+  }, []);
   const handleChange = (
     event: React.MouseEvent<HTMLElement>,
     newAlignment: string,
