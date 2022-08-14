@@ -1,19 +1,17 @@
 import { Box, Stack } from "@mui/material";
 import { useFormik } from "formik";
-import React, { useEffect, useState } from "react";
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import * as yup from "yup";
 import { signup } from "../../apis/auth";
 import SignControl from "../../components/organisms/SignControl";
 import User from "../../models/User";
-import * as yup from "yup";
-import { OptionalObjectSchema, TypeOfShape } from "yup/lib/object";
-import { AnyObject } from "yup/lib/types";
 import {
   emailValidation,
   nickNameValidation,
   passwordValidation,
-  phoneValidation,
+  phoneValidation
 } from "../../tools/utils";
-import { useNavigate } from "react-router-dom";
 
 const fields = [
   {

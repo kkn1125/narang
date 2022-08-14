@@ -1,6 +1,7 @@
 import axios from "axios";
 import { handleReceiveData, handleReceiveError } from "../commonTypes";
 
+// 상품 추가
 const insertProduct = (formData: FormData) => {
   return axios
     .post("/api/product", formData)
@@ -8,6 +9,7 @@ const insertProduct = (formData: FormData) => {
     .catch(handleReceiveError);
 };
 
+// 상품 전체 조회
 const findAllProduct = () => {
   return axios
     .get("/api/products")
@@ -15,6 +17,7 @@ const findAllProduct = () => {
     .catch(handleReceiveError);
 };
 
+// 상품 단건 조회
 const findProductById = (pid: string) => {
   return axios
     .get(`/api/product/${pid}`)
@@ -22,6 +25,7 @@ const findProductById = (pid: string) => {
     .catch(handleReceiveError);
 };
 
+// 상품 단건 삭제
 const deleteProduct = (pid: string) => {
   return axios
     .delete(`/api/product/${pid}`)
@@ -30,3 +34,4 @@ const deleteProduct = (pid: string) => {
 };
 
 export { insertProduct, findAllProduct, findProductById, deleteProduct };
+

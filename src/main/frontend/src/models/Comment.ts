@@ -1,9 +1,7 @@
 import {
-  IModel,
-  ModelBooleanValue,
-  ModelData,
+  IModel, ModelData,
   ModelStringValue,
-  ModelValue,
+  ModelValue
 } from "./IModel";
 import { PModel } from "./PModel";
 

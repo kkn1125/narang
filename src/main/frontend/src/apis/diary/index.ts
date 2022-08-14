@@ -1,7 +1,7 @@
-import axios, { AxiosResponse } from "axios";
-import Diary from "../../models/Diary";
+import axios from "axios";
 import { handleReceiveData, handleReceiveError } from "../commonTypes";
 
+// 일기 추가
 const insertDiary = (formData: FormData) => {
   return axios
     .post("/api/diary", formData)
@@ -9,6 +9,7 @@ const insertDiary = (formData: FormData) => {
     .catch(handleReceiveError);
 };
 
+// 일기 수정
 const updateDiary = (formData: FormData) => {
   return axios
     .put("/api/diary", formData)
@@ -16,6 +17,7 @@ const updateDiary = (formData: FormData) => {
     .catch(handleReceiveError);
 };
 
+// 일기 전체 조회
 const findDiaryAll = () => {
   return axios
     .get("/api/diaries")
@@ -23,6 +25,7 @@ const findDiaryAll = () => {
     .catch(handleReceiveError);
 };
 
+// 일기 단건 조회
 const findDiaryById = (id: string) => {
   return axios
     .get(`/api/diary/${id}`)
@@ -30,6 +33,7 @@ const findDiaryById = (id: string) => {
     .catch(handleReceiveError);
 };
 
+// 일기 단건 삭제
 const deleteDiaryById = (id: string) => {
   return axios
     .delete(`/api/diary/${id}`)

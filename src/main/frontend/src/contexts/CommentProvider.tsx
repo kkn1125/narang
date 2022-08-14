@@ -1,8 +1,8 @@
-import React, { createContext, useContext, useReducer } from "react";
+import React, { createContext, useReducer } from "react";
 import {
   deleteCommentById,
   insertComment,
-  updateCommentById,
+  updateCommentById
 } from "../apis/comment";
 import Comment from "../models/Comment";
 

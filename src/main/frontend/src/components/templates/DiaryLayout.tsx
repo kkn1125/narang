@@ -1,14 +1,13 @@
-import React, { useEffect, useState } from "react";
+import MenuIcon from "@mui/icons-material/Menu";
+import { SwipeableDrawer } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
+import React, { useEffect, useState } from "react";
 import { Outlet, useLocation } from "react-router-dom";
-import DrawerBlock from "../organisms/DrawerBlock";
-import SearchBar from "../molecules/SearchBar";
 import MessageBox from "../molecules/MessageBox";
-import { SwipeableDrawer } from "@mui/material";
+import DrawerBlock from "../organisms/DrawerBlock";
 import Footer from "../organisms/Footer";
 
 const drawerWidth = 240;

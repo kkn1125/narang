@@ -1,9 +1,8 @@
-import { Box, Stack } from "@mui/material";
+import { Stack } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { findDiaryById } from "../../apis/diary";
 import { findEmotionByDid } from "../../apis/emotions";
-import Footer from "../../components/organisms/Footer";
 import DetailLayout from "../../components/templates/DetailLayout";
 
 function Detail() {

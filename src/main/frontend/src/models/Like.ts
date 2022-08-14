@@ -3,7 +3,7 @@ import {
   ModelBooleanValue,
   ModelData,
   ModelStringValue,
-  ModelValue,
+  ModelValue
 } from "./IModel";
 import { PModel } from "./PModel";
 

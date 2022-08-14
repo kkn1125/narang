@@ -1,3 +1,4 @@
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import {
   Box,
   Button,
@@ -5,16 +6,15 @@ import {
   Divider,
   Stack,
   Typography,
-  useTheme,
+  useTheme
 } from "@mui/material";
 import React, { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { capitalize } from "../../tools/utils";
 import AuthTitle from "../molecules/AuthTitle";
 import SocialSignIn, { SocialInfo } from "../molecules/SocialSignIn";
 import TermsConditions from "../molecules/TermsConditions";
 import TextFieldSet, { TextFieldItem } from "../molecules/TextFieldSet";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import { capitalize } from "../../tools/utils";
 
 const SIGNIN = "signin";
 const SIGNUP = "signup";

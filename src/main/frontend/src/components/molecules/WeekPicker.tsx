@@ -1,13 +1,13 @@
-import React from "react";
-import { endOfWeek, isSameDay, isWithinInterval, startOfWeek } from "date-fns";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { styled, TextField } from "@mui/material";
 import {
   LocalizationProvider,
   PickersDay,
   PickersDayProps,
-  StaticDatePicker,
+  StaticDatePicker
 } from "@mui/x-date-pickers";
-import { styled, TextField } from "@mui/material";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { endOfWeek, isSameDay, isWithinInterval, startOfWeek } from "date-fns";
+import React from "react";
 
 type CustomPickerDayProps = PickersDayProps<Date> & {
   dayIsBetween: boolean;

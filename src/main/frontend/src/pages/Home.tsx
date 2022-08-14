@@ -1,24 +1,18 @@
+import BorderColorIcon from "@mui/icons-material/BorderColor";
+import PsychologyIcon from "@mui/icons-material/Psychology";
+import ShareIcon from "@mui/icons-material/Share";
 import {
   Box,
   Button,
   Paper,
   Stack,
   TextField,
-  Typography,
+  Typography
 } from "@mui/material";
-import React, { useContext, useEffect, useState } from "react";
-import BorderColorIcon from "@mui/icons-material/BorderColor";
-import PsychologyIcon from "@mui/icons-material/Psychology";
-import ShareIcon from "@mui/icons-material/Share";
-import DynamicSection from "../components/organisms/DynamicSection";
-import { dark } from "@mui/material/styles/createPalette";
-import axios from "axios";
-import { handleReceiveData, handleReceiveError } from "../apis/commonTypes";
-import { dev } from "../tools/devConsole";
-import { Link } from "react-router-dom";
 import { random } from "kadvice";
-import { UserContext } from "../contexts/UserProvider";
+import React, { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
+import DynamicSection from "../components/organisms/DynamicSection";
 
 let tryAmount = 5;
 

@@ -1,5 +1,5 @@
 import { Button, Stack, TextField } from "@mui/material";
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import { useParams } from "react-router-dom";
 import { CommentContext, setComment } from "../../contexts/CommentProvider";
@@ -13,8 +13,6 @@ interface CommentInsertProps {
 }
 
 function CommentInsert({}: // content,
-// setContent,
-// handleInsertComment,
 CommentInsertProps) {
   const params = useParams();
   const [cookies, setCookie] = useCookies(["token"]);

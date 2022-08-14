@@ -5,12 +5,11 @@ import {
   Paper,
   Stack,
   styled,
-  Typography,
+  Typography
 } from "@mui/material";
 import React, { useContext, useEffect, useMemo, useState } from "react";
 import { useCookies } from "react-cookie";
-import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { findDiaryAll } from "../../apis/diary";
 import FavoritButton from "../../components/atoms/FavoritButton";
 import OverflowContent from "../../components/atoms/OverflowContent";
