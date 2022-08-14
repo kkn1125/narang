@@ -6,7 +6,10 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.narang.web.entity.Emotion;
 import com.narang.web.service.EmotionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("/api")
@@ -43,6 +46,20 @@ public class EmotionRestController {
     @GetMapping("/emotion/did/{did}")
     public String findByDid(@PathVariable("did") String did) throws JsonProcessingException {
         return mapper(emotionService.findByDid(did));
+    }
+
+    @GetMapping("/emotion/date/{uid}")
+    public String findByDate(@PathVariable("uid") String uid,
+                             @RequestParam("start")
+                             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime start,
+                             @RequestParam("end")
+                             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime end) throws JsonProcessingException {
+        System.out.println(uid);
+        System.out.println(start);
+        System.out.println(end);
+        return mapper(emotionService.findByDate(uid, start, end));
+        // 날짜 검색을 해봅시다 방법은 아래 링크를 참조합시다.
+        // https://stackoverflow.com/questions/10311061/spring-data-mongodb-date-between
     }
 
     @PostMapping("/emotion")
