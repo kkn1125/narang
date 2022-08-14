@@ -6,6 +6,8 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 public class EmotionRepositoryCustomImpl implements EmotionRepositoryCustom {
@@ -30,6 +32,22 @@ public class EmotionRepositoryCustomImpl implements EmotionRepositoryCustom {
         Query q = new Query();
         Emotion foundEmotion = emotionTemplate.findOne(q, Emotion.class);
         return Optional.of(foundEmotion);
+    }
+
+    @Override
+    public List<Emotion> findByDate(String uid, LocalDateTime start, LocalDateTime end) {
+        // 요건 금방 복사한거
+//        q.addCriteria(Criteria.where("regdate").gte(start).lt(end));
+        // 더 완벽한거
+        Query q = new Query(
+            Criteria.where("uid").is(uid)
+                .andOperator(
+                    Criteria.where("regdate").lt(end),
+                    Criteria.where("regdate").gte(start)
+                )
+        );
+
+        return emotionTemplate.find(q, Emotion.class);
     }
 
     @Override
