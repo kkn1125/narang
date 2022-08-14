@@ -5,6 +5,7 @@ import com.narang.web.repository.EmotionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -28,6 +29,9 @@ public class EmotionService {
     }
     public Emotion findByDid(String did) {
         return emotionRepository.findByDid(did).orElseThrow();
+    }
+    public List<Emotion> findByDate(String uid, LocalDateTime start, LocalDateTime end) {
+        return emotionRepository.findByDate(uid, start, end);
     }
 
     public String insert(Emotion emotion) {
