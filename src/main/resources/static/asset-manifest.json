@@ -1,12 +1,12 @@
 {
   "files": {
     "main.css": "/static/css/main.fc1936e4.css",
-    "main.js": "/static/js/main.e91d34d3.js",
+    "main.js": "/static/js/main.67792b19.js",
     "static/media/NotFound.svg": "/static/media/NotFound.cc65759849338ad658ff0d6cc97bc6a8.svg",
     "index.html": "/index.html"
   },
   "entrypoints": [
     "static/css/main.fc1936e4.css",
-    "static/js/main.e91d34d3.js"
+    "static/js/main.67792b19.js"
   ]
 }
