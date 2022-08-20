@@ -82,10 +82,9 @@ class Analyzer {
   async translate() {
     const res = await axios // post 방식 다르게 사용하면 cors 피할 수 있음.
       .post(
-        this.url,
-        `source=${encodeURIComponent(this.source)}&target=${encodeURIComponent(
-          this.target,
-        )}&text=${encodeURIComponent(this.text)}`,
+        this.url+
+        `?source=${encodeURIComponent(this.source)}&target=${encodeURIComponent(this.target)}&text=${encodeURIComponent(this.text)}`,
+        {},
         this.config,
       );
     const translatedText = await res.data;
