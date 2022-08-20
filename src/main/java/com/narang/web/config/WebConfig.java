@@ -26,6 +26,14 @@ public class WebConfig implements WebMvcConfigurer {
                         HttpMethod.OPTIONS.name(),
                         HttpMethod.HEAD.name()
                         )
-                .allowedOrigins("http://localhost:8080", "http://localhost:3000", "http://43.200.167.97:8080");
+                .allowedOrigins("http://localhost:8080",
+                        "http://localhost:3000",
+                        "http://43.200.167.97:8080",
+                        "https://43.200.167.97",
+                        "http://43.200.167.97",
+                        "https://narang.ml"
+                        );
     }
+
+
 }

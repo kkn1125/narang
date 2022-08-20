@@ -68,3 +68,5 @@ yarn-error.log*
 
 **/resources/static/
 **/resources/templates/
+
+**/resources/application-secret.properties
