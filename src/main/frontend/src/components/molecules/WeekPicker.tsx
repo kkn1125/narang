@@ -53,7 +53,7 @@ function WeekPicker() {
 
     const start = startOfWeek(value);
     const end = endOfWeek(value);
-    console.log(`시작: ${start.getMonth()}/${start.getDate()}, 끝: ${end.getMonth()}/${end.getDate()}`);
+    // console.log(`시작: ${start.getMonth()}/${start.getDate()}, 끝: ${end.getMonth()}/${end.getDate()}`);
     
     const dayIsBetween = isWithinInterval(date, { start, end });
     const isFirstDay = isSameDay(date, start);
