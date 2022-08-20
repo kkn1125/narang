@@ -70,10 +70,13 @@ const mapToQuery = (maps: Map<string, ModelValue>): string => {
 };
 
 const convertLongToDate = (time: number | number[]): string => {
+  let timezoneOffset = new Date().getTimezoneOffset() * 60000;
+  let timezoneDate;
+
   let date = new Date();
   try {
     if (typeof time === "number") {
-      date = new Date(time);
+      timezoneDate = new Date(new Date(time).getTime() - timezoneOffset);
     } else {
       const [year, month, day, hours, minutes, seconds, milliseconds] = time;
       date.setFullYear(year);
@@ -83,6 +86,7 @@ const convertLongToDate = (time: number | number[]): string => {
       date.setMinutes(minutes);
       date.setSeconds(seconds);
       date.setMilliseconds(milliseconds);
+      timezoneDate = new Date(date.getTime() - timezoneOffset);
     }
   } catch (e) {
     return null;
@@ -154,4 +158,3 @@ export {
   reverse,
   cutMiddleText,
 };
-

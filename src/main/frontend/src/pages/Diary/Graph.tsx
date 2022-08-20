@@ -21,8 +21,8 @@ import {
 } from "@mui/material";
 import WeekPicker from "../../components/molecules/WeekPicker";
 import MonthPicker from "../../components/molecules/MonthPicker";
-import { UserContext } from '../../contexts/UserProvider';
-import { findEmotionByDateRange } from '../../apis/emotions';
+import { UserContext } from "../../contexts/UserProvider";
+import { findEmotionByDateRange } from "../../apis/emotions";
 
 ChartJS.register(
   LinearScale,
@@ -171,7 +171,10 @@ function Graph() {
     event: React.MouseEvent<HTMLElement>,
     newAlignment: string,
   ) => {
-    setAlignment(newAlignment);
+    console.log(newAlignment);
+    if (newAlignment !== null) {
+      setAlignment(newAlignment);
+    }
     if (newAlignment == "monthly") {
       console.log(1);
     }
@@ -190,8 +193,7 @@ function Graph() {
           <ToggleButton value='weekly'>Weekly</ToggleButton>
           <ToggleButton value='monthly'>Monthly</ToggleButton>
         </ToggleButtonGroup>
-        <WeekPicker />
-        <MonthPicker />
+        <Box>{alignment === "weekly" ? <WeekPicker /> : <MonthPicker />}</Box>
       </Box>
       <Chart data={data} type='bar' options={options} />
     </Box>
