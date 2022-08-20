@@ -152,11 +152,11 @@ const DiaryBlock = styled("div")`
       opacity: 1;
       transition: 150ms 150ms ease-in-out;
     }
-    &:hover [class*="MuiStack-root"] {
+    &:hover div:last-child {
       color: #ffffff;
       transition: 150ms ease-in-out;
     }
-    & [class*="MuiStack-root"] {
+    & div:last-child {
       position: absolute;
       top: 7px;
       right: 10px;
