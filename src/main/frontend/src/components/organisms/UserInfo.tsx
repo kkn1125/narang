@@ -4,12 +4,14 @@ import { convertLongToDate, profileImageOrCat } from "../../tools/utils";
 
 interface UserInfoProps {
   author: string;
-  regdate: number[];
+  regdate: string;
   diaryOwner?: any;
   slot?: React.ReactElement | React.ReactElement[];
 }
 
 function UserInfo({ author, regdate, diaryOwner, slot }: UserInfoProps) {
+  const toRegdate = new Date(regdate);
+  const numberRegdate = toRegdate.getTime();
   const getFirstWord = (name: string) => {
     return name?.substring(0, 1).toUpperCase();
   };
@@ -29,7 +31,7 @@ function UserInfo({ author, regdate, diaryOwner, slot }: UserInfoProps) {
             sx={{
               color: (theme) => theme.palette.grey[500],
             }}>
-            {convertLongToDate(regdate)}
+            {convertLongToDate(numberRegdate)}
           </Typography>
           {slot}
         </Stack>
