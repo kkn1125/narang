@@ -20,7 +20,8 @@ function Detail() {
     };
 
     getDiaryWithEmotion();
-  }, []);
+  }, [params.id]);
+  
   return (
     <Stack>
       {diary && emotion && <DetailLayout diary={diary} emotion={emotion} />}

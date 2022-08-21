@@ -2,10 +2,7 @@ import { Container, Stack } from "@mui/material";
 import React, { useContext, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { findCommentByDid } from "../../apis/comment";
-import {
-  CommentContext,
-  loadComment
-} from "../../contexts/CommentProvider";
+import { CommentContext, loadComment } from "../../contexts/CommentProvider";
 import { reverse } from "../../tools/utils";
 import CommentItem from "../molecules/CommentItem";
 import CommentInsert from "./CommentInsert";
@@ -18,7 +15,7 @@ function CommentList() {
     findCommentByDid(params.id).then((result: any[]) => {
       commentDispatch(loadComment(result));
     });
-  }, []);
+  }, [params.id]);
 
   return (
     <Container maxWidth='lg'>
