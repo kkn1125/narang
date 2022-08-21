@@ -51,10 +51,6 @@ dependencies {
     implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.13.3'
 }
 
-<<<<<<< HEAD
-//def deployDev = project.hasProperty("dev")
-=======
->>>>>>> origin/main
 //def frontendDir = "$projectDir/src/main/frontend"
 //
 //sourceSets {
