@@ -27,3 +27,7 @@ yarn-debug.log*
 yarn-error.log*
 
 \[x\]*
+
+.env*
+yarn.lock
+package-lock.json

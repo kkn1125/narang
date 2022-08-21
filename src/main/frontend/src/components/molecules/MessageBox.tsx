@@ -6,7 +6,7 @@ import {
   IconButton,
   Menu,
   MenuItem,
-  Typography
+  Typography,
 } from "@mui/material";
 import React, { useContext, useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
@@ -56,6 +56,12 @@ function MessageBox() {
     setAnchorEl(null);
   };
 
+  const getUserNickName = (content: string) =>
+    `[ ${content
+      .match(/@[\w\_\-\.]+/g)
+      .map((_) => _.replace("@", ""))
+      .join(", ")} ]`;
+
   return (
     <Box
       sx={{
@@ -65,14 +71,14 @@ function MessageBox() {
       }}>
       {cookies.token && (
         <>
-          <IconButton
+          {/* <IconButton
             size='large'
             aria-label='show 4 new mails'
             color='inherit'>
             <Badge badgeContent={0} color='error'>
               <MailIcon />
             </Badge>
-          </IconButton>
+          </IconButton> */}
           <IconButton
             size='large'
             aria-label='show 17 new notifications'
@@ -82,34 +88,38 @@ function MessageBox() {
               <NotificationsIcon />
             </Badge>
           </IconButton>
-          <Menu
-            sx={{ mt: "45px" }}
-            id='menu-appbar'
-            anchorEl={anchorEl}
-            anchorOrigin={{
-              vertical: "top",
-              horizontal: "right",
-            }}
-            keepMounted
-            transformOrigin={{
-              vertical: "top",
-              horizontal: "right",
-            }}
-            open={Boolean(anchorEl)}
-            onClose={handleCloseMentionMenu}>
-            {mentionInfo.map(({ from, content, diaryId }) => (
-              <MenuItem
-                key={diaryId}
-                onClick={() => {
-                  handleCloseMentionMenu();
-                  navigate(`/diary/${diaryId}`);
-                }}>
-                <Typography textAlign='center'>
-                  {from} -&gt; {content}
-                </Typography>
-              </MenuItem>
-            ))}
-          </Menu>
+          {mentionInfo.length > 0 && (
+            <Menu
+              sx={{ mt: "45px" }}
+              id='menu-appbar'
+              anchorEl={anchorEl}
+              anchorOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              open={Boolean(anchorEl)}
+              onClose={handleCloseMentionMenu}>
+              {mentionInfo.map(({ from, content, diaryId }) => (
+                <MenuItem
+                  key={diaryId}
+                  onClick={() => {
+                    handleCloseMentionMenu();
+                    navigate(`/diary/${diaryId}`);
+                  }}
+                  title={location.origin + `/diary/${diaryId}`}>
+                  <Typography textAlign='center'>
+                    {getUserNickName(content)} was mentioned by "
+                    {from === user.nickName ? "me" : from}"
+                  </Typography>
+                </MenuItem>
+              ))}
+            </Menu>
+          )}
         </>
       )}
       <AvatarBox />

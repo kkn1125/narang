@@ -2,9 +2,10 @@ import { Button, Container, Divider, Stack, Typography } from "@mui/material";
 import parse, {
   DOMNode,
   Element,
-  HTMLReactParserOptions
+  HTMLReactParserOptions,
 } from "html-react-parser";
 import React, { memo, useContext, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { deleteDiaryById } from "../../apis/diary";
 import { deleteEmotionByDid } from "../../apis/emotions";
@@ -96,11 +97,30 @@ function DetailLayout({ diary, emotion }: { diary: any; emotion: any }) {
         {parse(content, options)}
       </Typography>
 
-      <Typography>긍정점수: {emotion.positive.score}</Typography>
-      <Typography>부정점수: {emotion.negative.score}</Typography>
-      <Typography>총 점수: {emotion.score}</Typography>
-      <Typography>종합 이모지: {emotion.emoji}</Typography>
       <Divider sx={{ my: 2 }} />
+      <Stack
+        direction='row'
+        justifyContent='space-between'
+        alignItems='center'
+        sx={{ my: 2 }}>
+        <Stack direction='row' sx={{ gap: 1 }}>
+          <Button
+            color='secondary'
+            variant='contained'
+            onClick={() => {
+              navigate("/diary");
+            }}>
+            목록으로 돌아가기
+          </Button>
+          <Button
+            color='info'
+            variant='contained'
+            onClick={() => navigate("/diary/graph")}>
+            그래프로 보기
+          </Button>
+        </Stack>
+        <Typography>일기 감정 {emotion.emoji}</Typography>
+      </Stack>
 
       <CommentList />
     </Container>

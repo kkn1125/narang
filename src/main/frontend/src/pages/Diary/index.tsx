@@ -1,11 +1,14 @@
 import { Masonry } from "@mui/lab";
 import {
   Button,
+  CardActionArea,
+  CardMedia,
   ImageListItem,
   Paper,
   Stack,
   styled,
-  Typography
+  Typography,
+  useMediaQuery,
 } from "@mui/material";
 import React, { useContext, useEffect, useMemo, useState } from "react";
 import { useCookies } from "react-cookie";
@@ -77,24 +80,27 @@ function Diary() {
           </Button>
         )}
       </Stack>
-      <Masonry columns={4} spacing={2}>
+      <Masonry columns={{ xs: 2, sm: 3, md: 4 }} spacing={2}>
         {filteredItemData.length === 0 && (
           <Typography variant='body1'>공유된 일기가 없습니다 🥲</Typography>
         )}
         {filteredItemData.map((item, idx: number) => {
           const rand = getRandImg();
           return (
-            <ImageListItem
+            <CardActionArea
               key={item.id}
               component={Paper}
               elevation={5}
-              sx={{ "&.MuiImageListItem-root": { border: "none" } }}>
-              <img
+              onClick={() => {
+                navigate(item.id);
+              }}>
+              <CardMedia
+                component='img'
                 src={rand.src}
                 alt={item.title}
                 loading='lazy'
                 width={rand.width}
-                height={rand.height}
+                height={(rand.height as unknown as number) / 2}
               />
               {!item.isShare && (
                 <Typography
@@ -106,15 +112,21 @@ function Diary() {
                 </Typography>
               )}
               <Cover>
-                <Link to={item.id}>
-                  <Typography variant='h5'>{item.title}</Typography>
-                </Link>
-                <OverflowContent variant='body2' limit={200}>
-                  {getContent(item.content)}
+                <OverflowContent
+                  limit={20}
+                  variant='h5'
+                  sx={{
+                    fontSize: (theme) => ({
+                      xs: theme.typography.pxToRem(16),
+                      sm: theme.typography.pxToRem(18),
+                      md: theme.typography.pxToRem(24),
+                    }),
+                  }}>
+                  {item.title}
                 </OverflowContent>
               </Cover>
               <FavoritButton diaryId={item.id} />
-            </ImageListItem>
+            </CardActionArea>
           );
         })}
       </Masonry>
@@ -122,46 +134,45 @@ function Diary() {
   );
 }
 
-const Cover = styled("div")`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  opacity: 0;
-  height: 100%;
-  width: 100%;
-  padding: 1rem;
-  background-color: #15151585;
-  color: #ffffff;
-  user-select: none;
-`;
+const Cover = styled("div")(({ theme }) => ({
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "center",
+  alignItems: "flex-start",
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  opacity: useMediaQuery(theme.breakpoints.up("md")) ? 0 : 1,
+  height: "100%",
+  width: "100%",
+  padding: "1rem",
+  backgroundColor: "#15151585",
+  color: "#ffffff",
+  userSelect: "none",
+}));
 
-const DiaryBlock = styled("div")`
-  .MuiImageListItem-root {
-    border: 1px solid #c9c9c9;
-    overflow: hidden;
-    &:hover img {
-      transform: scale(1.1);
-      transition: 150ms ease-in-out;
-    }
-    &:hover div {
-      opacity: 1;
-      transition: 150ms 150ms ease-in-out;
-    }
-    &:hover div:last-child {
-      color: #ffffff;
-      transition: 150ms ease-in-out;
-    }
-    & div:last-child {
-      position: absolute;
-      top: 7px;
-      right: 10px;
-    }
-  }
-`;
+const DiaryBlock = styled("div")(({ theme }) => ({
+  ".MuiPaper-root": {
+    overflow: "hidden",
+    "&:hover img": {
+      transform: "scale(1.1)",
+      transition: "150ms ease-in-out",
+    },
+    "&:hover div": {
+      opacity: 1,
+      transition: "150ms ease-in-out",
+    },
+    "&:hover div:last-of-type": {
+      color: "#ffffff",
+      transition: "150ms ease-in-out",
+    },
+    "& div:last-of-type": {
+      position: "absolute",
+      top: "7px",
+      right: "10px",
+    },
+  },
+}));
 
 export default Diary;
