@@ -27,7 +27,7 @@ const OverflowContent = ({
       );
 
       if (ko * 2 + en + whitespace > limit) {
-        setResult(children.slice(0, limit));
+        setResult(children.slice(0, ko + en + whitespace - 1));
         setIsOverflow(true);
       } else {
         setResult(children);

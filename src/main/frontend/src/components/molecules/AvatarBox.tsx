@@ -51,13 +51,8 @@ function AvatarBox() {
   };
 
   useEffect(() => {
-    // console.log("이후 세션 받아와야 함");
     const { token } = cookies;
     if (token) {
-      // console.log(decodeJwt(token))
-      // if (decodeJwt(token).exp * 1000 <= Date.now()) {
-      //   removeCookie("token");
-      // }
       checkToken(cookies.token).then((res) => {
         if (res.result === false) {
           signout(token);
@@ -70,7 +65,6 @@ function AvatarBox() {
       setItems(items.map((item) => item.changeActive()));
       findByJwt(token).then((res) => {
         if (res) {
-          // console.log(res);
           delete res["password"];
           dispatch(setUser(res));
         }
