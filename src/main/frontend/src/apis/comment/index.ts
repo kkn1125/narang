@@ -9,7 +9,7 @@ const findCommentAll = () => {
     .catch(handleReceiveError);
 };
 
-// 댓글 단건 조회
+// 해당 일기에 대한 댓글 전체 조회
 const findCommentByDid = (did: string) => {
   return axios
     .get(`/api/comment/did/${did}`)
