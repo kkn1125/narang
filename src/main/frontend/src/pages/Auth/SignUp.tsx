@@ -79,11 +79,15 @@ function SignUp() {
       user.getResponseData(values as unknown as User);
       const formData = user.makeFormData();
       signup(formData)
-        .then(() => {
+        .then((result) => {
+          if(result === null) {
+            throw new Error("닉네임이 가입된 유저의 닉네임과 중복됩니다.");
+          }
           navigate("/auth/signin");
         })
-        .catch(() => {
-          alert("서버에 문제가 있는지 확인하십시오.");
+        .catch((e) => {
+          // alert("서버에 문제가 있는지 확인하십시오.");
+          alert(e.message);
         });
     },
   });

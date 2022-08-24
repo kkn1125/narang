@@ -15,15 +15,6 @@ import Diary from "../../models/Diary";
 import Emotions from "../../models/Emotions";
 import Analyzer from "../../tools/analyzer";
 
-interface FormikProps {
-  title: string;
-  content: string;
-  author: string;
-  isShare: boolean;
-  uid: string;
-  did: string;
-}
-
 let temp: any;
 
 function WriteForm() {
@@ -77,14 +68,14 @@ function WriteForm() {
         emotionResult.emotionScore as unknown as Emotions,
       );
       emotion.set("uid", values.uid);
-      emotion.set("did", diaryId);
+      emotion.set("did", diaryId.id); // diary수정 시 id가 아닌 객체를 받아옴
 
       const emotionFormData = emotion.makeFormData();
 
       if (!params.id) {
         insertEmotions(emotionFormData);
       } else {
-        deleteEmotionByDid(diaryId).then(() => {
+        deleteEmotionByDid(diaryId.id).then(() => { // diary수정 시 id가 아닌 객체를 받아옴
           insertEmotions(emotionFormData);
         });
       }
@@ -187,7 +178,6 @@ function WriteForm() {
         <Box>
           <SunEditor
             lang='ko'
-            // defaultValue='<p>내용을 입력하세요</p>'
             placeholder='내용을 입력하세요'
             width='100%'
             height='300px'

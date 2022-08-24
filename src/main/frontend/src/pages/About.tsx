@@ -2,6 +2,7 @@ import BookIcon from "@mui/icons-material/Book";
 import EmailIcon from "@mui/icons-material/Email";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import {
+  Alert,
   Avatar,
   Badge,
   Box,
@@ -15,7 +16,7 @@ import {
   Stack,
   styled,
   Tooltip,
-  Typography
+  Typography,
 } from "@mui/material";
 import React, { Fragment } from "react";
 import WavesBG from "../components/common/WavesBG";
@@ -177,6 +178,12 @@ function About() {
               로그인은 많지만 안면 인식을 통해 로그인하는 방법은 위험을 감수해야
               하는 방법일 수 있지만 의미있는 시도라고 생각합니다.
             </Typography>
+            <Alert severity='info' sx={{ my: 5 }}>
+              미디어 로드 및 안면 인식 프레임이 표시되는데 기기마다 시간 지연 될
+              수 있습니다. 안면 인식 기술 사용을 위해 모델 자료를 로드하기
+              때문에 미디어와 프레임을 함께 렌더링하는데 약 1~2분의 시간이
+              소요될 수 있습니다. 밝은 곳에서 화상 카메라를 사용하시기 바랍니다.
+            </Alert>
           </Box>
         </Stack>
       </Container>
@@ -221,7 +228,7 @@ function About() {
             (
               { id, name, avatar, email, github, blog, nation, desc },
               idx,
-              o
+              o,
             ) => (
               <Paper
                 key={name}
@@ -302,7 +309,7 @@ function About() {
                   </Typography>
                 </Stack>
               </Paper>
-            )
+            ),
           )}
         </Stack>
       </Container>

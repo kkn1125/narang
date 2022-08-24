@@ -64,6 +64,7 @@
    - dotenv
    - date-fns
    - axios
+   - naver papago - 번역
 3. back-end
    - Spring Boot
    - Spring Security
@@ -75,18 +76,25 @@
 4. AI
    - sentiment - 텍스트 감정 분석
    - face-api.js - 안면 인식 + 감정 분석 + 인물 매칭
-   - naver papago - 번역
 5. deploy
-   - AWS
+   - AWS EC2
+   - NGINX
    - mobaXterm
 
-### Database
+## Database 명세서
 
-- MongoDB
+- MongoDB v5.3.1
+- Mongosh v1.1.7
 
-## API 문서
+![Database - narang drawio](https://user-images.githubusercontent.com/71887242/186116219-1740e0eb-f0cd-47a4-805d-44d7d258e721.png)
 
-... : notion 작업
+[Project Narang Database Docs](https://nova-darkness-84c.notion.site/DB-3b192585505d4940bcb214fda45ce07e)
+
+## API 문서 & 명세서
+
+[Project Narang API Docs](https://documenter.getpostman.com/view/16546987/VUqrPxhf)
+
+<!--
 
 ---
 
@@ -101,3 +109,5 @@
 [aws 배포방법](https://velog.io/@dsunni/AWS-EC2%EC%97%90-Spring-Boot-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EB%B0%B0%ED%8F%AC%ED%95%98%EA%B8%B0)
 
 [jar 배포 방법](https://velog.io/@mooh2jj/springboot-jar%ED%8C%8C%EC%9D%BC-AWS-EC2%EC%97%90-%EB%B0%B0%ED%8F%AC%ED%95%98%EA%B8%B0)
+
+-->

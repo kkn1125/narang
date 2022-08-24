@@ -1,4 +1,4 @@
-import { Box, styled, TextField } from "@mui/material";
+import { Badge, Box, styled, TextField } from "@mui/material";
 import {
   LocalizationProvider,
   PickersDay,
@@ -18,44 +18,51 @@ type CustomPickerDayProps = PickersDayProps<Date> & {
 type setStartEndDayProps = {
   start: Date;
   end: Date;
-}|null;
+} | null;
 
 const CustomPickersDay = styled(PickersDay, {
   shouldForwardProp: (prop) =>
     prop !== "dayIsBetween" && prop !== "isFirstDay" && prop !== "isLastDay",
-})<CustomPickerDayProps>(({ theme, dayIsBetween, isFirstDay, isLastDay }) => ({
-  ...(dayIsBetween && {
-    borderRadius: 0,
-    backgroundColor: theme.palette.primary.main,
-    color: theme.palette.common.white,
-    "&:hover, &:focus": {
-      backgroundColor: theme.palette.primary.dark,
-    },
+})<CustomPickerDayProps>(
+  ({ theme, dayIsBetween, isFirstDay, isLastDay, sx }) => ({
+    ...(dayIsBetween && {
+      borderRadius: 0,
+      backgroundColor: theme.palette.primary.main,
+      color: theme.palette.common.white,
+      "&:hover, &:focus": {
+        backgroundColor: theme.palette.primary.dark,
+      },
+    }),
+    ...(isFirstDay && {
+      borderTopLeftRadius: "50%",
+      borderBottomLeftRadius: "50%",
+    }),
+    ...(isLastDay && {
+      borderTopRightRadius: "50%",
+      borderBottomRightRadius: "50%",
+    }),
+    sx,
   }),
-  ...(isFirstDay && {
-    borderTopLeftRadius: "50%",
-    borderBottomLeftRadius: "50%",
-  }),
-  ...(isLastDay && {
-    borderTopRightRadius: "50%",
-    borderBottomRightRadius: "50%",
-  }),
-})) as React.ComponentType<CustomPickerDayProps>;
+) as React.ComponentType<CustomPickerDayProps>;
 
 function WeekPicker({
   setStartEndDay,
+  userEmotions,
 }: {
   setStartEndDay: Dispatch<any>;
+  userEmotions: any[];
 }) {
+  const [badge, setBadge] = useState(false);
   const [value, setValue] = React.useState<Date | null>(new Date());
   useEffect(() => {
     const start = startOfWeek(value);
     const end = endOfWeek(value);
-    // console.log(`start: ${start}, end: ${end}`);
     setStartEndDay({
-      start, end
-    })
+      start,
+      end,
+    });
   }, []);
+
   const renderWeekPickerDay = (
     date: Date,
     selectedDates: Array<Date | null>,
@@ -69,11 +76,20 @@ function WeekPicker({
 
     const start = startOfWeek(value);
     const end = endOfWeek(value);
-    // console.log(`value: `, value);
-    // console.log(
-    //   `시작: ${start.getMonth()}/${start.getDate()}, 끝: ${end.getMonth()}/${end.getDate()}`,
-    // );
-    // console.log(`start: `, start); // Sun Aug 14 2022 00:00:00 GMT+0900 (한국 표준시)
+
+    // if (userEmotions) {
+    //   userEmotions.forEach((emotions) => {
+    //     const getDate = new Date(emotions.regdate);
+    //     const isYearSame = getDate.getFullYear() === date.getFullYear();
+    //     const isMonthSame = getDate.getMonth() === date.getMonth();
+    //     const isDateSame = getDate.getDate() === date.getDate();
+    //     if (isYearSame && isMonthSame && isDateSame) {
+    //       setBadge(true);
+    //     } else {
+    //       setBadge(false);
+    //     }
+    //   });
+    // }
 
     const dayIsBetween = isWithinInterval(date, { start, end });
     const isFirstDay = isSameDay(date, start);
@@ -99,13 +115,12 @@ function WeekPicker({
           value={value}
           onChange={(newValue) => {
             setValue(newValue);
-            // console.log(`newValue: ${newValue}`); // newValue: Mon Aug 22 2022 20:58:44 GMT+0900 (한국 표준시)
             const start = startOfWeek(newValue);
             const end = endOfWeek(newValue);
-            // console.log(`newStart: ${start}, newEnd: ${end}`);
             setStartEndDay({
-              start, end
-            })
+              start,
+              end,
+            });
           }}
           renderDay={renderWeekPickerDay}
           renderInput={(params) => <TextField {...params} />}

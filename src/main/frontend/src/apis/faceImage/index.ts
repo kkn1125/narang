@@ -42,8 +42,8 @@ const deleteFaceImageById = (uid: string, ids: string[], imgPath: string) => {
     faces.append("imgPath", imgPath);
   });
 
-  axios
-    .delete(`/api/face/${uid}`, {
+  return axios
+    .delete(`/api/face/uid/${uid}`, {
       data: faces,
     })
     .then(handleReceiveData)

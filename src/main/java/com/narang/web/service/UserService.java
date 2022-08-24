@@ -18,7 +18,7 @@ import java.util.Map;
 
 @Service
 public class UserService {
-//    @Value("${dev.profileupload}")
+    //    @Value("${dev.profileupload}")
     @Value("${prod.profileupload}")
     private String profileUploadPath;
     private final static long exp = 1000 * 60 * 60;
@@ -68,16 +68,26 @@ public class UserService {
     }
 
     public String faceSignin(String email, String password) {
+        String token = securityService.createToken(email, exp);
         User user = findByEmail(email);
-        Boolean isMatched = user.compareWithPassword(password);
-        if (isMatched) {
-            String token = securityService.createToken(email, exp);
+        if (user == null) {
+            return null;
+        }
+
+        Boolean isCorrect = securityService.matchPassword(password, user.getPassword());
+        if (isCorrect) {
             return token;
         }
+
         return null;
     }
 
     public String join(User user) {
+        User foundUser = userRepository.findByNickName(user.getNickName()).orElse(null);
+        if (foundUser != null && foundUser.compareWithNickName(user.getNickName())) {
+            System.out.println("유저 닉네임이 다른 유저의 닉네임과 중복됩니다.");
+            return "null";
+        }
         String hashPassword = securityService.passwordEncode(user.getPassword());
         user.setUserAuth("USER");
         user.setPassword(hashPassword);
@@ -87,10 +97,14 @@ public class UserService {
 
     public Boolean signout(String token) {
         String expiredToken = null;
-        System.out.println("sign out");
+        if(token == null || token.equals("")) {
+            System.out.println("토큰 값이 유효하지 않습니다. 잘못된 요청입니다.");
+            return false;
+        }
         try {
             expiredToken = securityService.logout(token);
         } catch (Exception e) {
+            System.out.println("sign out");
             return true;
         }
         return false;

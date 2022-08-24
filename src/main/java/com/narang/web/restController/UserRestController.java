@@ -102,6 +102,7 @@ public class UserRestController {
 
     @PutMapping("/user")
     public String update(User user) throws JsonProcessingException {
+        user.setPassword(null);
         return mapper(userService.update(user));
     }
 

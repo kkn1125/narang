@@ -29,14 +29,16 @@ function MessageBox() {
       findCommentAll().then((result) => {
         result.forEach(
           (comment: {
+            id: string;
             mention: string;
             author: string;
             content: string;
             did: string;
           }) => {
-            if (comment.mention.match(new RegExp(user.nickName, "g"))) {
+            if (comment.mention.indexOf(user.nickName) > -1) {
               setMentionInfo(
                 mentionInfo.concat({
+                  id: comment.id,
                   from: comment.author,
                   content: comment.content,
                   diaryId: comment.did,
@@ -57,11 +59,13 @@ function MessageBox() {
   };
 
   const getUserNickName = (content: string) =>
-    `[ ${content
-      .match(/@[\w\_\-\.]+/g)
-      .map((_) => _.replace("@", ""))
-      .join(", ")} ]`;
-
+    content.match(/@[\w\_\-\.]+/g)
+      ? `[ ${content
+          .match(/@[\w\_\-\.]+/g)
+          .map((_) => _.replace("@", ""))
+          .join(", ")} ]`
+      : "";
+  console.log(mentionInfo);
   return (
     <Box
       sx={{
@@ -71,14 +75,6 @@ function MessageBox() {
       }}>
       {cookies.token && (
         <>
-          {/* <IconButton
-            size='large'
-            aria-label='show 4 new mails'
-            color='inherit'>
-            <Badge badgeContent={0} color='error'>
-              <MailIcon />
-            </Badge>
-          </IconButton> */}
           <IconButton
             size='large'
             aria-label='show 17 new notifications'
@@ -104,9 +100,9 @@ function MessageBox() {
               }}
               open={Boolean(anchorEl)}
               onClose={handleCloseMentionMenu}>
-              {mentionInfo.map(({ from, content, diaryId }) => (
+              {mentionInfo.map(({ id, from, content, diaryId }) => (
                 <MenuItem
-                  key={diaryId}
+                  key={id}
                   onClick={() => {
                     handleCloseMentionMenu();
                     navigate(`/diary/${diaryId}`);

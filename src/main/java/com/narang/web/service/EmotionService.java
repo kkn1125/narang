@@ -24,8 +24,8 @@ public class EmotionService {
     public Emotion findById(String id) {
         return emotionRepository.findById(id).orElseThrow();
     }
-    public Emotion findByUid(String uid) {
-        return emotionRepository.findByUid(uid).orElseThrow();
+    public List<Emotion> findByUid(String uid) {
+        return emotionRepository.findByUid(uid);
     }
     public Emotion findByDid(String did) {
         return emotionRepository.findByDid(did).orElseThrow();

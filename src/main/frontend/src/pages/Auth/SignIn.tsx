@@ -84,9 +84,9 @@ function SignIn() {
     },
   });
 
-  const handleFaceSignStart = () => {
-    setFaceSignStart(!faceSignStart);
-  };
+  // const handleFaceSignStart = () => {
+  //   setFaceSignStart(!faceSignStart);
+  // };
 
   return (
     <Stack sx={{ height: "100%" }}>

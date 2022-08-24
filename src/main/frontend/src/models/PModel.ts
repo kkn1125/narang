@@ -73,6 +73,9 @@ export class PModel {
             formData.append(`${column}.${key}`, val);
           });
           break;
+        case "regdate":
+        case "updates":
+          break;
         default:
           formData.append(column, value);
           break;

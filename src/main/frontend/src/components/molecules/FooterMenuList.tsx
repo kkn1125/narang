@@ -1,6 +1,7 @@
 import { Stack } from "@mui/material";
-import React, { Fragment } from "react";
+import React, { Fragment, useContext } from "react";
 import { Link } from "react-router-dom";
+import { UserContext } from "../../contexts/UserProvider";
 import MenuItem from "../../models/MenuItem";
 import Title from "../atoms/Title";
 
@@ -14,6 +15,7 @@ interface MenuListProps {
 }
 
 function FooterMenuList({ menuList }: MenuListProps) {
+  const [user, dispatch] = useContext(UserContext);
   return (
     <Stack
       justifyContent='flex-start'
@@ -26,11 +28,13 @@ function FooterMenuList({ menuList }: MenuListProps) {
         menuList.map(({ title, items }) => (
           <Fragment key={title}>
             <Title title={title} size='xs' align='left' noGutter />
-            {items.map(({ text, url }) => (
-              <Link key={text} to={url}>
-                {text}
-              </Link>
-            ))}
+            {items
+              .filter(({ isActive }) => isActive)
+              .map(({ text, url }) => (
+                <Link key={text} to={url}>
+                  {text}
+                </Link>
+              ))}
           </Fragment>
         ))}
     </Stack>
