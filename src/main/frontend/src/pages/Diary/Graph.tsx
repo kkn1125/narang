@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import {
   BarController,
   BarElement,
@@ -12,11 +12,10 @@ import {
   Title,
   Tooltip,
 } from "chart.js";
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Chart } from "react-chartjs-2";
 import WeekPicker from "../../components/molecules/WeekPicker";
-// import MonthPicker from "../../components/molecules/[x]MonthPicker";
-import { findEmotionByDateRange } from "../../apis/emotions";
+import { findEmotionByDateRange, findEmotionByUid } from "../../apis/emotions";
 import { UserContext } from "../../contexts/UserProvider";
 
 ChartJS.register(
@@ -97,33 +96,37 @@ const data = ({
 });
 
 function Graph() {
-  // const [alignment, setAlignment] = React.useState("weekly");
   const [user, dispatch] = useContext(UserContext);
-  const [startEndDay, setStartEndDay] = React.useState(null);
-  const [graphData, setGraphData] = React.useState({
+  const [userEmotions, setUserEmotions] = useState([]);
+  const [startEndDay, setStartEndDay] = useState(null);
+  const [graphData, setGraphData] = useState({
     total: [],
     positive: [],
     negative: [],
   });
+
   useEffect(() => {
-    // console.log(user);
     if (startEndDay === null) {
       return;
     }
+
     let offset = new Date().getTimezoneOffset() * 60000;
     let startDate = new Date(startEndDay.start.getTime() - offset);
     let endDate = new Date(startEndDay.end.getTime() - offset);
-    /**
-     * var timezoneOffset = new Date().getTimezoneOffset() * 60000;
-     * var timezoneDate = new Date(Date.now() - timezoneOffset);
-     * timezoneDate.toISOString(); // 요고!
-     */
+
     if (user) {
       findEmotionByDateRange(user.id, startDate, endDate).then((result) => {
         let total: number[] = [];
         let negative: number[] = [];
         let positive: number[] = [];
-        result.data.forEach((emo: any) => {
+        result.data.forEach((emo: any, idx: number) => {
+          if (!emo) return;
+          if (idx > 0) {
+            if (!result[idx - 1]) return;
+            const before = new Date(result[idx - 1].regdate);
+            const now = new Date(emo.regdate);
+            if (before.getDate() === now.getDate()) return;
+          }
           total.push(emo.score);
           negative.push(emo.negative.score);
           positive.push(emo.positive.score);
@@ -136,34 +139,22 @@ function Graph() {
       });
     }
   }, [startEndDay]);
-  // const handleChange = (
-  //   event: React.MouseEvent<HTMLElement>,
-  //   newAlignment: string,
-  // ) => {
-  //   // console.log(newAlignment); // monthly or weekly
-  //   if (newAlignment !== null) {
-  //     setAlignment(newAlignment);
-  //   }
-  // };
+
+  useEffect(() => {
+    if (user) {
+      findEmotionByUid(user.id).then((result) => {
+        setUserEmotions(result);
+      });
+    }
+  }, []);
+
   return (
     <Box>
-      <Typography variant='body2' sx={{ textAlign: "center" }}>
-        분석 단위
-      </Typography>
       <Box sx={{ textAlign: "center" }}>
-        {/* <ToggleButtonGroup
-          color='primary'
-          value={alignment}
-          exclusive
-          onChange={handleChange}>
-          <ToggleButton value='weekly'>Weekly</ToggleButton>
-          <ToggleButton value='monthly'>Monthly</ToggleButton>
-        </ToggleButtonGroup> */}
-        <WeekPicker setStartEndDay={setStartEndDay} />
-        {/* {alignment === "weekly" ? (
-        ) : (
-          <MonthPicker />
-        )} */}
+        <WeekPicker
+          setStartEndDay={setStartEndDay}
+          userEmotions={userEmotions}
+        />
       </Box>
       <Chart data={data(graphData)} type='bar' options={options} />
     </Box>

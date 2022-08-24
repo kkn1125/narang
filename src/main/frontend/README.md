@@ -1,42 +1,44 @@
-# Create React App example with TypeScript
+# Prject Narang Front-end
 
 ## How to use
 
-Download the example [or clone the repo](https://github.com/mui/material-ui):
-
-<!-- #default-branch-switch -->
-
-```sh
-curl https://codeload.github.com/mui/material-ui/tar.gz/master | tar -xz --strip=2 material-ui-master/examples/create-react-app-with-typescript
-cd create-react-app-with-typescript
-```
-
-Install it and run:
+해당 저장소를 `clone`하거나 `zip`파일을 받아 압축을 풉니다.
 
 ```sh
 npm install
 npm start
+# 또는
+yarn install
+yarn start
 ```
 
-or:
+## Dependencies
 
-<!-- #default-branch-switch -->
-
-[![Edit on CodeSandbox](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/mui/material-ui/tree/master/examples/create-react-app-with-typescript)
-
-<!-- #default-branch-switch -->
-
-[![Edit on StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/mui/material-ui/tree/master/examples/create-react-app-with-typescript)
-
-## The idea behind the example
-
-This example demonstrates how you can use [Create React App](https://github.com/facebookincubator/create-react-app) with [TypeScript](https://github.com/Microsoft/TypeScript).
-It includes `@mui/material` and its peer dependencies, including `emotion`, the default style engine in MUI v5.
-If you prefer, you can [use styled-components instead](https://mui.com/material-ui/guides/interoperability/#styled-components).
-
-## What's next?
-
-<!-- #default-branch-switch -->
-
-You now have a working example project.
-You can head back to the documentation, continuing browsing it from the [templates](https://mui.com/material-ui/getting-started/templates/) section.
+1. common
+   - babel
+   - prettier
+2. front-end
+   - react
+   - typescript
+   - http-proxy-middleware
+   - html-react-parser
+   - formik
+   - yup
+   - jose
+   - js-sha256
+   - material-ui
+   - emotion
+   - kadvice
+   - suneditor
+   - react-cookie
+   - react-dom
+   - react-router-dom
+   - chart.js
+   - react-chartjs-2
+   - dotenv
+   - date-fns
+   - axios
+   - naver papago - 번역
+3. AI
+   - sentiment - 텍스트 감정 분석
+   - face-api.js - 안면 인식 + 감정 분석 + 인물 매칭

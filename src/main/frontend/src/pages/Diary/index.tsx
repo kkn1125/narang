@@ -91,7 +91,8 @@ function Diary() {
               key={item.id}
               component={Paper}
               elevation={5}
-              onClick={() => {
+              onClick={(e: React.MouseEvent) => {
+                e.stopPropagation();
                 navigate(item.id);
               }}>
               <CardMedia

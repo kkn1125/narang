@@ -9,20 +9,21 @@ import {
   Paper,
   Stack,
   TextField,
-  Typography
+  Typography,
 } from "@mui/material";
 import React, {
   Fragment,
   useCallback,
   useContext,
-  useEffect, useState
+  useEffect,
+  useState,
 } from "react";
 import { useCookies } from "react-cookie";
 import { findUserByNickNames } from "../../apis/user";
 import {
   CommentContext,
   removeComment,
-  updateComment
+  updateComment,
 } from "../../contexts/CommentProvider";
 import { UserContext } from "../../contexts/UserProvider";
 import UserInfo from "../organisms/UserInfo";
@@ -35,10 +36,8 @@ function CommentItem({
   children?: React.ReactElement | React.ReactElement[] | string;
 }) {
   const [open, setOpen] = useState(false);
-  const [content, setContent] = useState(
-    comment && comment.content ? comment.content : "",
-  );
-  const [cookies, setCooki] = useCookies();
+  const [content, setContent] = useState(comment && comment.content);
+  const [cookies, setCookie] = useCookies();
   const [user, dispatch] = useContext(UserContext);
   const [comments, commentDispatch] = useContext(CommentContext);
 
@@ -51,7 +50,7 @@ function CommentItem({
       });
       findUserByNickNames(formData);
     }
-  }, []);
+  }, [comment]);
 
   const metionChips = useCallback(
     (metions: string) => {
@@ -64,6 +63,7 @@ function CommentItem({
   );
 
   const handleRemoveComment = (id: string) => {
+    if (!confirm("댓글을 삭제하시겠습니까?")) return;
     commentDispatch(removeComment(id));
   };
 
@@ -143,8 +143,8 @@ function CommentItem({
                   <IconButton
                     color={open ? "warning" : "primary"}
                     onClick={() => {
+                      setContent(comment.content);
                       setOpen(!open);
-                      open && setContent(comment.content);
                     }}>
                     {open ? <CancelOutlinedIcon /> : <EditIcon />}
                   </IconButton>
@@ -153,7 +153,6 @@ function CommentItem({
                     onClick={() => {
                       handleRemoveComment(comment.id);
                       setOpen(false);
-                      setContent("");
                     }}>
                     <DeleteForeverIcon />
                   </IconButton>

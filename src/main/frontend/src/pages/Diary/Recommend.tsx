@@ -11,7 +11,7 @@ import {
   DialogProps,
   DialogTitle,
   Grid,
-  Typography
+  Typography,
 } from "@mui/material";
 import { Box } from "@mui/system";
 import axios from "axios";
@@ -84,9 +84,6 @@ function Items({ handleClickOpen }: ItemsProps) {
                   <Typography gutterBottom variant='h6' component='div'>
                     {item.title}
                   </Typography>
-                  {/* <OverflowContent limit={100}>
-                    {item.description}
-                  </OverflowContent> */}
                 </CardContent>
               </CardActionArea>
             </Card>
@@ -120,11 +117,11 @@ function Recommend() {
 
   const handleInsert = (productId: string) => {
     const cart = new Cart();
-    cart.set('uid', user.id);
-    cart.set('pid', productId);
-    cart.set('amount', 1);
-    cart.set('isOrdered', false);
-    
+    cart.set("uid", user.id);
+    cart.set("pid", productId);
+    cart.set("amount", 1);
+    cart.set("isOrdered", false);
+
     const formData = cart.makeFormData();
     insertCart(formData);
   };

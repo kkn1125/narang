@@ -7,10 +7,10 @@ class MenuItem {
     public url: string = null,
     public icon?: React.ReactElement,
     public isActive?: boolean,
-    public handler?: () => Promise<void>
+    public handler?: () => Promise<void>,
   ) {}
   public changeActive() {
-    if (this.url.match(/sign|profile/gi)) {
+    if (this.url.match(/sign|profile|cart|graph|recommend/gi)) {
       this.isActive = !this.isActive;
     }
     return this;

@@ -61,12 +61,6 @@ public class User implements UserDetails {
     @Field
     private String _class;
 
-    public Boolean compareWithPassword(String inputPassword) {
-        System.out.println(inputPassword);
-        System.out.println(this.password);
-        return this.password.equals(inputPassword);
-    }
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.authority;
@@ -95,6 +89,16 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public Boolean compareWithNickName (String nickName) {
+        return this.nickName.equals(nickName);
+    }
+
+    public Boolean compareWithPassword(String inputPassword) {
+        System.out.println(inputPassword);
+        System.out.println(this.password);
+        return this.password.equals(inputPassword);
     }
 
     public User replaceIfNotNull(User compare) {

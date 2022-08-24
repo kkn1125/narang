@@ -19,11 +19,11 @@ public class EmotionRepositoryCustomImpl implements EmotionRepositoryCustom {
     }
 
     @Override
-    public Optional<Emotion> findByUid(String uid) {
+    public List<Emotion> findByUid(String uid) {
         Criteria cr = new Criteria("uid").is(uid);
         Query q = new Query();
-        Emotion foundEmotion = emotionTemplate.findOne(q, Emotion.class);
-        return Optional.of(foundEmotion);
+        List<Emotion> foundEmotion = emotionTemplate.find(q, Emotion.class);
+        return foundEmotion;
     }
 
     @Override
@@ -42,7 +42,7 @@ public class EmotionRepositoryCustomImpl implements EmotionRepositoryCustom {
         Query q = new Query(
             Criteria.where("uid").is(uid)
                 .andOperator(
-                    Criteria.where("regdate").lt(end),
+                    Criteria.where("regdate").lte(end),
                     Criteria.where("regdate").gte(start)
                 )
         );

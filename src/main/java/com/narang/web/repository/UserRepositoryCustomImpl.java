@@ -24,7 +24,7 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
         Criteria cr = new Criteria("nickName");
         cr.is(nickName);
         Query q = new Query(cr);
-        return Optional.of(userTemplate.findOne(q, User.class));
+        return Optional.ofNullable(userTemplate.findOne(q, User.class));
     }
 
     @Override

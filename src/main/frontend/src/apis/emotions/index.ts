@@ -1,6 +1,14 @@
 import axios from "axios";
 import { handleReceiveData, handleReceiveError } from "../commonTypes";
 
+// 감정 데이터 유저 아이디로 조회
+const findEmotionByUid = (uid: string) => {
+  return axios
+    .get(`/api/emotion/uid/${uid}`)
+    .then(handleReceiveData)
+    .catch(handleReceiveError);
+};
+
 // 감정 데이터 시작~끝 날짜로 조회
 const findEmotionByDateRange = (uid: string, start: Date, end: Date) => {
   return axios
@@ -36,6 +44,7 @@ const deleteEmotionByDid = (did: string) => {
 };
 
 export {
+  findEmotionByUid,
   findEmotionByDateRange,
   findEmotionByDid,
   insertEmotions,

@@ -13,10 +13,6 @@ import Footer from "../organisms/Footer";
 const drawerWidth = 240;
 
 interface Props {
-  /**
-   * Injected by the documentation to work in an iframe.
-   * You won't need it on your project.
-   */
   window?: () => Window;
 }
 
@@ -47,11 +43,9 @@ function DiaryLayout(props: Props) {
       <AppBar
         position='fixed'
         sx={{
-          // width: { sm: `calc(100% - ${drawerWidth}px)` },
           ml: { sm: `${drawerWidth}px` },
           color: bgBlack ? "#ffffff" : "#000000",
-          backgroundColor: "white",
-          // backgroundColor: bgBlack ? "#252525" : "inherit",
+          backgroundColor: bgBlack ? "#353535" : "#ffffff",
         }}>
         <Toolbar
           sx={{
@@ -75,7 +69,6 @@ function DiaryLayout(props: Props) {
         component='nav'
         sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
         aria-label='mailbox folders'>
-        {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
         <SwipeableDrawer
           container={container}
           variant='temporary'
@@ -125,11 +118,8 @@ function DiaryLayout(props: Props) {
           sx={{
             flexGrow: 1,
             p: 3,
-            // width: { sm: `calc(100% - ${drawerWidth}px)` },
             backgroundColor: bgBlack ? "#252525" : "#ffffff",
             minHeight: "50%",
-            // marginLeft: "auto",
-            // marginRight: "auto",
           }}>
           <Toolbar />
           <Outlet />
