@@ -11,6 +11,7 @@ import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
@@ -19,13 +20,13 @@ import java.time.LocalDateTime;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Document(collection = "bills")
+@Document(collection = "bill")
 public class Bill {
 
     @Id
     private String id;
 
-    private String pid;
+    private String cid;
 
     private String uid;
 
@@ -38,4 +39,6 @@ public class Bill {
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @CreatedDate
     private LocalDateTime regdate;
+    @Field
+    private String _class;
 }

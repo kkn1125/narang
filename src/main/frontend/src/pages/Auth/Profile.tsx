@@ -5,7 +5,7 @@ import {
   Card,
   Divider,
   Stack,
-  Typography
+  Typography,
 } from "@mui/material";
 import { useFormik } from "formik";
 import { sha256 } from "js-sha256";
@@ -19,13 +19,13 @@ import {
   addFaceImage,
   deleteFaceImageById,
   findFaceImageAll,
-  findFaceImageByUid
+  findFaceImageByUid,
 } from "../../apis/faceImage";
 import { userUpdate } from "../../apis/user";
 import {
   deleteProfileImage,
   fileupload,
-  profileUpload
+  profileUpload,
 } from "../../apis/utils/fileupload";
 import TextFieldSet from "../../components/molecules/TextFieldSet";
 import { setUser, UserContext } from "../../contexts/UserProvider";
@@ -40,7 +40,7 @@ import {
   nickNameValidation,
   passwordValidation,
   phoneValidation,
-  profileImageOrCat
+  profileImageOrCat,
 } from "../../tools/utils";
 
 const validationSchema = yup.object({
@@ -111,7 +111,6 @@ const validationSchema = yup.object({
   }),
 });
 
-// http://placekitten.com/200/200
 function Profile() {
   const navigate = useNavigate();
   const [faceImages, setFaceImages] = useState([]);
@@ -163,9 +162,17 @@ function Profile() {
       checkPassword(values.check_password, user.id)
         .then((result) => {
           if (result) {
-            const userInfo = new User();
+            const userFormData = new FormData();
             Object.entries(values).forEach(([column, value]) => {
-              userInfo.set(column as UserColumn, value);
+              console.log(column);
+              if (column === "password") return;
+              if (
+                (column === "profileImg" || column === "faceImage") &&
+                typeof value === "string"
+              )
+                return;
+
+              userFormData.append(column as UserColumn, value);
             });
 
             const face = new FaceImage();
@@ -176,40 +183,31 @@ function Profile() {
             const type = imgSplit?.pop();
             const name = imgSplit?.join(".");
 
-            userInfo.set("id", user.id);
+            userFormData.append("id", user.id);
 
-            const userFormData = userInfo.makeFormData();
             const faceFormData = face.makeFormData();
 
             if (values.profileImg && values.profileImg instanceof File) {
-              userFormData.set(
-                "profileImg",
-                `${sha256(profileName)}.${profileType}`,
-              );
+              const hashProfileName = `${sha256(profileName)}.${profileType}`;
+              userFormData.set("profileImg", hashProfileName);
               deleteProfileImage(user.id).then(() => {
-                profileUpload(
-                  values.profileImg,
-                  user.id,
-                  `${sha256(profileName)}.${profileType}`,
-                );
+                profileUpload(values.profileImg, user.id, hashProfileName);
               });
             }
 
             if (values.faceImage && values.faceImage instanceof File) {
+              const hashedName = `${sha256(name)}.${type}`;
               faceFormData.set("uid", user.id);
-              faceFormData.set("imgPath", `${sha256(name)}.${type}`);
-              fileupload(values.faceImage, user.id, `${sha256(name)}.${type}`);
+              faceFormData.set("imgPath", hashedName);
+              fileupload(values.faceImage, user.id, hashedName);
               addFaceImage(faceFormData);
               userFormData.set("isFaceSign", "true");
             }
 
-            userFormData.append("id", user.id);
-            userFormData.delete("password");
             userUpdate(userFormData).then((result: any) => {
               if (result) {
                 delete result["password"];
                 dispatch(setUser(result));
-                navigate(0);
               }
             });
           } else {
@@ -262,15 +260,25 @@ function Profile() {
   };
 
   const handleRemoveFaceImage = (uid: string, ids: string, imgPath: string) => {
-    deleteFaceImageById(uid, [ids], imgPath);
-    findFaceImageAll().then((result) => {
-      if (result.length === 0) {
-        const updateUser = new User();
-        updateUser.getResponseData(user);
-        const formData = updateUser.makeFormData();
-        formData.set("id", user.id);
-        formData.set("isFaceSign", "false");
-        userUpdate(formData);
+    if (
+      !confirm("등록된 이미지를 제거하면 복구 불가합니다. 삭제하시겠습니까?")
+    ) {
+      return;
+    }
+
+    deleteFaceImageById(uid, [ids], imgPath).then((isDeleted: boolean) => {
+      if (isDeleted) {
+        findFaceImageAll().then((result) => {
+          if (result.length === 0) {
+            const updateUser = new User();
+            updateUser.getResponseData(user);
+            const formData = updateUser.makeFormData();
+            formData.set("id", user.id);
+            formData.set("isFaceSign", "false");
+            userUpdate(formData);
+          }
+          setFaceImages(result);
+        });
       }
     });
   };
@@ -320,7 +328,6 @@ function Profile() {
             </Box>
             <Divider />
             <Box sx={{ mt: 3, ml: 1, mb: 1 }}>
-              {/* https://mui.com/material-ui/react-button/#upload-button */}
               <Button component='label'>
                 Upload picture
                 <input
@@ -358,7 +365,6 @@ function Profile() {
           encType='multipart/form-data'>
           <Stack sx={{ mt: 2, mb: 1 }} spacing={2}>
             <TextFieldSet fields={fields} size={"medium"} formik={formik} />
-            {/* https://mui.com/material-ui/react-button/#upload-button */}
             <Button component='label'>
               Upload Face Login Picture
               <input
@@ -371,7 +377,7 @@ function Profile() {
               />
             </Button>
             {faceImages.map((face) => (
-              <Box key={face.imgPath}>
+              <Box key={face.id}>
                 <Typography>{cutMiddleText(face.imgPath)}</Typography>
                 <Button
                   size='small'

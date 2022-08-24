@@ -12,9 +12,9 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.lang.reflect.Field;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -23,7 +23,7 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Document(collection = "products")
+@Document(collection = "product")
 public class Product {
 
     @Id
@@ -54,9 +54,11 @@ public class Product {
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @LastModifiedDate
     private LocalDateTime updates;
+    @Field
+    private String _class;
 
     public Product replaceIfNotNull(Product compare) {
-        List<Field> fields = Arrays.asList(this.getClass().getDeclaredFields());
+        List<java.lang.reflect.Field> fields = Arrays.asList(this.getClass().getDeclaredFields());
         fields.forEach(field -> {
             try {
                 field.setAccessible(true);

@@ -38,6 +38,7 @@ function FavoritButton({ diaryId, onClick }: FavoritButton) {
   }, []);
 
   const handleFavoritCount = (e: React.MouseEvent) => {
+    e.stopPropagation();
     if (!isClicked) {
       setCount(count + 1);
       const like = new Like();

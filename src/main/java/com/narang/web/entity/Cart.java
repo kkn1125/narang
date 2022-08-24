@@ -12,9 +12,9 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.lang.reflect.Field;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -23,7 +23,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Document(collection = "carts")
+@Document(collection = "cart")
 public class Cart {
     @Id
     private String id;
@@ -47,19 +47,17 @@ public class Cart {
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @LastModifiedDate
     private LocalDateTime updates;
+    @Field
+    private String _class;
 
     public Cart replaceIfNotNull(Cart compare) {
-        List<Field> fields = Arrays.asList(this.getClass().getDeclaredFields());
+        List<java.lang.reflect.Field> fields = Arrays.asList(this.getClass().getDeclaredFields());
         fields.forEach(field -> {
             try {
                 field.setAccessible(true);
                 Object compareField = field.get(compare);
                 Object thisField = field.get(this);
-                if (field.getName() == "userAuth") {
-                    field.set(this, "USER");
-                } else {
-                    field.set(this, compareField != null ? compareField : thisField);
-                }
+                field.set(this, compareField != null ? compareField : thisField);
             } catch (IllegalAccessException e) {
                 System.out.println("The value is null [" + field.getName() + "]");
             }

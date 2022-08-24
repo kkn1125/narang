@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface EmotionRepositoryCustom {
-    public Optional<Emotion> findByUid(String uid);
+    public List<Emotion> findByUid(String uid);
 
     public Optional<Emotion> findByDid(String did);
     public List<Emotion> findByDate(String uid, LocalDateTime start, LocalDateTime end);

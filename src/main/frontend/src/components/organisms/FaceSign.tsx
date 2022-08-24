@@ -10,7 +10,7 @@ import {
   matchDimensions,
   nets,
   resizeResults,
-  TinyFaceDetectorOptions
+  TinyFaceDetectorOptions,
 } from "face-api.js";
 import React, { memo, useEffect, useRef, useState } from "react";
 import { useCookies } from "react-cookie";
@@ -286,7 +286,7 @@ function FaceSign({
   return (
     <Box>
       {captureVideo && (
-        <FaceDisplay show={test} ref={displayRef}>
+        <FaceDisplay show={Number(test)} ref={displayRef}>
           {(modelsLoaded || test) && (
             <>
               <video
@@ -309,7 +309,7 @@ function FaceSign({
   );
 }
 
-const FaceDisplay = styled(Box)(({ show }: { show?: boolean }) => ({
+const FaceDisplay = styled(Box)(({ show }: { show?: number }) => ({
   position: show ? "relative" : "absolute",
   ...(show && {
     width: "560px",
