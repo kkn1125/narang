@@ -113,11 +113,7 @@ function Graph() {
     let offset = new Date().getTimezoneOffset() * 60000;
     let startDate = new Date(startEndDay.start.getTime() - offset);
     let endDate = new Date(startEndDay.end.getTime() - offset);
-    /**
-     * var timezoneOffset = new Date().getTimezoneOffset() * 60000;
-     * var timezoneDate = new Date(Date.now() - timezoneOffset);
-     * timezoneDate.toISOString(); // 요고!
-     */
+    
     if (user) {
       findEmotionByDateRange(user.id, startDate, endDate).then((result) => {
         let total: number[] = [];
@@ -147,9 +143,6 @@ function Graph() {
   // };
   return (
     <Box>
-      <Typography variant='body2' sx={{ textAlign: "center" }}>
-        분석 단위
-      </Typography>
       <Box sx={{ textAlign: "center" }}>
         {/* <ToggleButtonGroup
           color='primary'
