@@ -1,8 +1,8 @@
-import FacebookIcon from "@mui/icons-material/Facebook";
 import GoogleIcon from "@mui/icons-material/Google";
 import { Box, Stack } from "@mui/material";
+import axios from "axios";
 import { useFormik } from "formik";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 import * as yup from "yup";
@@ -12,7 +12,15 @@ import { signin } from "../../apis/auth";
 import { SocialInfo } from "../../components/molecules/SocialSignIn";
 import FaceSign from "../../components/organisms/FaceSign";
 import SignControl from "../../components/organisms/SignControl";
-import { emailValidation, passwordValidation } from "../../tools/utils";
+import { ReactComponent as KakaoIcon } from "../../svg/Kakao.svg";
+import {
+  emailValidation,
+  getSearchQueryToMap,
+  passwordValidation,
+} from "../../tools/utils";
+
+const REST_API_KEY = `3555000cc39f213189c0ef743ffdfabc`;
+const REDIRECT_URI = `http://localhost:3000/auth/signin`;
 
 const fields = [
   {
@@ -37,10 +45,16 @@ const socials: SocialInfo[] = [
     icon: <GoogleIcon />,
   },
   {
-    name: "facebook",
-    url: "/",
-    color: "info",
-    icon: <FacebookIcon />,
+    name: "kakao",
+    // url: "",
+    exUrl: `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${REST_API_KEY}&redirect_uri=${encodeURIComponent(
+      REDIRECT_URI,
+    )}`,
+    color: "warning",
+    icon: <KakaoIcon style={{ width: 24, height: 24, color: "#ffffff" }} />,
+    // handler: () => {
+
+    // },
   },
 ];
 
@@ -59,7 +73,7 @@ export interface FormikInitialValue {
 }
 
 function SignIn() {
-  const [cookies, setCookie] = useCookies();
+  const [cookies, setCookie] = useCookies(["token"]);
   const [faceSignStart, setFaceSignStart] = useState(false);
   const [modelsLoaded, setModelsLoaded] = useState(false);
   const [processing, setProcessing] = useState(0);
@@ -84,9 +98,54 @@ function SignIn() {
     },
   });
 
-  // const handleFaceSignStart = () => {
-  //   setFaceSignStart(!faceSignStart);
-  // };
+  useEffect(() => {
+    const params = getSearchQueryToMap();
+    if (params.get("code")) {
+      const grant_type = "authorization_code";
+      const client_id = REST_API_KEY;
+      const redirect_uri = REDIRECT_URI;
+      const code = params.get("code");
+      axios
+        .post(`/oauth/token`, null, {
+          headers: {
+            "content-type": "application/x-www-form-urlencoded;charset=utf-8",
+          },
+          params: {
+            grant_type,
+            client_id,
+            redirect_uri,
+            code,
+          },
+        })
+        .then((result) => {
+          // console.log(result);
+          const data = result.data;
+          const {
+            id_token,
+            access_token,
+            expires_in,
+            refresh_token,
+            refresh_token_expires_in,
+            token_type,
+            scope,
+          } = data;
+          setCookie(
+            "token",
+            {
+              token_type,
+              access_token,
+            },
+            {
+              path: "/",
+            },
+          );
+          navigate("/");
+        })
+        .catch((e) => {
+          navigate("/auth/signin");
+        });
+    }
+  }, []);
 
   return (
     <Stack sx={{ height: "100%" }}>

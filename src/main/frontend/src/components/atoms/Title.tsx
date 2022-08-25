@@ -20,7 +20,7 @@ type Size =
   | "inherit";
 
 interface TitleProps {
-  title: string;
+  title: string | React.ReactElement;
   size: SizeProps;
   align: string;
   noGutter: boolean;
@@ -52,7 +52,10 @@ function Title({ title, size, align, noGutter, main }: TitleProps) {
           component='span'
           sx={{
             display: "block",
-            width: (theme) => theme.typography.pxToRem(title.length * 4),
+            width: (theme) =>
+              typeof title === "string"
+                ? theme.typography.pxToRem(title.length * 4)
+                : theme.typography.pxToRem(10 * 4),
             height: 4,
             backgroundColor: "#ff3366",
             margin: align === "center" ? "8px auto 0px" : "none",

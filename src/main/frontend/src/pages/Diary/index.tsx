@@ -2,17 +2,15 @@ import { Masonry } from "@mui/lab";
 import {
   Button,
   CardActionArea,
-  CardMedia,
-  ImageListItem,
-  Paper,
+  CardMedia, Paper,
   Stack,
   styled,
   Typography,
-  useMediaQuery,
+  useMediaQuery
 } from "@mui/material";
 import React, { useContext, useEffect, useMemo, useState } from "react";
 import { useCookies } from "react-cookie";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { findDiaryAll } from "../../apis/diary";
 import FavoritButton from "../../components/atoms/FavoritButton";
 import OverflowContent from "../../components/atoms/OverflowContent";
@@ -102,6 +100,10 @@ function Diary() {
                 loading='lazy'
                 width={rand.width}
                 height={(rand.height as unknown as number) / 2}
+                onError={(e: any) => {
+                  // 이미지 seed가 없는 seed일 때 이미지 랜덤으로 다시 할당
+                  e.target.src = getRandImg().src;
+                }}
               />
               {!item.isShare && (
                 <Typography

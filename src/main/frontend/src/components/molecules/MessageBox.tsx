@@ -65,7 +65,6 @@ function MessageBox() {
           .map((_) => _.replace("@", ""))
           .join(", ")} ]`
       : "";
-  console.log(mentionInfo);
   return (
     <Box
       sx={{

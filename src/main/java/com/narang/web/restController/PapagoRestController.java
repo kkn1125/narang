@@ -97,12 +97,12 @@ public class PapagoRestController {
         requestHeaders.put("Content-Type", CONTENT_TYPE);
         requestHeaders.put("X-Naver-Client-Id", CLIENT_ID);
         requestHeaders.put("X-Naver-Client-Secret", CLIENT_SECRET);
-        System.out.println(source);
-        System.out.println(target);
-        System.out.println(text);
-        System.out.println(CONTENT_TYPE);
-        System.out.println(CLIENT_ID);
-        System.out.println(CLIENT_SECRET);
+//        System.out.println(source);
+//        System.out.println(target);
+//        System.out.println(text);
+//        System.out.println(CONTENT_TYPE);
+//        System.out.println(CLIENT_ID);
+//        System.out.println(CLIENT_SECRET);
         String responseBody = post(apiURL, requestHeaders, sendText);
         return responseBody;
     }
