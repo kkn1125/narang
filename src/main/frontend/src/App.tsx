@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 import AuthLayout from "./components/templates/AuthLayout";
 import DiaryLayout from "./components/templates/DiaryLayout";
@@ -18,6 +18,13 @@ import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
 
 function App() {
+  useEffect(() => {
+    const typerCss = document.createElement("link");
+    typerCss.href = "https://cdn.jsdelivr.net/gh/kkn1125/typer@vv100/typer.css";
+    typerCss.rel = "stylesheet";
+    document.head.append(typerCss);
+  }, []);
+
   return (
     <Routes>
       <Route path='/' element={<Layout />}>

@@ -34,13 +34,18 @@ function Footer({ bottomFixed = false }: { bottomFixed?: boolean }) {
         })),
       );
     } else {
-      setIsSignin(false);
-      setMenuList(
-        menuList.map((item) => ({
-          title: item.title,
-          items: item.items.map((menu) => menu.changeActive()),
-        })),
-      );
+      setMenuList([
+        {
+          title: "Diary",
+          items: [
+            new MenuItem("프로필", "/auth/profile", null, false),
+            new MenuItem("일기", "/diary", null, true),
+            new MenuItem("감정 그래프", "/diary/graph", null, false),
+            new MenuItem("오늘의 추천", "/diary/recommend", null, false),
+            new MenuItem("장바구니", "/diary/cart", null, false),
+          ],
+        },
+      ]);
     }
   }, [cookies.token]);
 

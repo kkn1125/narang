@@ -146,7 +146,41 @@ const cutMiddleText = (text: string) => {
   return temp;
 };
 
+const getSearchQueryToMap = () =>
+  new Map<any, string>(
+    location.search
+      .slice(1)
+      .split("&")
+      .map((q: any) => q.split("=")),
+  );
+
+const formDataToQuery = (formData: FormData) => {
+  let query = "";
+  let idx = 0;
+  formData.forEach((value: FormDataEntryValue, key: string) => {
+    query += `${idx > 0 ? "&" : ""}${key}=${value}`;
+    idx++;
+  });
+  return query;
+};
+
+const getWeeks = (startDate: Date) => {
+  const newDate = new Date(startDate);
+  const weeks = [];
+  let i;
+  for (i = 0; i < 7; i++) {
+    if (i === 0) weeks.push(new Date(newDate.setDate(newDate.getDate())));
+    else weeks.push(new Date(newDate.setDate(newDate.getDate() + 1)));
+  }
+  return weeks;
+};
+
+const getWeekFormat = (weeks: Date[]) =>
+  weeks.map((week) => `${week.getMonth() + 1}/${week.getDate()}`);
+
 export {
+  getWeeks,
+  getWeekFormat,
   upperCase,
   splitToUnderBar,
   capitalize,
@@ -157,4 +191,6 @@ export {
   uploadImageOrNull,
   reverse,
   cutMiddleText,
+  getSearchQueryToMap,
+  formDataToQuery,
 };

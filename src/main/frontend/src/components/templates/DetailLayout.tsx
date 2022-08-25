@@ -112,12 +112,14 @@ function DetailLayout({ diary, emotion }: { diary: any; emotion: any }) {
             }}>
             목록으로 돌아가기
           </Button>
-          <Button
-            color='info'
-            variant='contained'
-            onClick={() => navigate("/diary/graph")}>
-            그래프로 보기
-          </Button>
+          {diaryOwner && diaryOwner.id === user.id && (
+            <Button
+              color='info'
+              variant='contained'
+              onClick={() => navigate("/diary/graph")}>
+              그래프로 보기
+            </Button>
+          )}
         </Stack>
         <Typography>일기 감정 {emotion.emoji}</Typography>
       </Stack>

@@ -6,7 +6,7 @@ import IconSet, { IconSetProps } from "../molecules/IconSet";
 interface DynamicSectionProps {
   main?: boolean;
   img?: string;
-  title?: string;
+  title?: string | React.ReactElement;
   titleSize?: SizeProps;
   icons?: IconSetProps[];
   slot?: React.ReactElement;

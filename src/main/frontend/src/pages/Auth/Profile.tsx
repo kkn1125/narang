@@ -225,6 +225,9 @@ function Profile() {
   const [faceImage, setFaceImage] = useState(null);
 
   useEffect(() => {
+    if (cookies.token.token_type) {
+      navigate(-1);
+    }
     findFaceImageByUid(user.id).then((result) => {
       setFaceImages(result);
     });
