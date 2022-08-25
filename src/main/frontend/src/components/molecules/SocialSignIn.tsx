@@ -4,7 +4,8 @@ import { useNavigate } from "react-router-dom";
 
 export interface SocialInfo {
   name: string;
-  url: string;
+  url?: string;
+  exUrl?: string;
   color?:
     | "inherit"
     | "error"
@@ -15,6 +16,7 @@ export interface SocialInfo {
     | "warning"
     | undefined;
   icon?: React.ReactElement;
+  handler?: () => void;
 }
 
 export interface SocialSignInProps {
@@ -27,14 +29,24 @@ function SocialSignIn({ socials }: SocialSignInProps) {
   return (
     <Stack gap={3} sx={{ mb: 3 }}>
       <Stack direction='row' gap={3} justifyContent='space-between'>
-        {socials.map(({ name, url, color = "info", icon }) => (
+        {socials.map(({ name, url, exUrl, color = "info", icon, handler }) => (
           <Button
             key={name}
             size='large'
             variant='contained'
             color={color || "info"}
             {...(icon && { startIcon: icon })}
-            onClick={() => navigate(url)}
+            onClick={() => {
+              if (handler) {
+                handler();
+              } else {
+                if (exUrl) {
+                  location.href = exUrl;
+                } else {
+                  navigate(url);
+                }
+              }
+            }}
             sx={{
               flex: 1,
               textTransform: "capitalize",

@@ -7,11 +7,12 @@ import {
   Paper,
   Stack,
   TextField,
-  Typography
+  Typography,
 } from "@mui/material";
 import { random } from "kadvice";
 import React, { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
+import TyperTypography from "../components/atoms/TyperTypography";
 import DynamicSection from "../components/organisms/DynamicSection";
 
 let tryAmount = 5;
@@ -59,6 +60,7 @@ const secondsSection = [
 ];
 
 function Home() {
+  const [view, setView] = useState(false);
   const [advice, setAdvice] = useState<any>({});
   const [cookies, setCookie] = useCookies();
   useEffect(() => {
@@ -73,12 +75,28 @@ function Home() {
       }
     }
     tryAdvice();
+    setView(true);
   }, []);
   return (
     <Box>
       <DynamicSection
         main
-        title='당신의 이야기를 들려주세요 😊'
+        title={
+          view && (
+            <TyperTypography
+              textList={[
+                {
+                  name: "base1",
+                  value: [
+                    "당신의 이야기를 들려주세요 😊",
+                    "당신의 이야기를 공유하세요 😮",
+                    "당신의 이야기에 집중하세요 😆",
+                  ],
+                },
+              ]}
+            />
+          )
+        }
         titleSize='m'
         img='https://cdn.pixabay.com/photo/2020/05/24/11/14/sea-5213746_1280.jpg'
         slot={

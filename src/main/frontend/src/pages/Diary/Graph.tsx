@@ -14,9 +14,10 @@ import {
 } from "chart.js";
 import React, { useContext, useEffect, useState } from "react";
 import { Chart } from "react-chartjs-2";
-import WeekPicker from "../../components/molecules/WeekPicker";
 import { findEmotionByDateRange, findEmotionByUid } from "../../apis/emotions";
+import WeekPicker from "../../components/molecules/WeekPicker";
 import { UserContext } from "../../contexts/UserProvider";
+import { getWeekFormat, getWeeks } from "../../tools/utils";
 
 ChartJS.register(
   LinearScale,
@@ -30,8 +31,6 @@ ChartJS.register(
   BarController,
   Title,
 );
-
-const labels = ["8/1", "8/2", "8/4", "8/7", "8/8", "8/10", "8/12"];
 
 const options = {
   plugins: {
@@ -55,15 +54,18 @@ const options = {
   },
 };
 
-const data = ({
-  total,
-  positive,
-  negative,
-}: {
-  total: number[];
-  positive: number[];
-  negative: number[];
-}) => ({
+const data = (
+  labels: string[],
+  {
+    total,
+    positive,
+    negative,
+  }: {
+    total: number[];
+    positive: number[];
+    negative: number[];
+  },
+) => ({
   labels,
   datasets: [
     {
@@ -99,6 +101,7 @@ function Graph() {
   const [user, dispatch] = useContext(UserContext);
   const [userEmotions, setUserEmotions] = useState([]);
   const [startEndDay, setStartEndDay] = useState(null);
+  const [labels, setLabels] = useState<any[]>([]);
   const [graphData, setGraphData] = useState({
     total: [],
     positive: [],
@@ -113,40 +116,56 @@ function Graph() {
     let offset = new Date().getTimezoneOffset() * 60000;
     let startDate = new Date(startEndDay.start.getTime() - offset);
     let endDate = new Date(startEndDay.end.getTime() - offset);
+    const dateLabes: any[] = getWeekFormat(getWeeks(startDate));
+    setLabels(dateLabes);
 
-    if (user) {
+    if (user.id) {
       findEmotionByDateRange(user.id, startDate, endDate).then((result) => {
         let total: number[] = [];
         let negative: number[] = [];
         let positive: number[] = [];
-        result.data.forEach((emo: any, idx: number) => {
-          if (!emo) return;
-          if (idx > 0) {
-            if (!result[idx - 1]) return;
-            const before = new Date(result[idx - 1].regdate);
-            const now = new Date(emo.regdate);
-            if (before.getDate() === now.getDate()) return;
+        const dates = result.data.sort(
+          (a: any, b: any) =>
+            new Date(a.regdate).getTime() - new Date(b.regdate).getTime(),
+        );
+        for (let label of dateLabes) {
+          const [mon, day] = label.split("/");
+          const foundDate = dates.find((date: any) => {
+            return (
+              new Date(date.regdate).getMonth() === Number(mon) - 1 &&
+              new Date(date.regdate).getDate() === Number(day)
+            );
+          });
+          if (foundDate) {
+            total.push(foundDate.score);
+            negative.push(foundDate.negative.score);
+            positive.push(foundDate.positive.score);
+          } else {
+            total.push(null);
+            negative.push(null);
+            positive.push(null);
+            delete total[total.length - 1];
+            delete negative[negative.length - 1];
+            delete positive[positive.length - 1];
           }
-          total.push(emo.score);
-          negative.push(emo.negative.score);
-          positive.push(emo.positive.score);
-        });
+        }
         setGraphData({
           total,
           negative,
           positive,
         });
+        console.log(total, negative, positive);
       });
     }
-  }, [startEndDay]);
+  }, [user.id, startEndDay]);
 
   useEffect(() => {
-    if (user) {
+    if (user.id) {
       findEmotionByUid(user.id).then((result) => {
         setUserEmotions(result);
       });
     }
-  }, []);
+  }, [user.id]);
 
   return (
     <Box>
@@ -156,7 +175,7 @@ function Graph() {
           userEmotions={userEmotions}
         />
       </Box>
-      <Chart data={data(graphData)} type='bar' options={options} />
+      <Chart data={data(labels, graphData)} type='bar' options={options} />
     </Box>
   );
 }
