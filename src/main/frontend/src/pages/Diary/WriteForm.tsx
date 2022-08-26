@@ -54,7 +54,7 @@ function WriteForm() {
       diary.getResponseData(values as unknown as Diary);
 
       const diaryFormData = diary.makeFormData();
-      let diaryId;
+      let diaryId: any;
 
       if (params.id) {
         diaryFormData.append("id", params.id);
@@ -68,7 +68,7 @@ function WriteForm() {
         emotionResult.emotionScore as unknown as Emotions,
       );
       emotion.set("uid", values.uid);
-      emotion.set("did", diaryId.id); // diary수정 시 id가 아닌 객체를 받아옴
+      emotion.set("did", diaryId?.id || diaryId); // diary수정 시 id가 아닌 객체를 받아옴
 
       const emotionFormData = emotion.makeFormData();
 
