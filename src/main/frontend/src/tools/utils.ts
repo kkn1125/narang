@@ -110,7 +110,7 @@ const profileImageOrCat = (user: any) => {
     }
   } catch (e) {
     path = "http://placekitten.com/300/200";
-    console.log(e);
+    // console.log(e);
   } finally {
     return path;
   }
@@ -124,7 +124,7 @@ const uploadImageOrNull = (user: any) => {
       path = prefix(user);
     }
   } catch (e) {
-    console.log(e);
+    // console.log(e);
   } finally {
     return path;
   }
