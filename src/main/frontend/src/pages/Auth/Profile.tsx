@@ -164,7 +164,7 @@ function Profile() {
           if (result) {
             const userFormData = new FormData();
             Object.entries(values).forEach(([column, value]) => {
-              console.log(column);
+              // console.log(column);
               if (column === "password") return;
               if (
                 (column === "profileImg" || column === "faceImage") &&

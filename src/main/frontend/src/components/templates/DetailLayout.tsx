@@ -39,6 +39,7 @@ function DetailLayout({ diary, emotion }: { diary: any; emotion: any }) {
   }, []);
 
   const handleDeleteDiary = async (e: React.MouseEvent) => {
+    if (!confirm("일기를 삭제하시겠습니까?")) return;
     await deleteDiaryById(id);
     await deleteEmotionByDid(id);
     navigate("/diary");
