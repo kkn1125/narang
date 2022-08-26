@@ -66,9 +66,8 @@ function Footer({ bottomFixed = false }: { bottomFixed?: boolean }) {
         <Stack sx={{ gap: 2 }}>
           <Typography>
             <code>Project Narang</code>은 일기를 쓰고 감정을 읽어서 나의 감정을
-            그래프로 나타내며, 주, 월, 연 별로 나를 돌아볼 수 있게 도움을 주는
-            웹 서비스 입니다. 안면 인식 로그인을 통해 쉽게 로그인 하는 등의
-            편의를 고려한 서비스를 준비 하였습니다.
+            그래프로 나타내며, 주 단위로 나를 돌아볼 수 있게 도움을 주는
+            웹 서비스 입니다. 안면 인식으로 로그인을 쉽게 할 수 있습니다.
           </Typography>
           <Typography>
             Copyright {getTodayYear}. narang. All rights reserved.

@@ -22,40 +22,93 @@ const firstSection = [
     icon: <BorderColorIcon sx={{ fontSize: 60 }} />,
     title: "일기 감정 분석",
     content:
-      "작성한 일기의 텍스트를 분석해서 감정 정보를 읽어 냅니다. 일기에 나타난 나의 감정은 그래프로 전환되어, 나를 관리하는데 도움을 줍니다.",
+      "작성한 일기의 텍스트를 분석해서 감정 정보를 읽어 냅니다.",
+      // 일기에 나타난 나의 감정은 그래프로 전환되어, 나를 관리하는데 도움을 줍니다.
   },
   {
     icon: <PsychologyIcon sx={{ fontSize: 60 }} />,
     title: "안면 인식 로그인",
     content:
-      "인증 절차가 편리한 요즘 더욱 편리한 사용감을 위해 안면 인식을 통한 간편한 로그인 서비스를 지원합니다.",
+      "안면 인식을 통한 간편한 로그인 서비스를 지원합니다.",
+      // 인증 절차가 편리한 요즘 더욱 편리한 사용감을 위해
   },
   {
     icon: <ShareIcon sx={{ fontSize: 60 }} />,
     title: "나의 일상 공유",
     content:
-      "일기는 개인이 공개 여부를 설정하여 사용자가 함께 오늘의 이야기를 함께 공유할 수 있습니다.",
+      "사용자가 나의 이야기를 공유할 수 있습니다.",
+      // 일기는 개인이 공개 여부를 설정하여 
   },
 ];
 
 const secondsSection = [
   {
     index: 1,
-    icon: <BorderColorIcon sx={{ fontSize: 60 }} />,
+    icon: (
+      <Stack
+        alignItems='center'
+        justifyContent='center'
+        sx={{
+          fontSize: 25,
+          fontWeight: 700,
+          borderRadius: 3,
+          color: "#353535",
+          backgroundColor: "#ffbb57",
+          // border: "1px solid #252525",
+          minWidth: 75,
+          minHeight: 75,
+        }}
+        children='TXT'
+      />
+    ),
     content:
-      "일기를 작성하면 내용이 sentiment 라이브러리를 통해 감정 분석 됩니다. 감정 분석된 내용은 데이터베이스에 저장 됩니다.",
+      "네이버 파파고 API로 일기 내용을 번역하고, 번역된 내용을 sentiment 라이브러리로 감정 분석합니다. 일기 하단에는 일기 전체의 감정을 나타내는 이모지를 표시합니다.",
   },
   {
     index: 2,
-    icon: <PsychologyIcon sx={{ fontSize: 60 }} />,
+    icon: (
+      <Stack
+        alignItems='center'
+        justifyContent='center'
+        sx={{
+          fontSize: 25,
+          fontWeight: 700,
+          borderRadius: 3,
+          color: "#ffffff",
+          backgroundColor: "#6dbbff",
+          // border: "1px solid #252525",
+          minWidth: 75,
+          minHeight: 75,
+        }}
+        children='AI'
+      />
+    ),
     content:
-      "저장된 감정 데이터는 감정 점수에 대응하여 추천할 만한 상품을 표시하는 기능과, 나만의 감정 그래프를 생성하는데 사용 됩니다.",
+      "등록된 안면 이미지를 조회하여 AI기술을 통해 사용자와 일치 여부를 판별하고, 간편하게 로그인합니다. 안면 인식 로그인은 프로필에서 자신의 사진을 업로드하면 자동 활성화 됩니다.",
   },
   {
     index: 3,
-    icon: <ShareIcon sx={{ fontSize: 60 }} />,
+    icon: (
+      <Stack
+        alignItems='center'
+        justifyContent='center'
+        sx={{
+          fontSize: 25,
+          fontWeight: 700,
+          borderRadius: 3,
+          color: "#ffffff",
+          backgroundColor: "#51dc61",
+          // border: "1px solid #252525",
+          minWidth: 75,
+          minHeight: 75,
+          whiteSpace: "wrap",
+          px: 3,
+        }}
+        children='GRAPH'
+      />
+    ),
     content:
-      "작성한 일기를 사용자들과 공유하고, 나의 이야기를 우리들의 이야기로 만들어 보세요.",
+      "분석된 감정 데이터는 Chart.js를 이용해 그래프로 표시합니다. 그래프를 통해 나의 감정을 케어하는 서비스를 사용할 수 있습니다.",
   },
 ];
 
@@ -124,11 +177,11 @@ function Home() {
       />
       <DynamicSection background icons={firstSection} />
       <DynamicSection
-        title='HOW IT WORKS'
+        title='MAIN SERVICE'
         titleSize='m'
         icons={secondsSection}
       />
-      <DynamicSection
+      {/* <DynamicSection
         background
         slot={
           <Box
@@ -219,7 +272,7 @@ function Home() {
             </Stack>
           </Box>
         }
-      />
+      /> */}
     </Box>
   );
 }
