@@ -30,11 +30,11 @@ function DynamicSection({
         position: "relative",
         height: {
           xs: "auto",
-          md: main ? "80vh" : "65vh",
+          md: main ? "80vh" : "auto",
         },
         minHeight: "500px",
         overflow: "hidden",
-        py: 10,
+        py: main ? 0 : 10,
         "& .MuiTypography-root": {
           color: img ? "#ffffff" : "black",
           ...(main && { px: 5 }),
@@ -52,8 +52,13 @@ function DynamicSection({
             display: "inline-block",
             position: "absolute",
             top: 0,
-            width: "100%",
-            height: "100%",
+            width: {
+              md: "100%",
+            },
+            height: {
+              xs: "auto",
+              md: "100%",
+            },
             zIndex: -1,
             objectFit: "cover",
             objectPosition: "0 calc(-7rem + 10vh)",

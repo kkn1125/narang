@@ -154,7 +154,6 @@ function Graph() {
           negative,
           positive,
         });
-        console.log(total, negative, positive);
       });
     }
   }, [user.id, startEndDay]);
