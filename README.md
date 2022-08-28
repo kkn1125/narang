@@ -16,23 +16,24 @@
 
 ## 컨셉
 
-감정 케어 웹 서비스
+일기를 쓰다보면 자신도 모르게 묻어나는 감정을 찾아내어 그래프로 볼 수 있게 한다는 개념을 가지고 AI를 접목한 웹 서비스를 컨셉으로 가지고 있습니다.
 
 ## 서비스 목록
 
-1. 안면 인식 로그인
-2. 소셜 계정 로그인
+1. 안면 인식 로그인 (face-api.js detectFace)
+2. 소셜 계정 로그인 (카카오 로그인 API)
 3. 일기
+   - 일기 내용을 기반으로 감정 판별
+   - 감정 분석
+   - 감정 분석 데이터 기반 그래프 (주, 월 단위) 생성
 
-- 일기 내용을 기반으로 감정 판별
-- 감정 분석
-- 감정 분석 데이터 기반 그래프 (주, 월 단위) 생성
+### 안면 인식 로그인
 
-1. 판매 시스템
+<video autoplay controls src="https://user-images.githubusercontent.com/71887242/187067717-01f33363-47a8-460e-8ed6-f86b043433ad.mp4" type="video/mp4"></video>
 
-- 감정 인식 -> 감정 점수에 따라 상품 추천
+### 일기 쓰기 & 감정 분석 그래프
 
-5. 결제 시스템
+<video autoplay controls src="https://user-images.githubusercontent.com/71887242/187068070-8f8233ca-15d9-4e28-a62f-65799c1b1d0e.mp4" type="video/mp4"></video>
 
 ## 기술 스택
 

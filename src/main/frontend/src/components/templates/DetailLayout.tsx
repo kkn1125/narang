@@ -122,7 +122,14 @@ function DetailLayout({ diary, emotion }: { diary: any; emotion: any }) {
             </Button>
           )}
         </Stack>
-        <Typography>일기 감정 {emotion.emoji}</Typography>
+        <Typography component='div'>
+          일기 감정{" "}
+          <Typography
+            component='span'
+            sx={{ fontSize: (theme) => theme.typography.pxToRem(24) }}>
+            {emotion.emoji}
+          </Typography>
+        </Typography>
       </Stack>
 
       <CommentList />

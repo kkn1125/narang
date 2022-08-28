@@ -97,10 +97,7 @@ function FaceSign({
           .withFaceLandmarks()
           .withFaceDescriptor();
         descriptions.push(detections.descriptor);
-
-        const foundUser: any = users
-          .filter((u: any) => u.id === label.uid)
-          ?.pop();
+        const foundUser: any = users.find((u: any) => u.id === label.uid);
         user = foundUser;
         return new LabeledFaceDescriptors(foundUser?.nickName, descriptions);
       }),
@@ -332,6 +329,10 @@ const FaceDisplay = styled(Box)(({ show }: { show?: number }) => ({
     opacity: show ? 1 : 0,
   },
 }));
+
+FaceSign.defaultProps = {
+  test: false,
+};
 
 export default memo(FaceSign);
 

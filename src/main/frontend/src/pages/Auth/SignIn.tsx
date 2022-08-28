@@ -19,8 +19,12 @@ import {
   passwordValidation,
 } from "../../tools/utils";
 
+const BASE_URI =
+  process.env.NODE_ENV === "production"
+    ? "https://narang.ml"
+    : "http://localhost:3000";
 const REST_API_KEY = `3555000cc39f213189c0ef743ffdfabc`;
-const REDIRECT_URI = `http://localhost:3000/auth/signin`;
+const REDIRECT_URI = BASE_URI + `/auth/signin`;
 
 const fields = [
   {
@@ -38,22 +42,33 @@ const fields = [
 ];
 
 const socials: SocialInfo[] = [
-  {
-    name: "google",
-    url: "/",
-    color: "error",
-    icon: <GoogleIcon />,
-  },
+  // {
+  //   name: "google",
+  //   url: "/",
+  //   color: "error",
+  //   icon: <GoogleIcon />,
+  // },
   {
     name: "kakao",
     // url: "",
-    exUrl: `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${REST_API_KEY}&redirect_uri=${encodeURIComponent(
+    exUrl: `/oauth/authorize?response_type=code&client_id=${REST_API_KEY}&redirect_uri=${encodeURIComponent(
       REDIRECT_URI,
     )}`,
     color: "warning",
     icon: <KakaoIcon style={{ width: 24, height: 24, color: "#ffffff" }} />,
     // handler: () => {
-
+    //   axios
+    //     .get(
+    //       `/oauth/authorize?response_type=code&client_id=${REST_API_KEY}&redirect_uri=${encodeURIComponent(
+    //         REDIRECT_URI,
+    //       )}`,
+    //     )
+    //     .then((result) => {
+    //       console.log(result);
+    //     })
+    //     .catch((e) => {
+    //       console.log(e);
+    //     });
     // },
   },
 ];

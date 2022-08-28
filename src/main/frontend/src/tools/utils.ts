@@ -91,10 +91,13 @@ const convertLongToDate = (time: number | number[]): string => {
   } catch (e) {
     return null;
   } finally {
-    return date.toLocaleString("ko", {
+    return timezoneDate.toLocaleString("ko", {
       year: "numeric",
       month: "long",
       day: "numeric",
+      hour12: false,
+      hour: "numeric",
+      minute: "numeric",
     });
   }
 };
@@ -117,10 +120,12 @@ const profileImageOrCat = (user: any) => {
 };
 
 const uploadImageOrNull = (user: any) => {
-  let prefix = (user: any) => `/images/upload/${user.id}/${user.profileImg}`;
+  let prefix = (user: any) =>
+    (process.env.NODE_ENV === "production" ? `https://narang.ml` : "") +
+    `/images/upload/${user.uid}/${user.imgPath}`;
   let path;
   try {
-    if (user && user.id && user.profileImg) {
+    if (user && user.uid && user.imgPath) {
       path = prefix(user);
     }
   } catch (e) {

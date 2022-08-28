@@ -36,7 +36,7 @@ function AvatarBox() {
           axios
             .post(`/v1/user/logout`, null, {
               headers: {
-                Authorization: `Bearer ${cookies.token.access_token}`,
+                Authorization: cookies.token.access_token,
               },
             })
             .then((result) => {
@@ -45,19 +45,27 @@ function AvatarBox() {
                 setIsSignin(false);
                 dispatch(removeUser());
               }
+            })
+            .finally(() => {
+              removeCookie("token", {
+                path: "/",
+              });
+              removeCookie("token");
+              navigate("/");
+              navigate(0);
             });
         } else {
           await signout(cookies.token).finally(() => {
             setIsSignin(false);
             dispatch(removeUser());
+            removeCookie("token", {
+              path: "/",
+            });
+            removeCookie("token");
+            navigate("/");
+            navigate(0);
           });
         }
-        removeCookie("token", {
-          path: "/",
-        });
-        removeCookie("token");
-        navigate("/");
-        navigate(0);
       },
     ),
   ]);
@@ -71,7 +79,7 @@ function AvatarBox() {
 
   useEffect(() => {
     const { token } = cookies;
-    if (token) {
+    if (token || user.id) {
       if (!token.token_type) {
         checkToken(cookies.token).then((res) => {
           if (res.result === false) {
@@ -119,11 +127,19 @@ function AvatarBox() {
             }
           })
           .catch((e) => {
-            // console.log(e);
-            removeCookie("token", {
-              path: "/",
-            });
-            navigate(0);
+            if (e.code === -401) {
+              if (
+                e.msg.match(
+                  /ip mismatched! callerIp=([\d.]+). check out registered ips./,
+                )
+              ) {
+                alert("카카오 개발자 도구에서 허용 IP를 확인하세요.");
+                removeCookie("token", {
+                  path: "/",
+                });
+                navigate(0);
+              }
+            }
           });
       }
       setIsSignin(true);
@@ -163,7 +179,11 @@ function AvatarBox() {
         open={Boolean(anchorElUser)}
         onClose={handleCloseUserMenu}>
         {items
-          .filter((_) => _.isActive)
+          .filter((_) =>
+            cookies.token && cookies.token.token_type
+              ? _.isActive && _.text !== "profile"
+              : _.isActive,
+          )
           .map(({ text, url, handler }) => (
             <MenuItem
               key={text}
