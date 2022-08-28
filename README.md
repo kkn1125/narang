@@ -44,10 +44,10 @@
 
 ### 개발 환경
 
-1. common
+1. Common
    - babel 7.18.10
    - prettier 2.7.1
-2. front-end
+2. Front-end
    - react 18.2.0
    - typescript 4.8.2
    - http-proxy-middleware 2.0.6
@@ -69,7 +69,7 @@
    - date-fns 2.29.1
    - axios 0.27.2
    - naver papago - 번역 
-3. back-end
+3. Back-end
    - java openJDK 11
    - Spring Boot 2.7.1
    - Spring Security 5.7.2
@@ -81,7 +81,7 @@
 4. AI
    - sentiment - 텍스트 감정 분석 5.0.2
    - face-api.js - 안면 인식 + 감정 분석 + 인물 매칭 0.22.2
-5. deploy
+5. Deploy
    - AWS EC2
    - NGINX 1.20.1
    - mobaXterm
