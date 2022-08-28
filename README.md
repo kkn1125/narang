@@ -10,13 +10,16 @@
 
 ## 기획
 
-"Narang"서비스는 개개인의 일기를 작성하면서 감정을 분석하고 해석된 감정 데이터를 그래프로 변환하여 월, 주 단위로 자신을 관찰 가능하게 하는 감정 케어 서비스입니다.
-
-주요 서비스는 일기를 작성하고, 일기의 내용을 분석하여 감정 데이터를 얻어 월, 주 단위로 그래프를 자동으로 작성합니다. 해당 데이터를 작성자가 활용하여 자신의 감정을 케어하는데 도움을 주기 위함이 목적이며, 로그인의 편의를 돕기 위해 안면 인식 로그인 기능을 고안하여 개발을 진행 했습니다.
+"Narang"서비스는 일기를 작성하면서 감정을 분석하고 해석된 감정 데이터를 그래프로 변환하여 주 단위로 자신을 관찰하는 감정 케어 서비스입니다.
 
 ## 컨셉
 
-일기를 쓰다보면 자신도 모르게 묻어나는 감정을 찾아내어 그래프로 볼 수 있게 한다는 개념을 가지고 AI를 접목한 웹 서비스를 컨셉으로 가지고 있습니다.
+1. TXT  
+네이버 파파고 API로 일기 내용을 번역하고, 번역된 내용을 sentiment 라이브러리로 감정 분석합니다. 일기 하단에는 일기 전체의 감정을 나타내는 이모지를 표시합니다.
+2. AI  
+등록된 안면 이미지를 조회하여 AI기술을 통해 사용자와 일치 여부를 판별하고, 간편하게 로그인합니다. 안면 인식 로그인은 프로필에서 자신의 사진을 업로드하면 자동 활성화 됩니다.
+3. GRAPH  
+분석된 감정 데이터는 Chart.js를 이용해 그래프로 표시합니다. 그래프를 통해 나의 감정을 케어하는 서비스를 사용할 수 있습니다.
 
 ## 서비스 목록
 
@@ -25,7 +28,7 @@
 3. 일기
    - 일기 내용을 기반으로 감정 판별
    - 감정 분석
-   - 감정 분석 데이터 기반 그래프 (주, 월 단위) 생성
+   - 감정 분석 데이터 기반 그래프 (주 단위) 생성
 
 ### 안면 인식 로그인
 
@@ -42,44 +45,45 @@
 ### 개발 환경
 
 1. common
-   - babel
-   - prettier
+   - babel 7.18.10
+   - prettier 2.7.1
 2. front-end
-   - react
-   - typescript
-   - http-proxy-middleware
-   - html-react-parser
-   - formik
-   - yup
-   - jose
-   - js-sha256
-   - material-ui
-   - emotion
-   - kadvice
-   - suneditor
-   - react-cookie
-   - react-dom
-   - react-router-dom
-   - chart.js
-   - react-chartjs-2
-   - dotenv
-   - date-fns
-   - axios
-   - naver papago - 번역
+   - react 18.2.0
+   - typescript 4.8.2
+   - http-proxy-middleware 2.0.6
+   - html-react-parser 3.0.1
+   - formik 2.2.9
+   - yup 0.32.11
+   - jose 4.8.3
+   - js-sha256 0.9.0
+   - material-ui 5.10.2
+   - emotion 11.10.0
+   - kadvice 1.0.10
+   - suneditor 2.43.14
+   - react-cookie 4.1.1
+   - react-dom 18.2.0
+   - react-router-dom 6.3.0
+   - chart.js 3.8.2
+   - react-chartjs-2 4.3.1
+   - dotenv 16.0.1
+   - date-fns 2.29.1
+   - axios 0.27.2
+   - naver papago - 번역 
 3. back-end
-   - Spring Boot
-   - Spring Security
-   - Json Web Token
-   - Lombok
-   - jackson data-bind
-   - common-io
-   - gradle
+   - java openJDK 11
+   - Spring Boot 2.7.1
+   - Spring Security 5.7.2
+   - Json Web Token 0.11.5
+   - Lombok 1.18.24
+   - jackson data-bind 2.13.3
+   - common-io 2.11.0
+   - gradle 7.4.2
 4. AI
-   - sentiment - 텍스트 감정 분석
-   - face-api.js - 안면 인식 + 감정 분석 + 인물 매칭
+   - sentiment - 텍스트 감정 분석 5.0.2
+   - face-api.js - 안면 인식 + 감정 분석 + 인물 매칭 0.22.2
 5. deploy
    - AWS EC2
-   - NGINX
+   - NGINX 1.20.1
    - mobaXterm
 
 ## Database 명세서
