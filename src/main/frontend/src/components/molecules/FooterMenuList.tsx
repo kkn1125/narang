@@ -1,5 +1,6 @@
 import { Stack } from "@mui/material";
 import React, { Fragment, useContext } from "react";
+import { useCookies } from "react-cookie";
 import { Link } from "react-router-dom";
 import { UserContext } from "../../contexts/UserProvider";
 import MenuItem from "../../models/MenuItem";
@@ -16,6 +17,8 @@ interface MenuListProps {
 
 function FooterMenuList({ menuList }: MenuListProps) {
   const [user, dispatch] = useContext(UserContext);
+  const [cookies, setCookie] = useCookies(["token"]);
+
   return (
     <Stack
       justifyContent='flex-start'
@@ -29,7 +32,11 @@ function FooterMenuList({ menuList }: MenuListProps) {
           <Fragment key={title}>
             <Title title={title} size='xs' align='left' noGutter />
             {items
-              .filter(({ isActive }) => isActive)
+              .filter(({ isActive, text }) =>
+                cookies.token && cookies.token.token_type
+                  ? isActive && text !== "프로필"
+                  : isActive,
+              )
               .map(({ text, url }) => (
                 <Link key={text} to={url}>
                   {text}

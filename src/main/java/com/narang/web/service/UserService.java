@@ -74,7 +74,7 @@ public class UserService {
             return null;
         }
 
-        Boolean isCorrect = securityService.matchPassword(password, user.getPassword());
+        Boolean isCorrect = user.getPassword().equals(password);
         if (isCorrect) {
             return token;
         }

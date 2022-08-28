@@ -8,8 +8,8 @@ import javax.servlet.http.HttpServletRequest;
 
 @Controller
 public class IndexController implements ErrorController {
-    @RequestMapping(value = {"/", "/{x:[\\w\\-]+}", "/{x:^(?!api$).*$}/*/{y:[\\w\\-]+}", "/error"})
-    public String index(HttpServletRequest request) {
-        return "index";
-    }
+  @RequestMapping(value = {"/", "/{x:[\\w\\-]+}", "/{x:^(?!api$).*$}/*/{y:[\\w\\-]+}", "/error"})
+  public String index(HttpServletRequest request) {
+    return "index";
+  }
 }

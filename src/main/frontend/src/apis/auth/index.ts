@@ -26,7 +26,7 @@ const signin = async ({
 }: {
   email: string;
   password: string;
-}) => {
+}): Promise<any> => {
   return await checkUserByEmail({ email, password });
 };
 
