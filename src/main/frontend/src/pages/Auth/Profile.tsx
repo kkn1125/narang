@@ -316,7 +316,11 @@ function Profile() {
           elevation={5}>
           <Stack spacing={2}>
             <Avatar
-              src={profileImageOrCat(user)}
+              {...(user.profileImg && {
+                src: user.profileImg.match(/http/g)
+                  ? user.profileImg
+                  : profileImageOrCat(user),
+              })}
               sx={{ width: 60, height: 60, display: "block", margin: "auto" }}
             />
             <Box>

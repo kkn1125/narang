@@ -2,13 +2,14 @@ import { Masonry } from "@mui/lab";
 import {
   Button,
   CardActionArea,
-  CardMedia, Paper,
+  CardMedia,
+  Paper,
   Stack,
   styled,
   Typography,
-  useMediaQuery
+  useMediaQuery,
 } from "@mui/material";
-import React, { useContext, useEffect, useMemo, useState } from "react";
+import React, { memo, useContext, useEffect, useMemo, useState } from "react";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 import { findDiaryAll } from "../../apis/diary";
@@ -71,7 +72,7 @@ function Diary() {
   return (
     <DiaryBlock>
       <Stack direction='row' sx={{ mb: 3, gap: 3 }}>
-        <Button variant='outlined'>정렬</Button>
+        {/* <Button variant='outlined'>정렬</Button> */}
         {cookies.token && (
           <Button variant='outlined' onClick={() => navigate("./form")}>
             일기 쓰기
@@ -82,56 +83,61 @@ function Diary() {
         {filteredItemData.length === 0 && (
           <Typography variant='body1'>공유된 일기가 없습니다 🥲</Typography>
         )}
-        {filteredItemData.map((item, idx: number) => {
-          const rand = getRandImg();
-          return (
-            <CardActionArea
-              key={item.id}
-              component={Paper}
-              elevation={5}
-              onClick={(e: React.MouseEvent) => {
-                e.stopPropagation();
-                navigate(item.id);
-              }}>
-              <CardMedia
-                component='img'
-                src={rand.src}
-                alt={item.title}
-                loading='lazy'
-                width={rand.width}
-                height={(rand.height as unknown as number) / 2}
-                onError={(e: any) => {
-                  // 이미지 seed가 없는 seed일 때 이미지 랜덤으로 다시 할당
-                  e.target.src = getRandImg().src;
-                }}
-              />
-              {!item.isShare && (
-                <Typography
-                  sx={{
-                    color: "#ffffff",
-                    transform: "translate(15px, -30px)",
-                  }}>
-                  {user.nickName}님의 비공개 된 일기 입니다.
-                </Typography>
-              )}
-              <Cover>
-                <OverflowContent
-                  limit={20}
-                  variant='h5'
-                  sx={{
-                    fontSize: (theme) => ({
-                      xs: theme.typography.pxToRem(16),
-                      sm: theme.typography.pxToRem(18),
-                      md: theme.typography.pxToRem(24),
-                    }),
-                  }}>
-                  {item.title}
-                </OverflowContent>
-              </Cover>
-              <FavoritButton diaryId={item.id} />
-            </CardActionArea>
-          );
-        })}
+        {filteredItemData
+          .sort(
+            (a, b) =>
+              new Date(b.regdate).getTime() - new Date(a.regdate).getTime(),
+          )
+          .map((item, idx: number) => {
+            const rand = getRandImg();
+            return (
+              <CardActionArea
+                key={item.id}
+                component={Paper}
+                elevation={5}
+                onClick={(e: React.MouseEvent) => {
+                  e.stopPropagation();
+                  navigate(item.id);
+                }}>
+                <CardMedia
+                  component='img'
+                  src={rand.src}
+                  alt={item.title}
+                  loading='lazy'
+                  width={rand.width}
+                  height={(rand.height as unknown as number) / 2}
+                  onError={(e: any) => {
+                    // 이미지 seed가 없는 seed일 때 이미지 랜덤으로 다시 할당
+                    e.target.src = getRandImg().src;
+                  }}
+                />
+                {!item.isShare && (
+                  <Typography
+                    sx={{
+                      color: "#ffffff",
+                      transform: "translate(15px, -30px)",
+                    }}>
+                    {user.nickName}님의 비공개 된 일기 입니다.
+                  </Typography>
+                )}
+                <Cover>
+                  <OverflowContent
+                    limit={20}
+                    variant='h5'
+                    sx={{
+                      fontSize: (theme) => ({
+                        xs: theme.typography.pxToRem(16),
+                        sm: theme.typography.pxToRem(18),
+                        md: theme.typography.pxToRem(24),
+                      }),
+                    }}>
+                    {item.title}
+                  </OverflowContent>
+                </Cover>
+                <FavoritButton diaryId={item.id} />
+              </CardActionArea>
+            );
+          })}
       </Masonry>
     </DiaryBlock>
   );
@@ -178,4 +184,4 @@ const DiaryBlock = styled("div")(({ theme }) => ({
   },
 }));
 
-export default Diary;
+export default memo(Diary);
