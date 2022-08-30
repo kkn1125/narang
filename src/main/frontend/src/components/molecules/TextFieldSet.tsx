@@ -24,7 +24,7 @@ function TextFieldSet({ fields, size = "medium", formik }: TextFieldSetProps) {
       {fields.map(
         (
           { name, type, placeholder, required, value, pattern, hidden = false },
-          idx
+          idx,
         ) =>
           type === "checkbox" ? (
             <Stack key={idx}>
@@ -62,6 +62,7 @@ function TextFieldSet({ fields, size = "medium", formik }: TextFieldSetProps) {
                 sx={{
                   opacity: hidden ? 0 : 1,
                 }}
+                {...(idx === 0 && { autoFocus: true })}
               />
               {formik.errors[splitToUnderBar(name)] && (
                 <FormHelperText error={!!formik.values[splitToUnderBar(name)]}>
@@ -69,7 +70,7 @@ function TextFieldSet({ fields, size = "medium", formik }: TextFieldSetProps) {
                 </FormHelperText>
               )}
             </Stack>
-          )
+          ),
       )}
     </Stack>
   );

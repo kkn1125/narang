@@ -1,4 +1,11 @@
-import { IModel, ModelData, ModelValue } from "./IModel";
+import {
+  IModel,
+  ModelBooleanValue,
+  ModelData,
+  ModelNumberValue,
+  ModelStringValue,
+  ModelValue,
+} from "./IModel";
 import { PModel } from "./PModel";
 
 export type CartColumn =
@@ -25,7 +32,7 @@ export enum CartColumnStrings {
 class Cart extends PModel implements IModel<Cart, CartColumn> {
   private uid: string;
   private pid: string;
-  private amount: bigint;
+  private amount: number;
   private isOrdered: boolean;
 
   // setter
@@ -33,8 +40,14 @@ class Cart extends PModel implements IModel<Cart, CartColumn> {
     switch (column) {
       case "uid":
       case "pid":
+        this[column] = (value as ModelStringValue) || "";
+        break;
       case "amount":
+        this[column] = (value as ModelNumberValue) || 1;
+        break;
       case "isOrdered":
+        this[column] = (value as ModelBooleanValue) || false;
+        break;
       default:
         break;
     }

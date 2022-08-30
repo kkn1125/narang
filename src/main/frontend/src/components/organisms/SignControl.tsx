@@ -6,9 +6,9 @@ import {
   Divider,
   Stack,
   Typography,
-  useTheme
+  useTheme,
 } from "@mui/material";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { capitalize } from "../../tools/utils";
 import AuthTitle from "../molecules/AuthTitle";
@@ -62,12 +62,17 @@ function SignControl({
   const navigate = useNavigate();
   const theme = useTheme();
   const { title, subtitle, button, notice } = AUTH[mode];
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (!modelsLoaded && setFaceSignStart) {
       setFaceSignStart(false);
     }
   }, [modelsLoaded]);
+
+  const waitForLoading = () => {
+    setIsLoading(true);
+  };
 
   return (
     <Stack justifyContent='center'>
@@ -108,8 +113,10 @@ function SignControl({
           size='large'
           variant='contained'
           type='submit'
-          sx={{ mt: 3, mb: 2 }}>
+          sx={{ mt: 3, mb: 2 }}
+          disabled={isLoading}>
           {button}
+          {isLoading && <CircularProgress size='small' color='info' />}
         </Button>
       </Stack>
       <Typography

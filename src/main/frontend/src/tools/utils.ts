@@ -76,8 +76,13 @@ const convertLongToDate = (time: number | number[]): string => {
   let date = new Date();
   try {
     if (typeof time === "number") {
-      timezoneDate = new Date(new Date(time).getTime() - timezoneOffset);
+      // console.log("숫자", time, timezoneOffset);
+      timezoneDate = new Date(
+        new Date(time).getTime() -
+          (process.env.NODE_ENV === "production" ? timezoneOffset : 0),
+      );
     } else {
+      // console.log("숫자 아님", time);
       const [year, month, day, hours, minutes, seconds, milliseconds] = time;
       date.setFullYear(year);
       date.setMonth(month);
@@ -180,10 +185,15 @@ const getWeeks = (startDate: Date) => {
   return weeks;
 };
 
-const getWeekFormat = (weeks: Date[]) =>
+// 한 주 시간 배열로 받아 포맷 맞춰서 텍스트로 변환
+const getWeekFormat = (weeks: Date[]): string[] =>
   weeks.map((week) => `${week.getMonth() + 1}/${week.getDate()}`);
 
+// Card Dummy 배열
+const dummies = new Array(10).fill(0);
+
 export {
+  dummies,
   getWeeks,
   getWeekFormat,
   upperCase,
