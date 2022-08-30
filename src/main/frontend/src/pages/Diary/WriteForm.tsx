@@ -80,7 +80,7 @@ function WriteForm() {
         });
       }
 
-      navigate("/diary");
+      navigate("/diary?diary=true");
     },
   });
 

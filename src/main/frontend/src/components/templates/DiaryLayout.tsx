@@ -5,7 +5,7 @@ import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import Toolbar from "@mui/material/Toolbar";
 import React, { useEffect, useState } from "react";
-import { Outlet, useLocation } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import MessageBox from "../molecules/MessageBox";
 import DrawerBlock from "../organisms/DrawerBlock";
 import Footer from "../organisms/Footer";
@@ -21,6 +21,7 @@ function DiaryLayout(props: Props) {
   const [bgBlack, setBgBlack] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const locate = useLocation();
+  const navigate = useNavigate();
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -30,6 +31,7 @@ function DiaryLayout(props: Props) {
     window !== undefined ? () => window().document.body : undefined;
 
   useEffect(() => {
+    document.body.scrollIntoView(true);
     // 경로가 auth/profile일 때 부분 다크 모드 적용
     if (locate.pathname === "/auth/profile") {
       setBgBlack(true);

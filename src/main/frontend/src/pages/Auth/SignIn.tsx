@@ -50,26 +50,11 @@ const socials: SocialInfo[] = [
   // },
   {
     name: "kakao",
-    // url: "",
     exUrl: `/oauth/authorize?response_type=code&client_id=${REST_API_KEY}&redirect_uri=${encodeURIComponent(
       REDIRECT_URI,
     )}`,
     color: "warning",
     icon: <KakaoIcon style={{ width: 24, height: 24, color: "#ffffff" }} />,
-    // handler: () => {
-    //   axios
-    //     .get(
-    //       `/oauth/authorize?response_type=code&client_id=${REST_API_KEY}&redirect_uri=${encodeURIComponent(
-    //         REDIRECT_URI,
-    //       )}`,
-    //     )
-    //     .then((result) => {
-    //       console.log(result);
-    //     })
-    //     .catch((e) => {
-    //       console.log(e);
-    //     });
-    // },
   },
 ];
 

@@ -1,7 +1,6 @@
 import { Box, Stack, Typography } from "@mui/material";
 import React, { useContext, useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
-import { createFalse } from "typescript";
 import { UserContext } from "../../contexts/UserProvider";
 import MenuItem from "../../models/MenuItem";
 import FooterMenuList from "../molecules/FooterMenuList";
@@ -57,7 +56,8 @@ function Footer({ bottomFixed = false }: { bottomFixed?: boolean }) {
         alignItems: "center",
         minHeight: 300,
         p: 10,
-        backgroundColor: "#f0e3e7",
+        backgroundColor: "#aeacb2",
+        // backgroundColor: "#f0e3e7",
       }}>
       <Stack gap={3}>
         <Stack direction='row' gap={5}>
@@ -66,8 +66,8 @@ function Footer({ bottomFixed = false }: { bottomFixed?: boolean }) {
         <Stack sx={{ gap: 2 }}>
           <Typography>
             <code>Project Narang</code>은 일기를 쓰고 감정을 읽어서 나의 감정을
-            그래프로 나타내며, 주 단위로 나를 돌아볼 수 있게 도움을 주는
-            웹 서비스 입니다. 안면 인식으로 로그인을 쉽게 할 수 있습니다.
+            그래프로 나타내며, 주 단위로 나를 돌아볼 수 있게 도움을 주는 웹
+            서비스 입니다. 안면 인식으로 로그인을 쉽게 할 수 있습니다.
           </Typography>
           <Typography>
             Copyright {getTodayYear}. narang. All rights reserved.

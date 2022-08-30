@@ -2,7 +2,7 @@ import React, { createContext, useReducer } from "react";
 import {
   deleteCommentById,
   insertComment,
-  updateCommentById
+  updateCommentById,
 } from "../apis/comment";
 import Comment from "../models/Comment";
 
@@ -57,7 +57,8 @@ const reducer = (state: any[], action: Action) => {
       comment.getResponseData(action.comment);
       formData = comment.makeFormData();
       insertComment(formData);
-      return state.concat(action.comment);
+      comment.set("regdate", new Date());
+      return state.concat(comment);
     case UPDATE_COMMENT:
       comment.getResponseData(action.comment);
       formData = comment.makeFormData();

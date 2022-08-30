@@ -5,7 +5,6 @@ import parse, {
   HTMLReactParserOptions,
 } from "html-react-parser";
 import React, { memo, useContext, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { deleteDiaryById } from "../../apis/diary";
 import { deleteEmotionByDid } from "../../apis/emotions";
@@ -33,9 +32,11 @@ function DetailLayout({ diary, emotion }: { diary: any; emotion: any }) {
   const [diaryOwner, setDiaryOwner] = useState(null);
 
   useEffect(() => {
-    findUserById(uid).then((result) => {
-      setDiaryOwner(result);
-    });
+    if (uid) {
+      findUserById(uid).then((result) => {
+        setDiaryOwner(result);
+      });
+    }
   }, []);
 
   const handleDeleteDiary = async (e: React.MouseEvent) => {
@@ -59,10 +60,13 @@ function DetailLayout({ diary, emotion }: { diary: any; emotion: any }) {
         justifyContent='space-between'
         alignItems='flex-end'>
         <Stack
-          direction='row'
+          direction={{ xs: "column", md: "row" }}
           justifyContent='space-between'
-          alignItems='flex-end'
-          sx={{ flex: 1 }}>
+          alignItems={{
+            xs: "flex-start",
+            md: "flex-end",
+          }}
+          sx={{ flex: 1, gap: 3 }}>
           <Typography variant='h4' sx={{ fontWeight: 700 }}>
             {title}
           </Typography>
