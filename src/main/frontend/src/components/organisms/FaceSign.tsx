@@ -263,7 +263,7 @@ function FaceSign({
                 setCookie("token", result, {
                   path: "/",
                 });
-                navigate("/");
+                navigate("/?face=true");
               })
               .catch(() => {
                 alert(

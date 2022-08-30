@@ -1,134 +1,152 @@
-import { CheckBox } from "@mui/icons-material";
 import {
   Box,
   Button,
   CardMedia,
+  Checkbox,
   FormControl,
   FormGroup,
   InputLabel,
   MenuItem,
   Paper,
   Select,
+  SelectChangeEvent,
   Stack,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableRow,
   Typography,
 } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
+
+const items = [
+  {
+    name: "TÄRNABY 테르나뷔",
+    type: "탁상스탠드",
+    price: 24900,
+    amount: 5,
+    src: "https://www.ikea.com/kr/ko/images/products/taernaby-table-lamp-anthracite__1105554_ph166557_s5.jpg?f=xl",
+  },
+  {
+    name: "NÄSSELKLOCKA 네셀클로카",
+    type: "이불커버+베개커버",
+    price: 39900,
+    amount: 5,
+    src: "https://www.ikea.com/kr/ko/images/products/naesselklocka-duvet-cover-and-pillowcase-light-grey-green-multicolour__1127978_ph185859_s5.jpg?f=xl",
+  },
+];
 
 function Cart() {
+  const [selectAmount, setSelectAmount] = useState(
+    new Array(items.length).fill("1"),
+  );
+
+  const handleSelectAmount = (e: SelectChangeEvent, ids: number) => {
+    setSelectAmount(
+      selectAmount.map((sel, idx) => {
+        const target = e.target;
+        // console.log(target.value);
+        if (idx === ids) {
+          return target.value;
+        }
+        return sel;
+      }),
+    );
+  };
+
   return (
     <>
-      <FormGroup>
-        <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 650 }}>
-            <TableBody>
-              <TableRow>
-                <TableCell align='center'>
-                  <FormControl>
-                    <CheckBox />
-                  </FormControl>
-                </TableCell>
-                <TableCell>
-                  <Box sx={{ height: 200, width: 200 }}>
-                    <CardMedia
-                      component='img'
-                      height='140'
-                      width='150'
-                      image='https://www.ikea.com/kr/ko/images/products/taernaby-table-lamp-anthracite__1105554_ph166557_s5.jpg?f=xl'
-                      alt='TÄRNABY 테르나뷔'
-                    />
-                  </Box>
-                </TableCell>
-                <TableCell>
-                  <Typography variant='h5'>TÄRNABY 테르나뷔</Typography>
-                  <Typography variant='body1'>탁상스탠드</Typography>
-                  <Typography variant='body1'>24,900원</Typography>
-                  {/* https://mui.com/material-ui/react-select/#main-content */}
-                  <FormControl sx={{ mt: 5, minWidth: 240 }} variant='standard'>
-                    <Stack direction='row' spacing={2}>
-                      <InputLabel id='amount-select-label'>수량</InputLabel>
-                      <Select
-                        labelId='amount-select-label'
-                        id='amount-select-label'>
-                        <MenuItem value={1}>1</MenuItem>
-                        <MenuItem value={2}>2</MenuItem>
-                        <MenuItem value={3}>3</MenuItem>
-                        <MenuItem value={4}>4</MenuItem>
-                        <MenuItem value={5}>5</MenuItem>
-                      </Select>
-                      <Button variant='outlined'>삭제</Button>
-                    </Stack>
-                  </FormControl>
-                </TableCell>
-                <TableCell>
-                  <Typography variant='h6'>24,900원</Typography>
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell align='center'>
-                  <CheckBox />
-                </TableCell>
-                <TableCell>
-                  <Box sx={{ height: 140, width: 200 }}>
-                    <CardMedia
-                      component='img'
-                      height='140'
-                      width='150'
-                      image='https://www.ikea.com/kr/ko/images/products/naesselklocka-duvet-cover-and-pillowcase-light-grey-green-multicolour__1127978_ph185859_s5.jpg?f=xl'
-                      alt='NÄSSELKLOCKA 네셀클로카'
-                    />
-                  </Box>
-                </TableCell>
-                <TableCell>
-                  <Typography variant='h5'>NÄSSELKLOCKA 네셀클로카</Typography>
-                  <Typography variant='body1'>이불커버+베개커버</Typography>
-                  <Typography variant='body1'>39,900원</Typography>
-                  {/* https://mui.com/material-ui/react-select/#main-content */}
-                  <FormControl sx={{ mt: 5, minWidth: 240 }} variant='standard'>
-                    <Stack direction='row' spacing={2}>
-                      <Box>
-                        <InputLabel id='amount-select-label'>수량</InputLabel>
-                        <Select
-                          labelId='amount-select-label'
-                          id='amount-select-label'>
-                          <MenuItem value={1}>1</MenuItem>
-                          <MenuItem value={2}>2</MenuItem>
-                          <MenuItem value={3}>3</MenuItem>
-                          <MenuItem value={4}>4</MenuItem>
-                          <MenuItem value={5}>5</MenuItem>
-                        </Select>
-                      </Box>
-                      <Box>
-                        <Button variant='outlined'>삭제</Button>
-                      </Box>
-                    </Stack>
-                  </FormControl>
-                </TableCell>
-                <TableCell>
-                  <Typography variant='h6'>39,900원</Typography>
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell colSpan={2}></TableCell>
-                <TableCell>
-                  <Typography variant='body1'>총 주문금액</Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography variant='h6'>64,800원</Typography>
-                </TableCell>
-              </TableRow>
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <Box sx={{ m: 3, textAlign: "right" }}>
-          <Button variant='contained' size='large'>
-            결제하기
-          </Button>
-        </Box>
+      <FormGroup sx={{ gap: 5 }}>
+        {items.map(({ name, type, price, amount, src }, ids) => (
+          <Stack
+            component={Paper}
+            elevation={5}
+            key={name}
+            direction='row'
+            justifyContent='space-around'
+            alignItems='center'
+            sx={{ gap: 5, p: 7 }}>
+            <Stack
+              direction='row'
+              justifyContent='flex-start'
+              alignItems='center'
+              sx={{ flex: 1, gap: 5 }}>
+              <Box sx={{ height: "100%", width: 250 }}>
+                <CardMedia
+                  component='img'
+                  height='180'
+                  width='250'
+                  image={src}
+                  alt={name}
+                />
+              </Box>
+
+              <Box>
+                <Typography variant='h5'>{name}</Typography>
+                <Typography variant='body1'>{type}</Typography>
+                <Typography variant='body1'>
+                  {price.toLocaleString()}원
+                </Typography>
+                {/* https://mui.com/material-ui/react-select/#main-content */}
+              </Box>
+              <FormControl
+                sx={{
+                  mt: 5,
+                  minWidth: 240,
+                  flexDirection: "row",
+                  gap: 2,
+                }}
+                variant='standard'>
+                <InputLabel id={name + "-" + ids}>수량</InputLabel>
+                <Select
+                  labelId={name + "-" + ids}
+                  id={name + "-" + ids}
+                  label='수량'
+                  value={selectAmount[ids]}
+                  onChange={(e: SelectChangeEvent) =>
+                    handleSelectAmount(e, ids)
+                  }
+                  sx={{
+                    minWidth: 200,
+                  }}>
+                  <MenuItem value=''>
+                    <em>-</em>
+                  </MenuItem>
+                  {new Array(amount).fill(0).map((i, idx) => (
+                    <MenuItem key={idx} value={idx + 1}>
+                      {idx + 1}
+                    </MenuItem>
+                  ))}
+                </Select>
+                <Button variant='outlined'>삭제</Button>
+              </FormControl>
+            </Stack>
+
+            <Typography variant='h6'>
+              {(price * Number(selectAmount[ids])).toLocaleString()}원
+            </Typography>
+
+            <FormControl>
+              <Checkbox />
+            </FormControl>
+          </Stack>
+        ))}
+
+        <Stack direction='row' justifyContent='flex-end' alignItems='center'>
+          <Box>
+            <Typography variant='body1'>총 주문금액</Typography>
+            <Typography variant='h6'>
+              {selectAmount
+                .reduce(
+                  (acc, cur, idx) => (acc += items[idx].price * Number(cur)),
+                  0,
+                )
+                .toLocaleString()}
+              원
+            </Typography>
+          </Box>
+          <Box sx={{ m: 3, textAlign: "right" }}>
+            <Button variant='contained' size='large'>
+              결제하기
+            </Button>
+          </Box>
+        </Stack>
       </FormGroup>
     </>
   );

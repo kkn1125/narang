@@ -3,6 +3,7 @@ package com.narang.web.service;
 import com.narang.web.entity.Diary;
 import com.narang.web.repository.DiaryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,7 +18,7 @@ public class DiaryService {
     }
 
     public List<Diary> findAll() {
-        return diaryRepository.findAll();
+        return diaryRepository.findAll((Sort.by(Sort.Order.desc("regdate"))));
     }
 
     public Diary findById(String id) {

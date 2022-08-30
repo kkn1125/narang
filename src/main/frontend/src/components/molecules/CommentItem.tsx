@@ -19,9 +19,12 @@ import React, {
   useState,
 } from "react";
 import { useCookies } from "react-cookie";
+import { useParams } from "react-router-dom";
+import { findCommentByDid } from "../../apis/comment";
 import { findUserByNickNames } from "../../apis/user";
 import {
   CommentContext,
+  loadComment,
   removeComment,
   updateComment,
 } from "../../contexts/CommentProvider";
@@ -35,6 +38,7 @@ function CommentItem({
   comment?: any;
   children?: React.ReactElement | React.ReactElement[] | string;
 }) {
+  const params = useParams();
   const [open, setOpen] = useState(false);
   const [content, setContent] = useState(comment && comment.content);
   const [cookies, setCookie] = useCookies();
@@ -114,7 +118,7 @@ function CommentItem({
       <Fragment key={id}>{_}</Fragment>
     ));
   };
-
+  // console.log(comment);
   return (
     <Paper
       elevation={10}

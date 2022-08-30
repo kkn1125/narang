@@ -85,6 +85,9 @@ function AvatarBox() {
           if (res.result === false) {
             signout(token);
             navigate("/auth/signin");
+            removeCookie("token", {
+              path: "/",
+            });
             removeCookie("token");
             alert("토큰이 만료 되었습니다.");
           }

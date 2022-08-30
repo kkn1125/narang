@@ -1,4 +1,6 @@
 import {
+  Alert,
+  AlertTitle,
   Avatar,
   Box,
   Button,
@@ -287,127 +289,148 @@ function Profile() {
   };
 
   return (
-    <Stack
-      direction={{
-        xs: "column",
-        lg: "row",
-      }}
-      spacing={4}
-      justifyContent={{
-        xs: "flex-start",
-        md: "center",
-      }}
-      alignItems={{
-        xs: "center",
-        lg: "flex-start",
-      }}
-      sx={{
-        maxWidth: "80%",
-        marginLeft: "auto",
-        marginRight: "auto",
-      }}>
-      <Box sx={{ width: "100%" }}>
-        <Card
-          sx={{
-            width: "100%",
-            p: 2,
-            textAlign: "center",
-          }}
-          elevation={5}>
-          <Stack spacing={2}>
-            <Avatar
-              {...(user.profileImg && {
-                src: user.profileImg.match(/http/g)
-                  ? user.profileImg
-                  : profileImageOrCat(user),
-              })}
-              sx={{ width: 60, height: 60, display: "block", margin: "auto" }}
-            />
-            <Box>
-              <Typography variant='h5' gutterBottom component='div'>
-                {user.nickName}
-              </Typography>
-            </Box>
-            <Box>
-              <Typography variant='body2' gutterBottom component='div' mb={2}>
-                {user.email}
-              </Typography>
-            </Box>
-            <Divider />
-            <Box sx={{ mt: 3, ml: 1, mb: 1 }}>
+    <Stack>
+      <Stack
+        direction={{
+          xs: "column",
+          lg: "row",
+        }}
+        spacing={4}
+        justifyContent={{
+          xs: "flex-start",
+          md: "center",
+        }}
+        alignItems={{
+          xs: "center",
+          lg: "flex-start",
+        }}
+        sx={{
+          flex: 1,
+          width: "80%",
+          marginLeft: "auto",
+          marginRight: "auto",
+        }}>
+        <Box sx={{ width: "100%" }}>
+          <Card
+            sx={{
+              width: "100%",
+              p: 2,
+              textAlign: "center",
+            }}
+            elevation={5}>
+            <Stack spacing={2}>
+              <Avatar
+                {...(user.profileImg && {
+                  src: user.profileImg.match(/http/g)
+                    ? user.profileImg
+                    : profileImageOrCat(user),
+                })}
+                sx={{ width: 60, height: 60, display: "block", margin: "auto" }}
+              />
+              <Box>
+                <Typography variant='h5' gutterBottom component='div'>
+                  {user.nickName}
+                </Typography>
+              </Box>
+              <Box>
+                <Typography variant='body2' gutterBottom component='div' mb={2}>
+                  {user.email}
+                </Typography>
+              </Box>
+              <Divider />
+              <Box sx={{ mt: 3, ml: 1, mb: 1 }}>
+                <Button component='label'>
+                  Upload picture
+                  <input
+                    hidden
+                    accept='image/*'
+                    multiple
+                    type='file'
+                    name='profileImg'
+                    onChange={handleProfileImg}
+                  />
+                </Button>
+              </Box>
+            </Stack>
+          </Card>
+        </Box>
+
+        {/* Profile area */}
+        <Card sx={{ m: 2, p: 2, width: "100%" }} elevation={5}>
+          <Box>
+            <Typography variant='h5' gutterBottom component='div'>
+              Profile
+            </Typography>
+          </Box>
+          <Box>
+            <Typography variant='body2' gutterBottom component='div' mb={4}>
+              The information can be edited
+            </Typography>
+          </Box>
+          <Divider />
+
+          {/* text fields */}
+          <Box
+            component='form'
+            onSubmit={formik.handleSubmit}
+            encType='multipart/form-data'>
+            <Stack sx={{ mt: 2, mb: 1 }} spacing={2}>
+              <TextFieldSet fields={fields} size={"medium"} formik={formik} />
               <Button component='label'>
-                Upload picture
+                Upload Face Login Picture
                 <input
                   hidden
                   accept='image/*'
                   multiple
                   type='file'
-                  name='profileImg'
-                  onChange={handleProfileImg}
+                  name='faceImage'
+                  onChange={handleFaceImage}
                 />
               </Button>
+              {faceImages.map((face) => (
+                <Box key={face.id}>
+                  <Typography>{cutMiddleText(face.imgPath)}</Typography>
+                  <Button
+                    size='small'
+                    color='error'
+                    onClick={() =>
+                      handleRemoveFaceImage(user.id, face.id, face.imgPath)
+                    }>
+                    &times;
+                  </Button>
+                </Box>
+              ))}
+            </Stack>
+            <Divider />
+            <Box sx={{ p: 2 }}>
+              <Button
+                type='submit'
+                variant='contained'
+                sx={{ display: "block", margin: "auto" }}>
+                프로필 저장하기
+              </Button>
             </Box>
-          </Stack>
-        </Card>
-      </Box>
-
-      {/* Profile area */}
-      <Card sx={{ m: 2, p: 2, width: "100%" }} elevation={5}>
-        <Box>
-          <Typography variant='h5' gutterBottom component='div'>
-            Profile
-          </Typography>
-        </Box>
-        <Box>
-          <Typography variant='body2' gutterBottom component='div' mb={4}>
-            The information can be edited
-          </Typography>
-        </Box>
-        <Divider />
-
-        {/* text fields */}
-        <Box
-          component='form'
-          onSubmit={formik.handleSubmit}
-          encType='multipart/form-data'>
-          <Stack sx={{ mt: 2, mb: 1 }} spacing={2}>
-            <TextFieldSet fields={fields} size={"medium"} formik={formik} />
-            <Button component='label'>
-              Upload Face Login Picture
-              <input
-                hidden
-                accept='image/*'
-                multiple
-                type='file'
-                name='faceImage'
-                onChange={handleFaceImage}
-              />
-            </Button>
-            {faceImages.map((face) => (
-              <Box key={face.id}>
-                <Typography>{cutMiddleText(face.imgPath)}</Typography>
-                <Button
-                  size='small'
-                  color='error'
-                  onClick={() =>
-                    handleRemoveFaceImage(user.id, face.id, face.imgPath)
-                  }>
-                  &times;
-                </Button>
-              </Box>
-            ))}
-          </Stack>
-          <Divider />
-          <Box sx={{ p: 2 }}>
-            <Button
-              type='submit'
-              variant='contained'
-              sx={{ display: "block", margin: "auto" }}>
-              프로필 저장하기
-            </Button>
           </Box>
-        </Box>
-      </Card>
+        </Card>
+      </Stack>
+      <Divider sx={{ my: 3, borderColor: "#ffffff56" }} />
+      <Box sx={{ width: "80%", marginLeft: "auto", marginRight: "auto" }}>
+        <Alert
+          severity='error'
+          sx={{
+            ".MuiAlert-message": {
+              width: "100%",
+            },
+          }}>
+          <AlertTitle>계정 삭제</AlertTitle>
+          <Typography>
+            회원 탈퇴를 원하시면 아래 버튼을 클릭해주세요.
+          </Typography>
+          <Button color='error' variant='contained' sx={{ float: "right" }}>
+            Delete Account
+          </Button>
+        </Alert>
+      </Box>
     </Stack>
   );
 }

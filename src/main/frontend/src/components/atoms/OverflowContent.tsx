@@ -6,7 +6,9 @@ interface OverflowContentProps extends TypographyProps {
   children: string | React.ReactElement | React.ReactElement[];
 }
 
-const Text = styled(Typography)``;
+const Text = styled(Typography)`
+  width: 100%;
+`;
 
 const OverflowContent = ({
   children,
