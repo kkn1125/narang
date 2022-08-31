@@ -39,10 +39,8 @@ function DrawerBlock() {
     <div>
       <Toolbar>
         <Typography variant='h5' sx={{ fontWeight: 600 }}>
-          <Link to='/'>
-            <Brand responsive={Responsive.Desktop} />
-            <Brand responsive={Responsive.Mobile} />
-          </Link>
+          <Brand responsive={Responsive.Desktop} />
+          <Brand responsive={Responsive.Mobile} />
         </Typography>
       </Toolbar>
       <Divider sx={{ borderColor: "#ffffff30" }} />
