@@ -102,9 +102,9 @@ function About() {
               },
               wordBreak: "keep-all",
             }}>
-            "Narang"서비스는 일기를 작성하면서 감정을 분석하고 해석된
-            감정 데이터를 그래프로 변환하여 주 단위로 자신을 관찰하는
-            감정 케어 서비스입니다.
+            "Narang"서비스는 일기를 작성하면서 감정을 분석하고 해석된 감정
+            데이터를 그래프로 변환하여 주 단위로 자신을 관찰하는 감정 케어
+            서비스입니다.
           </Typography>
         </Container>
       </Box>
@@ -124,25 +124,9 @@ function About() {
             md: "row",
           }}
           sx={{ p: 5 }}>
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              flex: "30vw 1 1",
-              minWidth: 300,
-              maxWidth: {
-                xs: "auto",
-                md: 500,
-              },
-              minHeight: 300,
-              height: "30vw",
-              maxHeight: 500,
-              backgroundColor: "#151515",
-              overflow: "hidden",
-            }}>
+          <Stack direction='row' justifyContent='center'>
             <FaceSign test />
-          </Box>
+          </Stack>
           <Box
             sx={{
               flex: 1,

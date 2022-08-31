@@ -10,13 +10,14 @@ import {
   ListItemText,
   SvgIcon,
   Toolbar,
-  Typography
+  Typography,
 } from "@mui/material";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import React, { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "../../contexts/UserProvider";
 import MenuItem from "../../models/MenuItem";
+import Brand, { Responsive } from "../atoms/Brand";
 
 const sideMenu: any = {
   top: [
@@ -38,7 +39,10 @@ function DrawerBlock() {
     <div>
       <Toolbar>
         <Typography variant='h5' sx={{ fontWeight: 600 }}>
-          <Link to='/'>Narang</Link>
+          <Link to='/'>
+            <Brand responsive={Responsive.Desktop} />
+            <Brand responsive={Responsive.Mobile} />
+          </Link>
         </Typography>
       </Toolbar>
       <Divider sx={{ borderColor: "#ffffff30" }} />
