@@ -38,9 +38,7 @@ function Brand({ responsive }: BrandProps) {
           flexGrow: 1,
         }),
       }}>
-      <Typography
-        variant='h6'
-        noWrap
+      <Box
         component={Link}
         to='/'
         sx={{
@@ -54,7 +52,7 @@ function Brand({ responsive }: BrandProps) {
           textDecoration: "none",
         }}>
         {BRAND}
-      </Typography>
+      </Box>
     </Box>
   );
 }
