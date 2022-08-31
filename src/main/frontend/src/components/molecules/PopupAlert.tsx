@@ -1,37 +1,59 @@
-import { Alert, Paper, Stack } from "@mui/material";
-import React, { useEffect } from "react";
+import { Alert, Paper, Snackbar, SnackbarOrigin, Stack } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { getSearchQueryToMap } from "../../tools/utils";
 
-interface PopupAlertProps {
-  type: "face" | "diary";
-  setOffAlert: () => void;
-}
-
-const matchMsg = {
+const matchMsg: {
+  face: string;
+  diary: string;
+} = {
   face: "안면 인식 로그인이 되었습니다.",
   diary: "일기가 등록 되었습니다.",
 };
 
-function PopupAlert({ type, setOffAlert }: PopupAlertProps) {
-  useEffect(() => {
-    setTimeout(() => {
-      setOffAlert();
-    }, 3000);
+function PopupAlert() {
+  const [state, setState] = useState({
+    open: false,
+    vertical: "top",
+    horizontal: "center",
   });
+  const [type, setType] = useState<"face" | "diary" | null>(null);
+  const params: any = getSearchQueryToMap();
 
+  const { vertical, horizontal, open } = state;
+
+  const handleClose = () => {
+    setState({ ...state, open: false });
+  };
+
+  useEffect(() => {
+    if (params.has("face")) {
+      // alert
+      setType("face");
+    } else if (params.has("diary")) {
+      setType("diary");
+    }
+
+    setState({
+      open: true,
+      vertical: "top",
+      horizontal: "center",
+    });
+  }, []);
+  if(!type) return null;
   return (
-    <Stack
-      alignItems='center'
+    <Snackbar
+      anchorOrigin={{ vertical, horizontal } as SnackbarOrigin}
+      open={open}
+      onClose={handleClose}
+      message={matchMsg[type]}
+      key={matchMsg[type]}
+      autoHideDuration={30000}
       sx={{
-        width: "100vw",
-        height: "100vh",
-        pt: 5,
-        position: "fixed",
-        zIndex: 1200,
-      }}>
-      <Paper component={Alert} elevation={10} severity='success'>
-        {matchMsg[type]}
-      </Paper>
-    </Stack>
+        [`.MuiPaper-root.MuiSnackbarContent-root`]: {
+          backgroundColor: (theme) => theme.palette.success.main,
+        },
+      }}
+    />
   );
 }
 
