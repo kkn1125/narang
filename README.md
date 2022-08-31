@@ -1,6 +1,34 @@
 # Project Narang
 
+<p align="center">
 개인의 감정을 케어하는 웹서비스
+</p>
+
+<div align="center">
+   <img src="https://user-images.githubusercontent.com/71887242/187703475-d9c52cbd-747b-40d9-a730-a15adef3eafc.png" alt="project narang">
+</div>
+
+---
+
+### 안면 인식 로그인
+
+<video autoplay controls src="https://user-images.githubusercontent.com/71887242/187067717-01f33363-47a8-460e-8ed6-f86b043433ad.mp4" type="video/mp4"></video>
+
+### 일기 쓰기 & 감정 분석 그래프
+
+<video autoplay controls src="https://user-images.githubusercontent.com/71887242/187068070-8f8233ca-15d9-4e28-a62f-65799c1b1d0e.mp4" type="video/mp4"></video>
+
+### 댓글 + 좋아요
+
+<video autoplay controls src="https://user-images.githubusercontent.com/71887242/187712000-b75ae935-cd3e-4e77-8f1f-29d009005b18.mp4" type="video/mp4"></video>
+
+### 멘션 확인
+
+<video autoplay controls src="https://user-images.githubusercontent.com/71887242/187711949-3dd7f7c9-bb1e-4306-be47-2abde75664ab.mp4" type="video/mp4"></video>
+
+| 웹 예시                                                                                                           | 소셜 로그인                                                                                                                  |
+| ----------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| ![웹 예시](https://user-images.githubusercontent.com/71887242/187704944-70d27ea9-02f3-4ff3-8e45-7e2b1e7379ca.gif) | ![카카오_로그인_짧음](https://user-images.githubusercontent.com/71887242/187705701-f7ff4457-1835-4c22-9a00-5e39c5e7741a.gif) |
 
 ## 참여자
 
@@ -15,11 +43,11 @@
 ## 컨셉
 
 1. TXT  
-네이버 파파고 API로 일기 내용을 번역하고, 번역된 내용을 sentiment 라이브러리로 감정 분석합니다. 일기 하단에는 일기 전체의 감정을 나타내는 이모지를 표시합니다.
+   네이버 파파고 API로 일기 내용을 번역하고, 번역된 내용을 sentiment 라이브러리로 감정 분석합니다. 일기 하단에는 일기 전체의 감정을 나타내는 이모지를 표시합니다.
 2. AI  
-등록된 안면 이미지를 조회하여 AI기술을 통해 사용자와 일치 여부를 판별하고, 간편하게 로그인합니다. 안면 인식 로그인은 프로필에서 자신의 사진을 업로드하면 자동 활성화 됩니다.
+   등록된 안면 이미지를 조회하여 AI기술을 통해 사용자와 일치 여부를 판별하고, 간편하게 로그인합니다. 안면 인식 로그인은 프로필에서 자신의 사진을 업로드하면 자동 활성화 됩니다.
 3. GRAPH  
-분석된 감정 데이터는 Chart.js를 이용해 그래프로 표시합니다. 그래프를 통해 나의 감정을 케어하는 서비스를 사용할 수 있습니다.
+   분석된 감정 데이터는 Chart.js를 이용해 그래프로 표시합니다. 그래프를 통해 나의 감정을 케어하는 서비스를 사용할 수 있습니다.
 
 ## 서비스 목록
 
@@ -29,14 +57,6 @@
    - 일기 내용을 기반으로 감정 판별
    - 감정 분석
    - 감정 분석 데이터 기반 그래프 (주 단위) 생성
-
-### 안면 인식 로그인
-
-<video autoplay controls src="https://user-images.githubusercontent.com/71887242/187067717-01f33363-47a8-460e-8ed6-f86b043433ad.mp4" type="video/mp4"></video>
-
-### 일기 쓰기 & 감정 분석 그래프
-
-<video autoplay controls src="https://user-images.githubusercontent.com/71887242/187068070-8f8233ca-15d9-4e28-a62f-65799c1b1d0e.mp4" type="video/mp4"></video>
 
 ## 기술 스택
 
@@ -68,7 +88,7 @@
    - dotenv 16.0.1
    - date-fns 2.29.1
    - axios 0.27.2
-   - naver papago - 번역 
+   - naver papago - 번역
 3. Back-end
    - java openJDK 11
    - Spring Boot 2.7.1
@@ -98,6 +118,10 @@
 ## API 문서 & 명세서
 
 [Project Narang API Docs](https://documenter.getpostman.com/view/16546987/VUqrPxhf)
+
+## Mock Image
+
+![Mock Image](https://user-images.githubusercontent.com/71887242/187711500-a3a0262a-834c-4cdf-b6f9-f7c4cc6057b8.png)
 
 <!--
 
