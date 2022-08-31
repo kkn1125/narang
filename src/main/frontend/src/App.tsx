@@ -18,9 +18,8 @@ import Usage from "./pages/Diary/Usage";
 import WriteForm from "./pages/Diary/WriteForm";
 import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
-import { getSearchQueryToMap } from "./tools/utils";
 
-const BRAND = "Narang";
+const BRAND = "Project Narang";
 
 const uriMapping = (uri: string): string => {
   let temp = [BRAND];
@@ -55,29 +54,11 @@ const uriMapping = (uri: string): string => {
 function App() {
   const locate = useLocation();
   const [pageName, setPageName] = useState(BRAND);
-  const [showAlert, setShowAlert] = useState(false);
-  const [type, setType] = useState(null);
 
   useEffect(() => {
     const mappedName = uriMapping(locate.pathname.split("?").shift());
     setPageName(mappedName);
-
-    const params: any = getSearchQueryToMap();
-    // console.log(params);
-    if (params.has("face")) {
-      // alert
-      setShowAlert(true);
-      setType("face");
-    } else if (params.has("diary")) {
-      setShowAlert(true);
-      setType("diary");
-    }
   }, [locate.pathname]);
-
-  const setOffAlert = () => {
-    setShowAlert(false);
-    setType(null);
-  };
 
   return (
     <>
@@ -87,8 +68,11 @@ function App() {
           href='https://cdn.jsdelivr.net/gh/kkn1125/typer@vv100/typer.css'
         />
         <title>{pageName}</title>
+        <meta name='title' property='og:title' content={pageName} />
+        <meta name='url' property='og:url' content={location.href} />
+        <meta name='url' property='url' content={location.href} />
       </Helmet>
-      {showAlert && <PopupAlert type={type} setOffAlert={setOffAlert} />}
+      <PopupAlert />
       <Routes>
         <Route path='/' element={<Layout />}>
           <Route index element={<Home />} />

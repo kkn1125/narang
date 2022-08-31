@@ -1,6 +1,17 @@
 import * as yup from "yup";
 import { ModelValue } from "../models/IModel";
 
+const logoWidth = 140;
+const calc = (width: number) => (width * 166) / 500;
+
+export const LOGO_SHORT = "/logo/narang-color-short.png";
+export const LOGO_FULL = "/logo/narang-color-full.png";
+export const LOGO_STYLE = {
+  // width: logoWidth,
+  height: calc(logoWidth),
+  objectFit: "contain",
+};
+
 export const nickNameValidation = yup
   .string()
   .matches(

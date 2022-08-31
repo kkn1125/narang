@@ -1,4 +1,4 @@
-import { Box, styled } from "@mui/material";
+import { Box, Paper, styled, useMediaQuery, useTheme } from "@mui/material";
 import {
   createCanvasFromMedia,
   detectAllFaces,
@@ -283,52 +283,78 @@ function FaceSign({
   return (
     <Box>
       {captureVideo && (
-        <FaceDisplay show={Number(test)} ref={displayRef}>
-          {(modelsLoaded || test) && (
-            <>
-              <video
-                ref={videoRef}
-                width={560}
-                height={350}
-                autoPlay
-                muted
-                onPlay={onPlay}
-                onPause={onPause}
-              />
-            </>
+        <FaceDisplay show={Number(test)} refs={displayRef}>
+          {(modelsLoaded || true) && (
+            <video
+              ref={videoRef}
+              width={560}
+              height={350}
+              autoPlay
+              muted
+              onPlay={onPlay}
+              onPause={onPause}
+            />
           )}
         </FaceDisplay>
       )}
-      {!captureVideo && (
-        <FaceDisplay ref={displayRef} width={560} height={350} />
-      )}
+      {!captureVideo && <FaceDisplay refs={displayRef} />}
     </Box>
   );
 }
 
-const FaceDisplay = styled(Box)(({ show }: { show?: number }) => ({
-  position: show ? "relative" : "absolute",
-  ...(show && {
-    width: "560px",
-    height: "350px",
-  }),
-  "& video": {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    width: "560px",
-    height: "350px",
-    opacity: show ? 1 : 0,
-  },
-  "& canvas": {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    width: "560px",
-    height: "350px",
-    opacity: show ? 1 : 0,
-  },
-}));
+const FaceDisplay = ({
+  show,
+  refs,
+  children,
+}: {
+  show?: number;
+  refs?: React.Ref<HTMLDivElement>;
+  children?: React.ReactElement;
+}) => {
+  const theme = useTheme();
+  return (
+    <Paper
+      ref={refs}
+      sx={{
+        position: !show ? "fixed" : "relative",
+        backgroundColor: "#000000",
+        overflow: "hidden",
+        ...(!show
+          ? {
+              top: useMediaQuery(theme.breakpoints.up("md")) ? "5%" : "50%",
+              right: useMediaQuery(theme.breakpoints.up("md")) ? "5%" : 0,
+              width: useMediaQuery(theme.breakpoints.up("md")) ? 450 : "80vw",
+              height: 350,
+              mx: useMediaQuery(theme.breakpoints.up("md")) ? 0 : 5,
+              borderRadius: "1rem",
+              overflow: "hidden",
+              zIndex: 1200,
+            }
+          : {
+              width: 560,
+              height: 350,
+            }),
+        "& video": {
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          // width: "560px",
+          // height: "350px",
+        },
+        "& canvas": {
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          // width: "560px",
+          // height: "350px",
+        },
+      }}
+      children={children}
+    />
+  );
+};
 
 FaceSign.defaultProps = {
   test: false,
