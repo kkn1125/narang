@@ -1,9 +1,13 @@
 import { Box, Stack, Typography } from "@mui/material";
 import React, { useContext, useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
+import { Link } from "react-router-dom";
 import { UserContext } from "../../contexts/UserProvider";
 import MenuItem from "../../models/MenuItem";
+import { LOGO_STYLE } from "../../tools/utils";
 import FooterMenuList from "../molecules/FooterMenuList";
+
+const LOGO_TEXT = "/logo/narang-color-full-text.png";
 
 function Footer({ bottomFixed = false }: { bottomFixed?: boolean }) {
   const [user, dispatch] = useContext(UserContext);
@@ -53,12 +57,31 @@ function Footer({ bottomFixed = false }: { bottomFixed?: boolean }) {
       component='footer'
       sx={{
         display: "flex",
+        flexDirection: {
+          xs: "column",
+          md: "row",
+        },
         alignItems: "center",
         minHeight: 300,
         p: 10,
         backgroundColor: "#aeacb2",
-        // backgroundColor: "#f0e3e7",
+        gap: 5,
       }}>
+      <Box
+        component={Link}
+        to='/'
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          mr: 2,
+          fontFamily: "monospace",
+          fontWeight: 700,
+          letterSpacing: ".3rem",
+          color: "inherit",
+          textDecoration: "none",
+        }}>
+        <Box component='img' src={LOGO_TEXT} loading='lazy' sx={LOGO_STYLE} />
+      </Box>
       <Stack gap={3}>
         <Stack direction='row' gap={5}>
           <FooterMenuList menuList={menuList} />
@@ -70,7 +93,7 @@ function Footer({ bottomFixed = false }: { bottomFixed?: boolean }) {
             서비스 입니다. 안면 인식으로 로그인을 쉽게 할 수 있습니다.
           </Typography>
           <Typography>
-            Copyright {getTodayYear}. narang. All rights reserved.
+            Copyright {getTodayYear}. Project Narang. All rights reserved.
           </Typography>
         </Stack>
       </Stack>

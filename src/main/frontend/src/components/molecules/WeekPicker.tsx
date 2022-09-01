@@ -3,7 +3,7 @@ import {
   LocalizationProvider,
   PickersDay,
   PickersDayProps,
-  StaticDatePicker,
+  StaticDatePicker
 } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { endOfWeek, isSameDay, isWithinInterval, startOfWeek } from "date-fns";
@@ -14,11 +14,6 @@ type CustomPickerDayProps = PickersDayProps<Date> & {
   isFirstDay: boolean;
   isLastDay: boolean;
 };
-
-type setStartEndDayProps = {
-  start: Date;
-  end: Date;
-} | null;
 
 const CustomPickersDay = styled(PickersDay, {
   shouldForwardProp: (prop) =>
@@ -54,6 +49,7 @@ function WeekPicker({
 }) {
   const [badge, setBadge] = useState(false);
   const [value, setValue] = React.useState<Date | null>(new Date());
+
   useEffect(() => {
     const start = startOfWeek(value);
     const end = endOfWeek(value);
@@ -71,38 +67,39 @@ function WeekPicker({
     if (!value) {
       return <PickersDay {...pickersDayProps} />;
     }
-    // console.log(`date: ${date}`); // 해당월의 1일 부터 말일까지
-    // console.log(`selectedDates: ${selectedDates}`); // 선택한 날짜
-
     const start = startOfWeek(value);
     const end = endOfWeek(value);
-
-    // if (userEmotions) {
-    //   userEmotions.forEach((emotions) => {
-    //     const getDate = new Date(emotions.regdate);
-    //     const isYearSame = getDate.getFullYear() === date.getFullYear();
-    //     const isMonthSame = getDate.getMonth() === date.getMonth();
-    //     const isDateSame = getDate.getDate() === date.getDate();
-    //     if (isYearSame && isMonthSame && isDateSame) {
-    //       setBadge(true);
-    //     } else {
-    //       setBadge(false);
-    //     }
-    //   });
-    // }
 
     const dayIsBetween = isWithinInterval(date, { start, end });
     const isFirstDay = isSameDay(date, start);
     const isLastDay = isSameDay(date, end);
 
+    const isSame = userEmotions.find((emotion) => {
+      const emoTime = new Date(emotion.regdate);
+      const curTime = new Date(date);
+      if (
+        emoTime.getMonth() === curTime.getMonth() &&
+        emoTime.getDate() === curTime.getDate() &&
+        emoTime.getFullYear() === curTime.getFullYear()
+      ) {
+        return true;
+      }
+      return false;
+    });
+
     return (
-      <CustomPickersDay
-        {...pickersDayProps}
-        disableMargin
-        dayIsBetween={dayIsBetween}
-        isFirstDay={isFirstDay}
-        isLastDay={isLastDay}
-      />
+      <Badge
+        key={date.toString()}
+        overlap='circular'
+        badgeContent={isSame ? isSame.emoji : ""}>
+        <CustomPickersDay
+          {...pickersDayProps}
+          disableMargin
+          dayIsBetween={dayIsBetween}
+          isFirstDay={isFirstDay}
+          isLastDay={isLastDay}
+        />
+      </Badge>
     );
   };
 
