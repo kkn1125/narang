@@ -70,10 +70,6 @@ function SignControl({
     }
   }, [modelsLoaded]);
 
-  const waitForLoading = () => {
-    setIsLoading(true);
-  };
-
   return (
     <Stack justifyContent='center'>
       <Box>
