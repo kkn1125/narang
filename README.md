@@ -8,35 +8,17 @@
    <img src="https://user-images.githubusercontent.com/71887242/187703475-d9c52cbd-747b-40d9-a730-a15adef3eafc.png" alt="project narang">
 </div>
 
-> Demo site: [https://narang.ml](https://narang.ml) (open)
+## Demo site
 
----
-
-### 안면 인식 로그인
-
-<video autoplay controls src="https://user-images.githubusercontent.com/71887242/187067717-01f33363-47a8-460e-8ed6-f86b043433ad.mp4" type="video/mp4"></video>
-
-### 일기 쓰기 & 감정 분석 그래프
-
-<video autoplay controls src="https://user-images.githubusercontent.com/71887242/187068070-8f8233ca-15d9-4e28-a62f-65799c1b1d0e.mp4" type="video/mp4"></video>
-
-### 댓글 + 좋아요
-
-<video autoplay controls src="https://user-images.githubusercontent.com/71887242/187712000-b75ae935-cd3e-4e77-8f1f-29d009005b18.mp4" type="video/mp4"></video>
-
-### 멘션 확인
-
-<video autoplay controls src="https://user-images.githubusercontent.com/71887242/187711949-3dd7f7c9-bb1e-4306-be47-2abde75664ab.mp4" type="video/mp4"></video>
-
-| 웹 예시                                                                                                           | 소셜 로그인                                                                                                                  |
-| ----------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| ![웹 예시](https://user-images.githubusercontent.com/71887242/187704944-70d27ea9-02f3-4ff3-8e45-7e2b1e7379ca.gif) | ![카카오_로그인_짧음](https://user-images.githubusercontent.com/71887242/187705701-f7ff4457-1835-4c22-9a00-5e39c5e7741a.gif) |
+[https://narang.ml](https://narang.ml)
 
 ## 참여자
 
 | [@ohoraming](https://github.com/ohoraming)                                     | [@kkn1125](https://github.com/kkn1125)                                         |
 | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ |
 | <img src="https://avatars.githubusercontent.com/u/77590526?v=4" width="120" /> | <img src="https://avatars.githubusercontent.com/u/71887242?v=4" width="120" /> |
+
+---
 
 ## 기획
 
@@ -59,6 +41,28 @@
    - 일기 내용을 기반으로 감정 판별
    - 감정 분석
    - 감정 분석 데이터 기반 그래프 (주 단위) 생성
+
+### 안면 인식 로그인
+
+<video autoplay controls src="https://user-images.githubusercontent.com/71887242/187067717-01f33363-47a8-460e-8ed6-f86b043433ad.mp4" type="video/mp4"></video>
+
+### 일기 쓰기 & 감정 분석 그래프
+
+<video autoplay controls src="https://user-images.githubusercontent.com/71887242/187068070-8f8233ca-15d9-4e28-a62f-65799c1b1d0e.mp4" type="video/mp4"></video>
+
+### 댓글 + 좋아요
+
+<video autoplay controls src="https://user-images.githubusercontent.com/71887242/187712000-b75ae935-cd3e-4e77-8f1f-29d009005b18.mp4" type="video/mp4"></video>
+
+### 멘션 확인
+
+<video autoplay controls src="https://user-images.githubusercontent.com/71887242/187711949-3dd7f7c9-bb1e-4306-be47-2abde75664ab.mp4" type="video/mp4"></video>
+
+| 웹 예시                                                                                                                                   | 소셜 로그인                                                                                                                  |
+| ----------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| ![웹 예시](https://user-images.githubusercontent.com/71887242/187704944-70d27ea9-02f3-4ff3-8e45-7e2b1e7379ca.gif)                         | ![카카오_로그인_짧음](https://user-images.githubusercontent.com/71887242/187705701-f7ff4457-1835-4c22-9a00-5e39c5e7741a.gif) |
+| 안면 로그인 정확도 테스트                                                                                                                 | \-                                                                                                                           |
+| ![안면로그인_정확도_테스트_저용량](https://user-images.githubusercontent.com/71887242/187865348-3b9b3cd3-b790-4e45-aac9-c8439b61ea92.gif) | \-                                                                                                                           |
 
 ## 기술 스택
 
@@ -124,10 +128,6 @@
 ## Mock Image
 
 ![Mock Image](https://user-images.githubusercontent.com/71887242/187711500-a3a0262a-834c-4cdf-b6f9-f7c4cc6057b8.png)
-
-## Demo site
-
-[https://narang.ml](https://narang.ml)
 
 <!--
 
