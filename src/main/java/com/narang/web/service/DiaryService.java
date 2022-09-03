@@ -7,6 +7,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class DiaryService {
@@ -22,7 +23,11 @@ public class DiaryService {
     }
 
     public Diary findById(String id) {
-        return diaryRepository.findById(id).orElseThrow();
+        Optional<Diary> options = diaryRepository.findById(id);
+        if(options.isPresent()){
+            return options.get();
+        }
+        return null;
     }
 
     public String insert(Diary diary) {

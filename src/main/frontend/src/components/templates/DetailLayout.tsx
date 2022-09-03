@@ -6,6 +6,7 @@ import parse, {
 } from "html-react-parser";
 import React, { memo, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { deleteCommentByDid } from "../../apis/comment";
 import { deleteDiaryById } from "../../apis/diary";
 import { deleteEmotionByDid } from "../../apis/emotions";
 import { findUserById } from "../../apis/user";
@@ -43,6 +44,7 @@ function DetailLayout({ diary, emotion }: { diary: any; emotion: any }) {
     if (!confirm("일기를 삭제하시겠습니까?")) return;
     await deleteDiaryById(id);
     await deleteEmotionByDid(id);
+    await deleteCommentByDid(id);
     navigate("/diary");
   };
 

@@ -5,6 +5,7 @@ import PopupAlert from "./components/molecules/PopupAlert";
 import AuthLayout from "./components/templates/AuthLayout";
 import DiaryLayout from "./components/templates/DiaryLayout";
 import Layout from "./components/templates/Layout";
+import TopLayout from "./components/templates/TopLayout";
 import About from "./pages/About";
 import Profile from "./pages/Auth/Profile";
 import SignIn from "./pages/Auth/SignIn";
@@ -81,6 +82,7 @@ function App() {
 
   return (
     <>
+      {/* open graph 설정 */}
       <Helmet>
         <link
           rel='stylesheet'
@@ -91,30 +93,35 @@ function App() {
         <meta name='url' property='og:url' content={location.href} />
         <meta name='url' property='url' content={location.href} />
       </Helmet>
+
+      {/* alert */}
       {showAlert && <PopupAlert type={type} setOffAlert={setOffAlert} />}
+
       <Routes>
-        <Route path='/' element={<Layout />}>
-          <Route index element={<Home />} />
-          <Route path='about' element={<About />} />
+        <Route element={<TopLayout />}>
+          <Route path='/' element={<Layout />}>
+            <Route index element={<Home />} />
+            <Route path='about' element={<About />} />
+          </Route>
+          <Route path='/auth' element={<AuthLayout />}>
+            <Route path='signin' element={<SignIn />} />
+            <Route path='signup' element={<SignUp />} />
+          </Route>
+          <Route path='/auth' element={<DiaryLayout />}>
+            <Route path='profile' element={<Profile />} />
+          </Route>
+          <Route path='/diary' element={<DiaryLayout />}>
+            <Route index element={<Diary />} />
+            <Route path=':id' element={<Detail />} />
+            <Route path='form' element={<WriteForm />} />
+            <Route path='form/:id' element={<WriteForm />} />
+            <Route path='graph' element={<Graph />} />
+            <Route path='recommend' element={<Recommend />} />
+            <Route path='cart' element={<Cart />} />
+            <Route path='usage' element={<Usage />} />
+          </Route>
+          <Route path='*' element={<NotFound />} />
         </Route>
-        <Route path='/auth' element={<AuthLayout />}>
-          <Route path='signin' element={<SignIn />} />
-          <Route path='signup' element={<SignUp />} />
-        </Route>
-        <Route path='/auth' element={<DiaryLayout />}>
-          <Route path='profile' element={<Profile />} />
-        </Route>
-        <Route path='/diary' element={<DiaryLayout />}>
-          <Route index element={<Diary />} />
-          <Route path=':id' element={<Detail />} />
-          <Route path='form' element={<WriteForm />} />
-          <Route path='form/:id' element={<WriteForm />} />
-          <Route path='graph' element={<Graph />} />
-          <Route path='recommend' element={<Recommend />} />
-          <Route path='cart' element={<Cart />} />
-          <Route path='usage' element={<Usage />} />
-        </Route>
-        <Route path='*' element={<NotFound />} />
       </Routes>
     </>
   );

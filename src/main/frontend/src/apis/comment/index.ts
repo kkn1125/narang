@@ -41,11 +41,19 @@ const deleteCommentById = (id: string) => {
     .catch(handleReceiveError);
 };
 
+// 댓글 삭제
+const deleteCommentByDid = (did: string) => {
+  return axios
+    .delete(`/api/comment/did/${did}`)
+    .then(handleReceiveData)
+    .catch(handleReceiveError);
+};
+
 export {
   findCommentAll,
   findCommentByDid,
   insertComment,
   updateCommentById,
   deleteCommentById,
+  deleteCommentByDid,
 };
-

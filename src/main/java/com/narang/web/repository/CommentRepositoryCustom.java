@@ -8,4 +8,5 @@ public interface CommentRepositoryCustom {
     public List<Comment> findByDid(String did);
 
     public Comment update(Comment comment);
+    public Boolean deleteByDid (String did);
 }
