@@ -11,6 +11,7 @@ interface DynamicSectionProps {
   icons?: IconSetProps[];
   slot?: React.ReactElement;
   background?: boolean;
+  animation: boolean;
 }
 
 function DynamicSection({
@@ -21,6 +22,7 @@ function DynamicSection({
   icons,
   slot,
   background,
+  animation,
 }: DynamicSectionProps) {
   return (
     <Stack
@@ -67,7 +69,14 @@ function DynamicSection({
           }}
         />
       )}
-      {title && <Title title={title} size={titleSize} main={main} />}
+      {title && (
+        <Title
+          title={title}
+          size={titleSize}
+          main={main}
+          animation={animation}
+        />
+      )}
       {slot}
       {icons && (
         <Stack
@@ -75,13 +84,14 @@ function DynamicSection({
           justifyContent={{ xs: "normal", md: "center" }}
           alignItems={{ xs: "center", md: "normal" }}
           gap={20}>
-          {icons.map(({ index, title, icon, content }) => (
+          {icons.map(({ index, title, icon, content }, idx) => (
             <IconSet
               key={index + title + content}
               index={index}
               icon={icon}
               title={title}
               content={content}
+              order={idx}
             />
           ))}
         </Stack>
@@ -89,5 +99,9 @@ function DynamicSection({
     </Stack>
   );
 }
+
+DynamicSection.defaultProps = {
+  animation: false,
+};
 
 export default DynamicSection;

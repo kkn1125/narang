@@ -25,6 +25,7 @@ interface TitleProps {
   align: string;
   noGutter: boolean;
   main?: boolean;
+  animation: boolean;
 }
 
 const sizeType: {
@@ -36,9 +37,11 @@ const sizeType: {
   l: "h3",
 };
 
-function Title({ title, size, align, noGutter, main }: TitleProps) {
+function Title({ title, size, align, noGutter, main, animation }: TitleProps) {
   return (
-    <Box sx={{ textAlign: align, mb: !noGutter && 12 }}>
+    <Box
+      sx={{ textAlign: align, mb: !noGutter && 12 }}
+      {...(animation && { 'data-aos': "fade-down" })}>
       <Typography
         variant={sizeType[size]}
         sx={{
@@ -70,6 +73,7 @@ Title.defaultProps = {
   align: "center",
   size: "m",
   noGutter: false,
+  animation: false,
 };
 
 export default Title;
