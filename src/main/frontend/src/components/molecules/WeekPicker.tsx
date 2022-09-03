@@ -3,11 +3,12 @@ import {
   LocalizationProvider,
   PickersDay,
   PickersDayProps,
-  StaticDatePicker
+  StaticDatePicker,
 } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { endOfWeek, isSameDay, isWithinInterval, startOfWeek } from "date-fns";
-import React, { Dispatch, useEffect, useState } from "react";
+import React, { Dispatch, useContext, useEffect, useState } from "react";
+import { UserContext } from "../../contexts/UserProvider";
 
 type CustomPickerDayProps = PickersDayProps<Date> & {
   dayIsBetween: boolean;
@@ -47,8 +48,10 @@ function WeekPicker({
   setStartEndDay: Dispatch<any>;
   userEmotions: any[];
 }) {
+  const [user, dispatch] = useContext(UserContext);
   const [badge, setBadge] = useState(false);
-  const [value, setValue] = React.useState<Date | null>(new Date());
+  const [value, setValue] = useState<Date | null>(new Date());
+  const [viewDate, setViewDate] = useState<Date | null>(new Date());
 
   useEffect(() => {
     const start = startOfWeek(value);
@@ -78,9 +81,10 @@ function WeekPicker({
       const emoTime = new Date(emotion.regdate);
       const curTime = new Date(date);
       if (
+        emoTime.getFullYear() === curTime.getFullYear() &&
         emoTime.getMonth() === curTime.getMonth() &&
         emoTime.getDate() === curTime.getDate() &&
-        emoTime.getFullYear() === curTime.getFullYear()
+        user.id === emotion.uid
       ) {
         return true;
       }
@@ -91,7 +95,11 @@ function WeekPicker({
       <Badge
         key={date.toString()}
         overlap='circular'
-        badgeContent={isSame ? isSame.emoji : ""}>
+        badgeContent={
+          isSame && viewDate.getMonth() === new Date(isSame.regdate).getMonth()
+            ? isSame.emoji
+            : ""
+        }>
         <CustomPickersDay
           {...pickersDayProps}
           disableMargin
@@ -118,6 +126,9 @@ function WeekPicker({
               start,
               end,
             });
+          }}
+          onMonthChange={(month) => {
+            setViewDate(month);
           }}
           renderDay={renderWeekPickerDay}
           renderInput={(params) => <TextField {...params} />}

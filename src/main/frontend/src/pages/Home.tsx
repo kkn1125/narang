@@ -162,11 +162,12 @@ function Home() {
           </Stack>
         }
       />
-      <DynamicSection background icons={firstSection} />
+      <DynamicSection background icons={firstSection} animation />
       <DynamicSection
         title='MAIN SERVICE'
         titleSize='m'
         icons={secondsSection}
+        animation
       />
     </Box>
   );

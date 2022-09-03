@@ -29,4 +29,12 @@ public class CommentRepositoryCustomImpl implements CommentRepositoryCustom {
         foundComment.replaceIfNotNull(comment);
         return commentTemplate.save(foundComment, "comment");
     }
+
+    @Override
+    public Boolean deleteByDid(String did) {
+        Criteria cr = new Criteria("did").is(did);
+        Query q = new Query(cr);
+        commentTemplate.remove(q,"comment");
+        return true;
+    }
 }

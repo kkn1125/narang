@@ -203,8 +203,24 @@ const getWeekFormat = (weeks: Date[]): string[] =>
 // Card Dummy 배열
 const dummies = new Array(10).fill(0);
 
+const randomSize = ["640/400", "640/300", "640/500", "640/600"];
+
+const getRandImg = () => {
+    const size =
+      randomSize[parseInt((Math.random() * 3).toString())].split("/");
+    const [width, height] = size;
+    return {
+      width,
+      height,
+      src: `https://picsum.photos/seed/${parseInt(
+        (Math.random() * 1000).toString(),
+      )}/${size.join("/")}`,
+    };
+  };
+
 export {
   dummies,
+  getRandImg,
   getWeeks,
   getWeekFormat,
   upperCase,

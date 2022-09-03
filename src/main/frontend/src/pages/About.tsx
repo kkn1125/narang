@@ -1,26 +1,19 @@
-import BookIcon from "@mui/icons-material/Book";
-import EmailIcon from "@mui/icons-material/Email";
-import GitHubIcon from "@mui/icons-material/GitHub";
 import {
   Alert,
-  Avatar,
-  Badge,
   Box,
   Container,
   Divider,
-  IconButton,
   List,
   ListItem,
   ListItemText,
   Paper,
   Stack,
-  styled,
-  Tooltip,
   Typography,
 } from "@mui/material";
 import React, { Fragment } from "react";
 import WavesBG from "../components/common/WavesBG";
 import FaceSign from "../components/organisms/FaceSign";
+import TeamCard from "../components/organisms/TeamCard";
 
 const diaryProcess = [
   {
@@ -141,11 +134,6 @@ function About() {
               face-api.js를 사용해서 안면 인식 및 감정 분석을 가능하게 합니다.
               안면 인식을 통해 간편하게 로그인을 할 수 있습니다.
             </Typography>
-            {/* <Typography gutterBottom variant='body1' sx={{ fontWeight: 300 }}>
-              로그인을 보다 편리하게 하는 방법을 강구하면서 지문으로 하는 간편
-              로그인은 많지만 안면 인식을 통해 로그인하는 방법은 위험을 감수해야
-              하는 방법일 수 있지만 의미있는 시도라고 생각합니다.
-            </Typography> */}
             <Alert severity='info' sx={{ my: 5 }}>
               미디어 로드 및 안면 인식 프레임이 표시되는데 기기마다 시간 지연 될
               수 있습니다. 안면 인식 기술 사용을 위해 모델 자료를 로드하기
@@ -176,12 +164,6 @@ function About() {
             </Fragment>
           ))}
         </List>
-        {/* <Typography gutterBottom sx={{ fontWeight: 300 }}>
-          일기 감정 분석 프로세스는 완벽하게 감점을 분석하지 못하는 약점이
-          있습니다. 더 보완하려면 AI 분야 개발이 필요하지만 필요한 기능을
-          조사하여 취약하지만 아이디어를 실현해보는 데 초점을 두어 안면 인식과
-          더불어 좋은 경험이라 생각하고 개발에 임 했습니다.
-        </Typography> */}
       </Container>
 
       <Container maxWidth='lg' sx={{ my: 10 }}>
@@ -192,104 +174,13 @@ function About() {
           Teams
         </Typography>
         <Stack direction={{ xs: "column", md: "row" }} sx={{ gap: 3 }}>
-          {developers.map(
-            (
-              { id, name, avatar, email, github, blog, nation, desc },
-              idx,
-              o,
-            ) => (
-              <Paper
-                key={name}
-                elevation={5}
-                sx={{
-                  flex: "25% 0 0",
-                  p: 3.5,
-                  minHeight: "250px",
-                  height: "60vh",
-                  maxHeight: "300px",
-                }}>
-                <Stack>
-                  <Stack
-                    direction='row'
-                    justifyContent='space-between'
-                    alignItems='flex-start'>
-                    <Box>
-                      <Badge
-                        overlap='circular'
-                        anchorOrigin={{
-                          vertical: "bottom",
-                          horizontal: "right",
-                        }}
-                        badgeContent={
-                          <SmallAvatar
-                            alt={nation}
-                            src={`https://flagcdn.com/${nation}.svg`}
-                          />
-                        }>
-                        <Avatar
-                          variant='rounded'
-                          alt={name}
-                          src={avatar}
-                          sx={{
-                            width: 70,
-                            height: 70,
-                          }}
-                        />
-                      </Badge>
-                    </Box>
-                    <Stack direction='row'>
-                      <Tooltip title={"email".toUpperCase()}>
-                        <a href={`mailto:${email}`}>
-                          <IconButton>
-                            <EmailIcon />
-                          </IconButton>
-                        </a>
-                      </Tooltip>
-                      <Tooltip title={"blog".toUpperCase()}>
-                        <a href={`${blog}`} target='_blank'>
-                          <IconButton>
-                            <BookIcon />
-                          </IconButton>
-                        </a>
-                      </Tooltip>
-                      <Tooltip title={"github".toUpperCase()}>
-                        <a href={`${github}`} target='_blank'>
-                          <IconButton>
-                            <GitHubIcon />
-                          </IconButton>
-                        </a>
-                      </Tooltip>
-                    </Stack>
-                  </Stack>
-                  <Typography variant='body1' sx={{ fontWeight: 700 }}>
-                    {name}
-                  </Typography>
-                  <Typography
-                    variant='body1'
-                    sx={{ color: (theme) => theme.palette.grey[500] }}>
-                    FE & BE
-                  </Typography>
-                  <Divider sx={{ my: 1 }} />
-                  <Typography
-                    variant='body2'
-                    sx={{ color: (theme) => theme.palette.grey[500] }}>
-                    {desc}
-                  </Typography>
-                </Stack>
-              </Paper>
-            ),
-          )}
+          {developers.map((users, idx, o) => (
+            <TeamCard key={idx} users={users} />
+          ))}
         </Stack>
       </Container>
     </Box>
   );
 }
-
-const SmallAvatar = styled(Avatar)(({ theme }) => ({
-  width: 22,
-  height: 22,
-  border: `2px solid ${theme.palette.background.paper}`,
-  transform: `translateX(50%)`,
-}));
 
 export default About;
