@@ -52,7 +52,7 @@
 
 ### 댓글 + 좋아요
 
-<video autoplay controls src="https://user-images.githubusercontent.com/71887242/187712000-b75ae935-cd3e-4e77-8f1f-29d009005b18.mp4" type="video/mp4"></video>
+<video autoplay controls src="https://user-images.githubusercontent.com/71887242/188259089-7589539c-8cb6-4f9e-8580-39141ab5dcd9.mp4" type="video/mp4"></video>
 
 ### 멘션 확인
 
